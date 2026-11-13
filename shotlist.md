@@ -53,3 +53,40 @@ Each shot has its own setting, light and camera move. **No move repeats in this 
 - Average shot length about 2.0s. Word-by-word titles, one pink-gradient accent word per line, white flash on the payoff.
 - **The music cuts out on "The screen goes black."** and **drops on "Pink neon"**. A heartbeat plays under shot 7.
 - "Worth it." is the retention beat. Typed comment + heart and the Follow tap close the video.
+
+---
+
+# Video 4 moves (now also used, so do not reuse)
+fly-through · overhead top-down spin+descend · low floor tracking · rack focus · crane down · orbit · dolly zoom · crane up ·
+camera roll · macro track along an object · worm's-eye spiral · pull-back reveal · POV handheld · whip pan · tilt down.
+Locations: camera iris, bedroom from ceiling, night office, nightstand, upstairs hallway, progress-bar void, desk behind chair,
+7-segment monoliths, CRT, neon on brick, palm crowns, sunset-on-monitor, Terms of Service, dawn sticky note, rainy alley.
+
+# Video 5: "Every sin's a story" (13 years). All new.
+
+Each shot also names the **psychological trigger** it is built on.
+
+| # | Line | Setting | Lighting | Camera move | Trigger |
+|---|------|---------|----------|-------------|---------|
+| 1 | "A baby born the day GTA 5 came out is now 13." | Kitchen door frame with a child's pencil height marks, 2013 → 2026 | Late-afternoon sun shaft | **Tilt up** following the marks | Curiosity gap + baby schema |
+| 2 | "…still not old enough to buy GTA 6." | Self-checkout at night: "AGE RESTRICTED ITEM", red beacon | Cold supermarket fluorescents + red strobe | **Crash zoom** onto the beacon | Frustration, instant recognition |
+| 3 | "13 years." | Cross-section of a tree trunk, 13 rings glowing | Raking side light, workshop dust | **Turntable** (subject rotates) | Time made physical |
+| 4 | "Rockstar Games made us wait." | Waiting room: "NOW SERVING 5", your ticket "6" | Grey institutional light | **Truck** past rows of empty chairs | Wordplay + shared pain |
+| 5 | "13 years." | 13 candles on a cake, the waiting console far behind | Candlelight only | **Split diopter** (both planes sharp) | Escalation of the repeat |
+| 6 | "married, divorced, remarried" | Cake topper couple: together → snapped → taped | Banquet-hall gold | **Snorricam** (locked to the topper, world spins) | Comedy build |
+| 7 | "same woman" | Rice and confetti frozen mid-air | Flash-photo white | **Bullet-time** freeze arc | Pattern interrupt (the joke lands) |
+| 8 | "twice" | A ring falling into a champagne flute | Champagne amber | **Elevator drop** following the ring | Punchline button |
+| 9 | "220 million copies… Take-Two" | Game cases end to end, wrapping once around the Earth | Space: sun rim on the planet | **Chase cam** behind the leading case | Concrete scale (41,800 km > 40,075 km) |
+| 10 | "220 million" | Mechanical odometer rolling to 220,000,000 | Brass, warm practical bulb | **Pan** across the digit wheels | Repetition → certainty |
+| 11 | "Rockstar still said, nah, we'll take our time" | A tortoise carrying a box marked "6" across a road | Midday heat haze | **Leading shot** (camera retreats ahead) | Absurd humor |
+| 12 | "refresh the release date every week" | Pull-to-refresh: "Release date: TBA", refreshed 676 times | Phone glow | **UI scroll / pull** | "That's me" recognition |
+| 13 | "I saw you." | CCTV feed of you in bed refreshing at 3:12 AM | Night-vision green | **Robotic PTZ step move** | Being watched (direct address) |
+| 14 | "Everyone saw you." | A wall of security cameras all snapping to look at you | Red REC lights | **360° spin in place** | Social exposure, eyes on you |
+| 15 | "Now let's talk money." | Cash-counting machine seen through a glass table | Green banker's lamp | **Slide-under** (beneath the glass) | Reward cue (cha-ching) |
+| 16 | "93 million views… 24 hours" | One lit window → a whole city of lit screens | Night city blue/pink | **Optical zoom-out** (lens, not dolly) | Social proof |
+| 17 | "more than the population of the UK" | UK map made of people-dots, overflowing its borders | Map-table spotlight | **Impact shake** | Comparison anchor (≈69M) |
+| 18 | "watching 90 seconds of a game" | Swinging stopwatch, hypnotist style | Spot on black | **Pendulum ride** (camera swings with it) | Hypnosis = attention |
+| 19 | "in one day" | Sun races across the sky in one arc | Sunrise → sunset | **Slingshot arc** | Speed / compression |
+| 20 | "what were you doing when GTA 5 came out?" | 2013 time capsule: wired earbuds, cracked phone, DVD case | Attic bulb, dust motes | **Boom-over** the lid | Nostalgia |
+| 21 | "I promise you… it wasn't this." | A phone playing this video, inside a phone, inside a phone… | Screen glow | **Droste loop** | Self-reference → rewatch |
+| 22 | "Follow Vice City Sin. Every sin's a story." | Fogged bathroom mirror; a finger writes the name | Soft steam backlight | **Lens-fog wipe** | Intimacy, signature tagline |
