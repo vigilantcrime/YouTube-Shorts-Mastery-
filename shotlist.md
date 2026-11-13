@@ -90,3 +90,45 @@ Each shot also names the **psychological trigger** it is built on.
 | 20 | "what were you doing when GTA 5 came out?" | 2013 time capsule: wired earbuds, cracked phone, DVD case | Attic bulb, dust motes | **Boom-over** the lid | Nostalgia |
 | 21 | "I promise you… it wasn't this." | A phone playing this video, inside a phone, inside a phone… | Screen glow | **Droste loop** | Self-reference → rewatch |
 | 22 | "Follow Vice City Sin. Every sin's a story." | Fogged bathroom mirror; a finger writes the name | Soft steam backlight | **Lens-fog wipe** | Intimacy, signature tagline |
+
+---
+
+# Video 5 moves (now also used, so do not reuse)
+tilt up · crash zoom · turntable · truck · split diopter · snorricam · bullet-time · elevator drop · chase cam · pan ·
+leading shot · UI scroll/pull · robotic PTZ steps · 360° spin in place · slide-under · optical zoom-out · impact shake ·
+pendulum ride · slingshot arc · boom-over · Droste loop · lens-fog wipe.
+
+# Video 6: "6 things a Brit should never do in GTA 6". All new.
+
+Visual system: **contrast effect**. Grey drizzle Britain (#8a96a3, pillar-box red) against neon Vice City (pink/cyan/sunset).
+Open loop: a "RULE x/6" plate + 6-dot progress bar (Zeigarnik), plus "#4 will get you deported" teased in the hook.
+
+| # | Line | Setting | Lighting | Camera move |
+|---|------|---------|----------|-------------|
+| 1 | "Six things… British person playing GTA 6" | A red phone box on a neon Miami beach | Sunset rim + phone-box interior glow | **FPV drone dive** off a palm top |
+| 2 | "Number 4 will get you deported" | Burgundy passport on a customs desk, DEPORTED stamp | Hard customs-booth top light | **Wipe-by** (stamp arm crosses the lens) |
+| 3 | "1 · Don't queue at the gun shop" | Perfect single-file queue under a neon GUN SHOP sign | Neon magenta + streetlight | **Hyperlapse step** along the queue |
+| 4 | "Bruv, nobody's queuing" | Comic-book panels | Flat print colours, halftone | **Panel hop** |
+| 5 | "rocket launcher and zero patience" | A man with a rocket launcher, PATIENCE 0% meter | Telescopic-sight vignette | **Scope POV** |
+| 6 | "2 · Don't apologise after you hit someone" | Night road through a windscreen, thud, crack | Headlights + dash glow | **Dashcam** |
+| 7 | "doing a hundred down Ocean Drive" | Speedo at 100, neon streaks | Neon motion streaks | **Cable-cam** (diagonal wire run) |
+| 8 | "Sorry mate isn't fixing his spine" | X-ray lightbox: spine + "sorry mate" sticky note | Lightbox backlight | **Multiplane rise** (layers at different speeds) |
+| 9 | "3 · Don't stop at the zebra crossing" | Zebra crossing with blinking Belisha beacons | Overcast grey + orange beacons | **Fisheye skate-cam** |
+| 10 | "There's no zebra crossing" | Stripes peel away to bare Miami asphalt | Midday glare | **Speed ramp** (fast → slow → fast) |
+| 11 | "crocodile… man in a thong filming it" | Croc on the road vs a phone recording it | Harsh sun | **Split-screen slide** |
+| 12 | "4 · Don't ask for a cup of tea" | Inside a china teacup looking up at neon | Neon bar glow through tea | **Inside-object cam** |
+| 13 | "iced coffee the size of your nan" | Giant iced coffee beside nan's silhouette | Café daylight | **Forced-perspective break** |
+| 14 | "You will cry." | A teabag with a single tear | Soft window light | **Stop-motion** (animated on 3s) |
+| 15 | "heist around the bakery opening hours" | Corkboard: red string, sausage-roll polaroids, opening hours | Desk lamp | **Vortex spiral** |
+| 16 | "Doesn't exist over there." | The bakery shopfront dissolving | Flat daylight | **Layer explode** (2D planes fly apart) |
+| 17 | "Grieve properly." | A sausage roll in a tiny coffin, candles | Candlelight | **Flip-over** (world turns 180°) |
+| 18 | "5 · Don't complain about the weather" | Rainy British window → wiper reveals Miami sun | Grey → gold | **Wiper wipe** |
+| 19 | "32 degrees and sunny" | Backward fall onto a sunbed, looking at the sky | Blazing sun | **Trust-fall** (camera falls backwards) |
+| 20 | "moaning about rain since 2013" | Dry-cleaner rail of umbrellas tagged 2013–2026 | Shop fluorescent | **Match-speed track, then stop** |
+| 21 | "Enjoy it." | Sunglasses drop over the lens | Tinted sun | **Lens-drop** |
+| 22 | "Now. Let's talk money." | A coin flipped into the air | Gold glints | **Coin-tumble cam** |
+| 23 | "6 · Don't convert the prices into pounds" | Price tag $ → £ under a magnifying glass | Jeweller's loupe light | **Magnifier sweep** |
+| 24 | "mansion costs more than your whole street in Croydon" | Neon mansion vs a row of terraced houses, all SOLD | Isometric daylight | **Orthographic sweep** |
+| 25 | "Just rob a bank like a normal person" | A bank vault door swinging open | Vault strip lights | **Door-hinge cam** |
+| 26 | "Which one are you breaking first? Be honest." | A slot machine with reels of the 6 rules | Casino neon | **Reel spin** |
+| 27 | "Comments. Follow Vice City Sin…" | Inside a red pillar postbox, a letter drops through the slot | Slot daylight | **Slot POV** |
