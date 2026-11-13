@@ -6,11 +6,15 @@
     "render": "remotion render src/index.ts GtaShort out/gta-short.mp4 --browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-linux/headless_shell"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.17.10",
     "@remotion/cli": "^4.0.320",
+    "@remotion/three": "^4.0.320",
     "@types/react": "^18.3.12",
+    "@types/three": "^0.169.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "remotion": "^4.0.320",
+    "three": "^0.169.0",
     "typescript": "^5.6.3"
   }
 }
