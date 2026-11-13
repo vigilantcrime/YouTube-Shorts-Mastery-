@@ -8,10 +8,12 @@ import {EverySin} from './EverySin';
 import {BritRules} from './BritRules';
 import {BadgeBillboard} from './BadgeBillboard';
 import {SaVsSix, SA6_FRAMES} from './SaVsSix';
+import {FiveVsSix, V56_FRAMES} from './FiveVsSix';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="FiveVsSix" component={FiveVsSix} durationInFrames={V56_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="SaVsSix" component={SaVsSix} durationInFrames={SA6_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="BadgeBillboard" component={BadgeBillboard} durationInFrames={2340} fps={FPS} width={1080} height={1920} />
     <Composition id="BritRules" component={BritRules} durationInFrames={2091} fps={FPS} width={1080} height={1920} />
