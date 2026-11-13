@@ -6,10 +6,12 @@ import {GlTest} from './GlTest';
 import {LaunchNight} from './LaunchNight';
 import {EverySin} from './EverySin';
 import {BritRules} from './BritRules';
+import {BadgeBillboard} from './BadgeBillboard';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="BadgeBillboard" component={BadgeBillboard} durationInFrames={2340} fps={FPS} width={1080} height={1920} />
     <Composition id="BritRules" component={BritRules} durationInFrames={2091} fps={FPS} width={1080} height={1920} />
     <Composition id="EverySin" component={EverySin} durationInFrames={1731} fps={FPS} width={1080} height={1920} />
     <Composition id="LaunchNight" component={LaunchNight} durationInFrames={903} fps={FPS} width={1080} height={1920} />
