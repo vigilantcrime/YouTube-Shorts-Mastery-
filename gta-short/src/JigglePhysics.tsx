@@ -223,9 +223,9 @@ const Guinness: React.FC<{t0: number; line: string; sub: string}> = ({t0, line, 
 const SHOTS: Shot[] = [
   // 1 · HOOK — emblem sting over the beach jogger (A + emblem), "REAL ✅" stamp on "real"
   {t: 0, C: ({s, d}) => { const fr = useCurrentFrame(); const exit = interpolate(fr, [36, 41], [0, 1], cl);
-    return <><Plate n={2} dur={d} from={[1.08, 0, 60]} to={[1.16, 0, 30]} pos="9% 50%" /><AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,0,20,.97) 0%, rgba(10,0,20,.9) 22%, rgba(10,0,20,0) 40%)'}} />
-      <div style={{position: 'absolute', left: (W - 640) / 2, top: 210, opacity: 1 - exit, transform: `scale(${1 - exit * 0.15})`, filter: `blur(${exit * 20}px)`}}><Emblem size={640} /></div>
-      <Stamp text="REAL ✅" t0={f(T('REAL') - s)} col="#3dff8a" y={0.28} size={130} /></>; }},
+    return <><Plate n={4} dur={d} from={[1.16, 40, 120]} to={[1.22, 30, 90]} pos="60% 35%" /><AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,0,20,.55) 0%, rgba(10,0,20,0) 35%)'}} />
+      <div style={{position: 'absolute', left: (W - 520) / 2, top: 90, opacity: 1 - exit, transform: `scale(${1 - exit * 0.15})`, filter: `blur(${exit * 20}px)`}}><Emblem size={520} /></div>
+      <Stamp text="REAL ✅" t0={f(T('REAL') - s)} col="#3dff8a" y={0.08} size={130} /></>; }},
   // 2 · "filing them under research" — the file photo slides into a TOP SECRET folder (B)
   {t: 2.51, C: ({s}) => { const fr = useCurrentFrame(); const k = f(T('FILING') - s); const slide = interpolate(fr, [k, k + 10], [0, 1], {...cl, easing: Easing.inOut(Easing.cubic)});
     return <Stage bg={2}>
@@ -303,7 +303,7 @@ const SHOTS: Shot[] = [
   {t: 26.25, C: ({s, d}) => <><Clip src="jg/boobie.mp4" rate={0.4} d={d} zoom={[1.25, 1.1]} pos="60% 50%" />
     <Chip x={W / 2} y={300} t0={f(T('STORY', 26.9) - s)} bg="#fff" size={56}>📖 "FOR THE STORY"</Chip></>},
   // 12 · "Now. Let's talk money." — cash hand + money in the air (A)
-  {t: 27.47, C: ({d}) => <Plate n={4} dur={d} from={[1.5, 0, 0]} to={[1.25, 0, 0]} pos="70% 30%" />},
+  {t: 27.47, C: ({d}) => <Plate n={6} dur={d} from={[1.7, -60, 290]} to={[1.5, -40, 150]} pos="58% 0%" />},
   // 13 · GTA 5 $815.7M day one (B + odometer)
   {t: 28.67, C: ({s}) => <Stage bg={1}>
     <Chip x={W / 2} y={250} t0={2} bg="#111" size={48} rot={0}>GTA 5 · LAUNCH DAY</Chip>
