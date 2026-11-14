@@ -10,10 +10,12 @@ import {BadgeBillboard} from './BadgeBillboard';
 import {SaVsSix, SA6_FRAMES} from './SaVsSix';
 import {FiveVsSix, V56_FRAMES} from './FiveVsSix';
 import {JackOfHearts, JOH_FRAMES} from './JackOfHearts';
+import {JigglePhysics, JIG_FRAMES} from './JigglePhysics';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="JigglePhysics" component={JigglePhysics} durationInFrames={JIG_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="JackOfHearts" component={JackOfHearts} durationInFrames={JOH_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="FiveVsSix" component={FiveVsSix} durationInFrames={V56_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="SaVsSix" component={SaVsSix} durationInFrames={SA6_FRAMES} fps={FPS} width={1080} height={1920} />
