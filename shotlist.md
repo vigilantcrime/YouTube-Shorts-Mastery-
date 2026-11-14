@@ -132,3 +132,30 @@ Open loop: a "RULE x/6" plate + 6-dot progress bar (Zeigarnik), plus "#4 will ge
 | 25 | "Just rob a bank like a normal person" | A bank vault door swinging open | Vault strip lights | **Door-hinge cam** |
 | 26 | "Which one are you breaking first? Be honest." | A slot machine with reels of the 6 rules | Casino neon | **Reel spin** |
 | 27 | "Comments. Follow Vice City Sin…" | Inside a red pillar postbox, a letter drops through the slot | Slot daylight | **Slot POV** |
+
+## Video 7 — VIGILANT CRIME VC-001 "Yanko: Life of a Rider" (Case File format, TikTok, 61s)
+Source: the music video (4:3), shown as 9:16 windows, plus 18 supplied 9:16 frames. Every move is new to this log.
+1. 0.0 Close-up at 102s, PULL-BACK from 1.5×, two police tapes wipe in, CASE #001 plate, marker ring on the face (NITTY).
+2. 2.6 Van-door low angle at 16s, WHIP-IN with motion blur, paper SUSPECT tag types "YANKO".
+3. 5.3 Blurred plate at 62s with a slow diagonal drift, EXHIBIT A typewriter card, highlighter on "in front of a nursery", LYRIC stamp.
+4. 7.9 Hands close-up at 12s, DUTCH angle (9°), red "THAT'S THE LINE" tape slashes across.
+5. 9.1 Close-up at 60s, CRANE down, bouncing 👇 and THIS MAN chip.
+6. 10.7 Graphite card stage: Yanko frame (i3) vs a drawn bus stop and 👵, yellow ring on the scarf, SAME SCARF ENERGY.
+7. 14.7 Cork evidence board with all 18 frames pinned machine-gun style, red string, overhead slow rotation, SUSPECT stamp.
+8. 15.9 Van interior at 30s, lateral TRUCK, now-playing bar, CONFESSION? stamp.
+9. 19.9 Outdoors at 64s, CCTV night-vision grade, TILT, timestamp rolls 14:59:5x → 15:00:00.
+10. 21.8 Dimmed plate at 86s with a handheld FLOAT, split-flap "15:00 SLIDE / PAGANS / HOME EARLY".
+11. 24.2 Van at 56s, ROLL (−7° → +5°), ORGANISED stamp.
+12. 25.5 Blue glove at 76s, SPIN-settle, swinging EVIDENCE BAG tag.
+13. 27.6 Masked man at 36s, HANDHELD SHAKE, fingerprint scanner ✕, NO PRINTS FOUND.
+14. 29.1 Gloves at 46s, CRASH ZOOM on GLOVES, yellow ring, VERY IMPORTANT warning sign.
+15. 32.1 Upside-down at 98s (FLIP), yellow scan-line wipe to full body at 104s, BANGED-OUT TRACKY ring.
+16. 34.7 Stage: i14 vs i9 cards (from up and down), BURBERRY ✅ SAFE vs TRACKY ❌ EXPENDABLE, PROTECTED stamp.
+17. 37.0 Van at 82s, low TRUCK, 10-bar volume meter peaks on LOUD.
+18. 39.6 Plate at 58s at a Dutch angle, RISK ASSESSMENT form, meter slams to HIGH, HIGH RISK stamp.
+19. 42.2 Plate at 62s with a RACK-FOCUS (blur → sharp), DON'T DISAGREE tick box, SELF-CONFIRMED stamp.
+20. 44.8 Gloves at 38s, TILT, chef-hat drop with bounce, "CHEF LIKE GORDON" chip.
+21. 47.7 Van at 24s, SPIN, EXHIBIT B typewriter card, HYGIENE RATING 0 sticker slam.
+22. 51.2 Greyscale plate at 22s, crane, "THESE ARE LYRICS", NOT EVIDENCE stamp.
+23. 53.6 Plate at 58s with a ROLL, VERDICT gauge swings DANGEROUS → FUNNIEST.
+24. 57.9 End credit "FILM BY BIGGZ" at 110s, float, comment bubble, + FOLLOW tap, closing tape.
