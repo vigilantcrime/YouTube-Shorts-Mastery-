@@ -311,7 +311,8 @@ const SHOTS: Shot[] = [
     <Tape y={980} rot={7} t0={2} dir={-1} out={f(1.5)} />
     {fr < f(1.6) && <div style={{position: 'absolute', top: 560, width: W, textAlign: 'center', opacity: interpolate(fr, [3, 6], [0, 1], cl)}}>
       <span style={{display: 'inline-block', padding: '10px 26px', background: 'rgba(0,0,0,.7)', border: `5px solid ${YEL}`, transform: 'rotate(-3deg)'}}><Mono size={54} color={YEL}>CASE #001 · YANKO</Mono></span></div>}
-    <Ring x={590} y={210} w={360} h={440} t0={f(T('NITTY') - s)} label="NOT A NITTY?" ly={490} lx={-30} />
+    {fr >= f(1.5) && <Chip x={540} y={1450} t0={f(1.5)} bg={MAG} size={42} rot={-2}>DRILL LYRICS ON TRIAL ⚖️</Chip>}
+    <Ring x={630} y={240} w={360} h={440} t0={f(T('NITTY') - s)} label="NOT A NITTY?" ly={490} lx={-30} />
   </>; }},
   // 2 · "This UK drill rapper Yanko" — whip in + suspect lower-third
   {t: 2.63, C: ({s, d}) => { const fr = useCurrentFrame(); const k = f(T('YANKO') - s); const n = Math.floor(interpolate(fr, [k, k + 10], [0, 5], cl));
@@ -337,7 +338,7 @@ const SHOTS: Shot[] = [
   // 6 · Burberry scarf vs your Nan at the bus stop — side-by-side proof
   {t: 10.68, C: ({s, d}) => { const fr = useCurrentFrame(); const b = f(T('BURBERRY') - s), nan = f(T('NAN') - s), bus = f(T('BUS') - s); return <Stage>
     <Card x={50} y={250} w={470} h={820} t0={0} tilt={10} from="left"><Fit n={3} pos="50% 30%" zoom={1.25} /></Card>
-    <Ring x={150} y={260} w={300} h={330} t0={b} col={YEL} label="BURBERRY" ly={-62} />
+    <Ring x={170} y={560} w={300} h={330} t0={b} col={YEL} label="BURBERRY" ly={400} />
     <Card x={560} y={250} w={470} h={820} t0={nan} tilt={-10} from="right"><div style={{width: '100%', height: '100%', background: 'linear-gradient(180deg,#9fb3bf,#5d6d75)', position: 'relative'}}>
       <div style={{position: 'absolute', left: 300, top: 120, width: 14, height: 700, background: '#ccc'}} />
       <div style={{position: 'absolute', left: 230, top: 70, width: 150, height: 150, borderRadius: 75, background: '#d0021b', border: '8px solid #fff', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Txt size={34} style={{textAlign: 'center', textShadow: 'none'}}>BUS<br />STOP</Txt></div>
@@ -408,18 +409,21 @@ const SHOTS: Shot[] = [
     </>; }},
   // 14 · "I'm wearing gloves, it's very important" — orbit-ish rotation on the blue gloves, warning sign
   {t: 29.1, C: ({s, d}) => { const fr = useCurrentFrame(); const g = f(T('GLOVES') - s), im = f(T('IMPORTANT') - s); return <>
-    <Foot src={46.4} x={-740} d={d} mv="crash" k={g} />
-    <Ring x={560} y={720} w={330} h={260} t0={g + 3} col={YEL} label="GLOVES" ly={-64} />
-    {fr >= im && <div style={{position: 'absolute', left: 540, top: 250, transform: `translateX(-50%) scale(${pop(fr - im, 6, 1.8).s})`}}>
+    {(() => { const z = interpolate(fr, [g, g + 3], [1.0, 1.32], cl) + 0.04 * interpolate(fr, [0, f(d)], [0, 1], cl); return <AbsoluteFill style={{overflow: 'hidden', background: '#000'}}>
+      <AbsoluteFill style={{transformOrigin: '560px 1060px', transform: `scale(${z})`}}>
+        <Img src={img(8)} style={{width: W, height: H, objectFit: 'cover', filter: 'saturate(.72) contrast(1.14) brightness(.96)'}} />
+        <Ring x={250} y={900} w={780} h={300} t0={g + 3} col={YEL} label="GLOVES 🧤" ly={-66} /></AbsoluteFill>
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(4,10,16,.35) 0%, rgba(4,10,16,.08) 28%, rgba(4,10,16,.08) 58%, rgba(4,10,16,.6) 100%)'}} /></AbsoluteFill>; })()}
+    {fr >= im && <div style={{position: 'absolute', left: 880, top: 250, transform: `translateX(-50%) scale(${0.55 * pop(fr - im, 6, 1.8).s})`}}>
       <div style={{width: 0, height: 0, borderLeft: '200px solid transparent', borderRight: '200px solid transparent', borderBottom: `340px solid ${YEL}`, filter: 'drop-shadow(0 16px 30px rgba(0,0,0,.6))'}} />
       <div style={{position: 'absolute', left: -200, top: 120, width: 400, textAlign: 'center'}}><Txt size={140} color="#111" style={{textShadow: 'none'}}>!</Txt><Txt size={34} color="#111" style={{textShadow: 'none', marginTop: -4}}>VERY IMPORTANT</Txt></div></div>}
   </>; }},
   // 15 · "changes into a banged out tracky" — upside-down flip reveal → full body, outfit-change wipe
   {t: 32.05, C: ({s, d}) => { const fr = useCurrentFrame(); const k = f(T('TRACKY') - s); const w = interpolate(fr, [k - 14, k], [0, 1], {...cl, easing: Easing.inOut(Easing.cubic)}); return <>
     <Foot src={98.3} x={-300} d={d} mv="flip" />
-    <AbsoluteFill style={{clipPath: `inset(0 0 ${100 - w * 100}% 0)`}}><Foot src={104.2} x={-996} d={d} mv="drift" /></AbsoluteFill>
+    <AbsoluteFill style={{clipPath: `inset(0 0 ${100 - w * 100}% 0)`}}><Sequence from={k - 14}><Foot src={49.5} x={-836} d={d - (k - 14) / FPS} mv="drift" /></Sequence></AbsoluteFill>
     <div style={{position: 'absolute', left: 0, top: w * H - 6, width: W, height: 12, background: YEL, boxShadow: `0 0 30px ${YEL}`, opacity: w > 0 && w < 1 ? 1 : 0}} />
-    {fr >= k && <Ring x={340} y={760} w={380} h={420} t0={k} col={MAG} label="BANGED-OUT TRACKY" ly={-64} />}
+    {fr >= k && <Ring x={170} y={720} w={360} h={560} t0={k} col={MAG} label="BANGED-OUT TRACKY" ly={-64} />}
   </>; }},
   // 16 · "Cause I don't want to ruin the Burberry" — protected vs expendable
   {t: 34.68, C: ({s, d}) => { const fr = useCurrentFrame(); const r = f(T('RUIN') - s), b = f(T('BURBERRY', 35) - s); return <Stage>
@@ -513,16 +517,39 @@ const SHOTS: Shot[] = [
     </>; }},
 ];
 
+const PUNCH = ['STAB', 'NURSERY', 'LINE', 'NAN', 'CONFESSION', 'THREE', 'PRINTS', 'GLOVES', 'TRACKY', 'LOUD', 'RISK', 'DISAGREE', 'CHEF', 'HYGIENE', 'EVIDENCE', 'FUNNIEST']
+  .map((w, i, a) => f(T(w, i ? T(a[i - 1]) + 0.1 : 0)));
+/** Open loop: promises the worst lyric is still coming (pays off at EXHIBIT B). */
+const OpenLoop: React.FC = () => {
+  const fr = useCurrentFrame(); const a = f(5.4), b = f(7.9); if (fr < a || fr >= b) return null; const p = pop(fr - a, 6, 1.5);
+  return <div style={{position: 'absolute', top: 1450, width: W, textAlign: 'center', transform: `scale(${p.s})`, opacity: p.o}}>
+    <span style={{display: 'inline-block', padding: '8px 20px', background: 'rgba(0,0,0,.75)', borderRadius: 10, border: `3px solid ${YEL}`}}><Mono size={34} color={YEL}>…and EXHIBIT B is worse 💀</Mono></span></div>;
+};
+/** Case progress bar: evidence collected (keeps people to the verdict). */
+const Progress: React.FC = () => {
+  const fr = useCurrentFrame(); const p = fr / VC1_FRAMES;
+  return <div style={{position: 'absolute', left: 44, right: 44, top: 205, height: 8, borderRadius: 4, background: 'rgba(255,255,255,.18)'}}>
+    <div style={{width: `${p * 100}%`, height: '100%', borderRadius: 4, background: `linear-gradient(90deg, ${YEL}, ${MAG})`}} />
+    {[0.25, 0.5, 0.75, 0.88].map((m) => <div key={m} style={{position: 'absolute', left: `${m * 100}%`, top: -4, width: 4, height: 16, background: p >= m ? MAG : 'rgba(255,255,255,.4)'}} />)}
+  </div>;
+};
+
 export const VigilantCase: React.FC = () => {
   const ready = useFontsReady('vc1');
   const fr = useCurrentFrame();
   if (!ready) return <AbsoluteFill style={{background: '#000'}} />;
   // white flash on every hard cut (1 frame) — keeps the cut rate felt
   const cut = SHOTS.some((sh) => fr === f(sh.t) && sh.t > 0);
+  const lf = Math.min(99, ...PUNCH.map((p) => (fr >= p ? fr - p : 99)));
+  const punch = lf < 7 ? 1 + 0.07 * Math.exp(-lf / 2.2) : 1; const jit = lf < 5 ? Math.sin(lf * 3.1) * 7 * (1 - lf / 5) : 0;
   return (
     <AbsoluteFill style={{background: '#000'}}>
+      <AbsoluteFill style={{transform: `translate(${jit}px,${jit * 0.6}px) scale(${punch})`}}>
       {SHOTS.map((sh, i) => { const s = sh.t, e = i < SHOTS.length - 1 ? SHOTS[i + 1].t : VC1_FRAMES / FPS; const C = sh.C;
         return <Sequence key={i} from={f(s)} durationInFrames={f(e) - f(s)}><C s={s} d={e - s} /></Sequence>; })}
+      </AbsoluteFill>
+      <OpenLoop />
+      <Progress />
       <Grain />
       <AbsoluteFill style={{background: 'radial-gradient(ellipse 85% 70% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%)', pointerEvents: 'none'}} />
       <Chrome />

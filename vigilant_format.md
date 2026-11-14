@@ -27,6 +27,13 @@ Episode 1: VC-001 Yanko, "Life of a Rider" (`gta-short/src/VigilantCase.tsx`, 61
 | Verdict gauge, DANGEROUS 😈 ↔ FUNNIEST 😂 | the question at the end, driving comments |
 | Comment bubble, then a "+ FOLLOW" tap with a hand, then the closing tape | CTA |
 
+## Retention layer (added after review)
+- **Open loop** at 5.4s: "…and EXHIBIT B is worse 💀", paid off at 47.7s.
+- **"DRILL LYRICS ON TRIAL ⚖️"** framing chip in the hook.
+- **Case progress bar** under the chrome, with markers at 25/50/75/88%, so people stay for the verdict.
+- **Impact punch on every key word:** a 7% zoom with shake plus a sub hit (STAB, NURSERY, LINE, NAN, CONFESSION, 3PM, PRINTS, GLOVES, TRACKY, LOUD, RISK, DISAGREE, CHEF, HYGIENE, EVIDENCE, FUNNIEST).
+- **Marker rings:** check the ring on a still at its exact frame. Lock it to the subject by putting it inside the same zoom transform, and never let a ring outlive a cut in the source footage.
+
 ## Rules
 - Mute the music video's audio. Use our own 142 BPM bed with tape-rip, typewriter, stamp and CCTV SFX. Mix at −18 LUFS.
 - Satire, not glorification:
