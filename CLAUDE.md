@@ -20,3 +20,8 @@
 - Never repeat a move within one video. Never default to a push-in or a locked-off medium shot.
 - If an idea feels familiar, throw it out and find a stranger, more specific one.
 - Always keep the reverse-engineered editing formula in `style.md`.
+
+## Default video format for new scripts
+
+- When the owner sends a script, build it in the **Roddy Games format** documented in `roddy_style.md`: logo emblem sting with a glint at 0s, 1–3-word captions with a yellow/magenta key word, the Vice City gradient card stage, side-by-side proof, icon pops, animated numbers, article highlighter sweeps and the subscribe-click ending.
+- Render at 1080×1920 at −18 LUFS, and keep the file under about 28 MB so it sends first time.
