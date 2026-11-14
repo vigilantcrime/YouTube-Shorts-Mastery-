@@ -42,3 +42,20 @@ Episode 1: VC-001 Yanko, "Life of a Rider" (`gta-short/src/VigilantCase.tsx`, 61
   - Credit the video's director on screen.
 - Cut on clause starts, with a 1-frame 35% white flash on each hard cut. Average shot length is about 2.4s, with on-screen changes inside each shot on every key noun.
 - Render 1080×1920 at about 3.3 Mbps so the file stays under 28 MB.
+
+---
+# Format 2 — "BARS ON PAUSE" (VC-002, `gta-short/src/BarsBreakdown.tsx`)
+- The **real song plays bar by bar** with its own music video, synced because the clip audio is the song. The 9:16 window tracks the artist using keyframes taken from a contact sheet.
+- **Live bar HUD:** "▶ LIFE OF A RIDER · YANKO · BAR 0n" with an animated EQ. Karaoke lyrics appear word by word as sung, with key words on tape and pages of 7 words.
+- **Each bar ends in a tape-stop PAUSE:**
+  - the song's last 0.36s is slowed to a stop
+  - the frame freezes and goes VHS blue-grey with scanlines
+  - a big ⏸ and a "⏸ PAUSED · BAR n · mm:ss" HUD appear
+- **The breakdown uses the owner's own VO**, plus:
+  - a SLANG DECODER bar (NITTY, SLIDE, PAGANS, BANGED-OUT, KITCHEN…)
+  - a red-pen lyric sheet
+  - settings toggles, a checklist, a chat card and stamps
+- A ▶ flash and click resumes the next bar.
+- **Ending:** a TikTok-style verdict poll (DANGEROUS vs FUNNIEST) over the song's outro, then "+ FOLLOW" with a tap and the closing tape.
+- **Lyrics come from transcribing the clip's own audio** (no lyrics site was usable), and only the bars under discussion are shown. The most graphic and explicit bars are skipped.
+- **Audio:** song at 0.8, sidechained under the VO; hiss and hum bed during pauses; pause/play clicks; stamp thuds. Mixed to −18 LUFS.

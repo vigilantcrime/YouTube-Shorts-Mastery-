@@ -14,7 +14,7 @@ type Wd = [string, number];
 const WT = (words as Wd[]).map(([w, t]) => [w, t + 0.03] as Wd);
 const at = (word: string, after = 0) => WT.find(([w, t]) => w === word && t >= after - 0.05)?.[1] ?? after;
 
-const YEL = '#FFD400', MAG = '#E01E37';
+export const YEL = '#FFD400', MAG = '#E01E37';
 const STAGE = 'radial-gradient(ellipse 120% 80% at 50% 25%, #2b3236 0%, #15191c 55%, #07090a 100%)';
 const img = (n: number) => staticFile(`vc/i${n}.jpg`);
 
@@ -94,7 +94,7 @@ const Captions: React.FC = () => {
 /* ------------------------------------------------------------------ */
 /* Building blocks                                                     */
 /* ------------------------------------------------------------------ */
-const Txt: React.FC<{children: React.ReactNode; size: number; color?: string; style?: React.CSSProperties}> = ({children, size, color = '#fff', style}) => (
+export const Txt: React.FC<{children: React.ReactNode; size: number; color?: string; style?: React.CSSProperties}> = ({children, size, color = '#fff', style}) => (
   <div style={{fontFamily: 'HeroBlack', fontSize: size, color, letterSpacing: -size * 0.02, lineHeight: 1, textShadow: SHADOW, ...style}}>{children}</div>
 );
 const Stage: React.FC<{children?: React.ReactNode; bg?: number}> = ({children, bg}) => (
@@ -115,7 +115,7 @@ const Plate: React.FC<{n: number; dur: number; from?: number[]; to?: number[]; p
   );
 };
 /** Card pop-in: 4-frame blur slide + slight 3D tilt + idle float (Roddy §2.4). */
-const Card: React.FC<{children: React.ReactNode; x: number; y: number; w: number; h: number; t0?: number; tilt?: number; from?: 'left' | 'right' | 'up' | 'down' | 'pop'; radius?: number; border?: boolean}> =
+export const Card: React.FC<{children: React.ReactNode; x: number; y: number; w: number; h: number; t0?: number; tilt?: number; from?: 'left' | 'right' | 'up' | 'down' | 'pop'; radius?: number; border?: boolean}> =
 ({children, x, y, w, h, t0 = 0, tilt = -8, from = 'pop', radius = 22, border = true}) => {
   const fr = useCurrentFrame(); const lf = fr - t0;
   if (lf < 0) return null;
@@ -131,7 +131,7 @@ const Card: React.FC<{children: React.ReactNode; x: number; y: number; w: number
     </div>
   );
 };
-const Fit: React.FC<{n: number; pos?: string; zoom?: number}> = ({n, pos = 'center', zoom = 1}) => (
+export const Fit: React.FC<{n: number; pos?: string; zoom?: number}> = ({n, pos = 'center', zoom = 1}) => (
   <Img src={img(n)} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: pos, transform: `scale(${zoom})`}} />
 );
 const Label: React.FC<{text: string; x: number; y: number; w: number; t0?: number; col?: string}> = ({text, x, y, w, t0 = 0, col = '#fff'}) => {
@@ -149,7 +149,7 @@ const HBox: React.FC<{x: number; y: number; w: number; h: number; t0: number; la
     </div>
   );
 };
-const Chip: React.FC<{children: React.ReactNode; x: number; y: number; t0: number; bg?: string; size?: number; rot?: number}> = ({children, x, y, t0, bg = YEL, size = 46, rot = -3}) => {
+export const Chip: React.FC<{children: React.ReactNode; x: number; y: number; t0: number; bg?: string; size?: number; rot?: number}> = ({children, x, y, t0, bg = YEL, size = 46, rot = -3}) => {
   const fr = useCurrentFrame(); const p = pop(fr - t0, 6, 1.6); if (fr < t0) return null;
   return <div style={{position: 'absolute', left: x, top: y, transform: `translateX(-50%) rotate(${rot}deg) scale(${p.s})`, opacity: p.o, padding: '10px 26px', borderRadius: 14, background: bg,
     boxShadow: '0 12px 30px rgba(0,0,0,.4)', whiteSpace: 'nowrap'}}><Txt size={size} color={bg === YEL ? '#111' : '#fff'} style={{textShadow: 'none'}}>{children}</Txt></div>;
@@ -173,7 +173,7 @@ const Odometer: React.FC<{value: number; t0: number; t1: number; y: number; size
 /* CASE FILE kit                                                       */
 /* ------------------------------------------------------------------ */
 const T = (w: string, after = 0) => at(w, after);
-const MONO = '"DejaVu Sans Mono", "Courier New", monospace';
+export const MONO = '"DejaVu Sans Mono", "Courier New", monospace';
 const SRC = staticFile('vc/yanko_wide.mp4');
 type Move = 'crane' | 'truck' | 'roll' | 'pullback' | 'whip' | 'tilt' | 'dutch' | 'crash' | 'shake' | 'drift' | 'spin' | 'flip' | 'float';
 /** A 9:16 window into the 4:3 music video. `src` = seconds in the source, `x` = window offset (0 … -1480), one camera move each. */
@@ -205,7 +205,7 @@ const Foot: React.FC<{src: number; x: number; d: number; mv: Move; k?: number; d
   );
 };
 /** Police tape band (the format's signature). */
-const Tape: React.FC<{y: number; rot: number; t0: number; dir?: 1 | -1; col?: string; text?: string; out?: number}> = ({y, rot, t0, dir = 1, col = YEL, text = 'VIGILANT CRIME · DO NOT CROSS ·', out}) => {
+export const Tape: React.FC<{y: number; rot: number; t0: number; dir?: 1 | -1; col?: string; text?: string; out?: number}> = ({y, rot, t0, dir = 1, col = YEL, text = 'VIGILANT CRIME · DO NOT CROSS ·', out}) => {
   const fr = useCurrentFrame(); const lf = fr - t0; if (lf < 0) return null;
   const e = interpolate(lf, [0, 7], [1, 0], {...cl, easing: Easing.out(Easing.cubic)});
   const o = out !== undefined ? interpolate(fr, [out, out + 6], [0, 1], {...cl, easing: Easing.in(Easing.cubic)}) : 0;
@@ -217,7 +217,7 @@ const Tape: React.FC<{y: number; rot: number; t0: number; dir?: 1 | -1; col?: st
   );
 };
 /** Hand-drawn marker ring that draws itself on. */
-const Ring: React.FC<{x: number; y: number; w: number; h: number; t0: number; col?: string; label?: string; lx?: number; ly?: number}> = ({x, y, w, h, t0, col = MAG, label, lx = 0, ly = -70}) => {
+export const Ring: React.FC<{x: number; y: number; w: number; h: number; t0: number; col?: string; label?: string; lx?: number; ly?: number}> = ({x, y, w, h, t0, col = MAG, label, lx = 0, ly = -70}) => {
   const fr = useCurrentFrame(); const lf = fr - t0; if (lf < 0) return null;
   const draw = interpolate(lf, [0, 8], [0, 1], {...cl, easing: Easing.out(Easing.cubic)});
   const rx = w / 2, ry = h / 2, cx = rx + 20, cy = ry + 20;
@@ -233,7 +233,7 @@ const Ring: React.FC<{x: number; y: number; w: number; h: number; t0: number; co
     </div>
   );
 };
-const Stamp: React.FC<{text: string; t0: number; col?: string; y?: number; size?: number; rot?: number; x?: number}> = ({text, t0, col = MAG, y = 0.4, size = 120, rot = -8, x = 0}) => {
+export const Stamp: React.FC<{text: string; t0: number; col?: string; y?: number; size?: number; rot?: number; x?: number}> = ({text, t0, col = MAG, y = 0.4, size = 120, rot = -8, x = 0}) => {
   const fr = useCurrentFrame(); if (fr < t0) return null; const lf = fr - t0;
   const s = interpolate(lf, [0, 4], [2.4, 1], {...cl, easing: Easing.in(Easing.cubic)}); const sh = lf < 8 && lf > 3 ? Math.sin(lf * 4) * 6 : 0;
   return <div style={{position: 'absolute', top: H * y, left: x, width: W, textAlign: 'center', transform: `translate(${sh}px,${sh}px) rotate(${rot}deg) scale(${s})`, opacity: Math.min(1, lf / 2)}}>
@@ -261,7 +261,7 @@ const Exhibit: React.FC<{tag: string; text: string; hl: string; t0: number; t1: 
     </div>
   );
 };
-const Polaroid: React.FC<{n: number; x: number; y: number; w: number; rot: number; t0: number; cap?: string; pos?: string}> = ({n, x, y, w, rot, t0, cap, pos = '50% 25%'}) => {
+export const Polaroid: React.FC<{n: number; x: number; y: number; w: number; rot: number; t0: number; cap?: string; pos?: string}> = ({n, x, y, w, rot, t0, cap, pos = '50% 25%'}) => {
   const fr = useCurrentFrame(); const lf = fr - t0; if (lf < 0) return null;
   const s = interpolate(lf, [0, 4], [1.6, 1], {...cl, easing: Easing.in(Easing.quad)}); const h = w * 1.18;
   return (
@@ -272,16 +272,16 @@ const Polaroid: React.FC<{n: number; x: number; y: number; w: number; rot: numbe
     </div>
   );
 };
-const Paper: React.FC<{children: React.ReactNode; x: number; y: number; w: number; t0?: number; rot?: number; from?: 'down' | 'left' | 'right'}> = ({children, x, y, w, t0 = 0, rot = 0, from = 'down'}) => {
+export const Paper: React.FC<{children: React.ReactNode; x: number; y: number; w: number; t0?: number; rot?: number; from?: 'down' | 'left' | 'right'}> = ({children, x, y, w, t0 = 0, rot = 0, from = 'down'}) => {
   const fr = useCurrentFrame(); const lf = fr - t0; if (lf < 0) return null;
   const e = interpolate(lf, [0, 7], [1, 0], {...cl, easing: Easing.out(Easing.cubic)});
   const off = from === 'down' ? [0, 1100 * e] : from === 'left' ? [-1200 * e, 0] : [1200 * e, 0];
   return <div style={{position: 'absolute', left: x, top: y, width: w, background: '#efeadc', borderRadius: 6, boxShadow: '0 30px 70px rgba(0,0,0,.6)', padding: 40,
     transform: `translate(${off[0]}px,${off[1]}px) rotate(${rot}deg)`}}>{children}</div>;
 };
-const Mono: React.FC<{children: React.ReactNode; size?: number; color?: string; style?: React.CSSProperties}> = ({children, size = 40, color = '#141414', style}) =>
+export const Mono: React.FC<{children: React.ReactNode; size?: number; color?: string; style?: React.CSSProperties}> = ({children, size = 40, color = '#141414', style}) =>
   <div style={{fontFamily: MONO, fontWeight: 700, fontSize: size, color, lineHeight: 1.3, ...style}}>{children}</div>;
-const Grain: React.FC = () => {
+export const Grain: React.FC = () => {
   const fr = useCurrentFrame();
   return <AbsoluteFill style={{opacity: 0.13, mixBlendMode: 'overlay', pointerEvents: 'none'}}>
     <svg width={W} height={H}><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={fr % 12} /></filter><rect width={W} height={H} filter="url(#gr)" /></svg>

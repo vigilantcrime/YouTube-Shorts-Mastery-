@@ -159,3 +159,16 @@ Source: the music video (4:3), shown as 9:16 windows, plus 18 supplied 9:16 fram
 22. 51.2 Greyscale plate at 22s, crane, "THESE ARE LYRICS", NOT EVIDENCE stamp.
 23. 53.6 Plate at 58s with a ROLL, VERDICT gauge swings DANGEROUS → FUNNIEST.
 24. 57.9 End credit "FILM BY BIGGZ" at 110s, float, comment bubble, + FOLLOW tap, closing tape.
+
+## Video 8 — VIGILANT CRIME VC-002 "Bars on Pause: Yanko – Life of a Rider" (TikTok, 61.8s)
+The real song plays in 9 bars (source seconds 36.6, 0.0, 5.2, 28.4, 31.7, 42.0, 48.3, 54.9, 65.0), with the outro at 79.9 under the CTA. The window tracks the subject with five rotating moves: creep, rise, arc, breathe-out, handheld.
+Pauses 1–8 are freeze frames with a VHS grade, and each uses a new device:
+1. Red-pen lyric sheet plus the NITTY decoder and a "THAT'S THE LINE" tape.
+2. ARTIST FILE card and "A CONFESSION?" stamp.
+3. SLIDE/PAGANS decoders and "15:00 SHARP" stamp.
+4. BANGED-OUT decoder and an iOS-style toggles card (PROTECT THE BURBERRY / NAN MODE).
+5. Forensics checklist and EVIDENCE-AWARE stamp.
+6. KITCHEN decoder, "chef entered the chat" card and QUIET → OUT LOUD chips.
+7. "HE… AGREES 💀" with a CONFIRMED BY ARTIST slip.
+8. HYGIENE decoder, THESE ARE LYRICS and NOT EVIDENCE.
+End: verdict poll bars, follow tap and tape.

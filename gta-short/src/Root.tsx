@@ -12,10 +12,12 @@ import {FiveVsSix, V56_FRAMES} from './FiveVsSix';
 import {JackOfHearts, JOH_FRAMES} from './JackOfHearts';
 import {JigglePhysics, JIG_FRAMES} from './JigglePhysics';
 import {VigilantCase, VC1_FRAMES} from './VigilantCase';
+import {BarsBreakdown, BARS_FRAMES} from './BarsBreakdown';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="BarsBreakdown" component={BarsBreakdown} durationInFrames={BARS_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="VigilantCase" component={VigilantCase} durationInFrames={VC1_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="JigglePhysics" component={JigglePhysics} durationInFrames={JIG_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="JackOfHearts" component={JackOfHearts} durationInFrames={JOH_FRAMES} fps={FPS} width={1080} height={1920} />
