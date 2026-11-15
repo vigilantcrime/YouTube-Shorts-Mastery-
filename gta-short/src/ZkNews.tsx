@@ -28,12 +28,14 @@ const Card: React.FC<{t0: number; out?: number; x: number; y: number; w: number;
   return <div style={{position: 'absolute', left: x, top: y, width: w, transform: `translate(${o[0]}px,${o[1]}px) rotate(${rot}deg)`, boxShadow: '0 30px 70px rgba(0,0,0,.65)', borderRadius: 24, overflow: 'hidden'}}>{children}</div>;
 };
 
-type Shot = {a: number; c: number; from: number; z?: number; oy?: string; head: string; L: React.FC<{s: number}>};
+type Shot = {a: number; c: number; from: number; z?: number; oy?: string; head: string; tape?: boolean; L: React.FC<{s: number}>};
+type TLx = {kind: string; id: string; t0: number; t1: number; c?: number; src?: number};
+const TLS = (data as unknown as {tl: TLx[]}).tl; const seg = (id: string) => TLS.find((x) => x.id === id)!;
 const T = (w: string, s: number, after = 0) => f(vt(w, after) - s);
-const SHOTS: Shot[] = [
-  {a: 0, c: 7, from: 0.2, z: 1.75, oy: '8%', head: 'CASE LEAVES INVESTIGATORS BAFFLED', L: ({s}) => { const fr = useCurrentFrame(); const o = interpolate(fr, [f(1.9), f(2.2)], [1, 0], cl); return <>
+const VSHOTS: Shot[] = [
+  {a: seg('V1').t0, c: 7, from: 0.2, z: 1.75, oy: '8%', head: 'BREAKING NEWS', L: ({s}) => { const fr = useCurrentFrame(); const o = 1; return <>
     <AbsoluteFill style={{background: RED, opacity: o, alignItems: 'center', justifyContent: 'center'}}><div style={{transform: `scale(${pop(fr, 6, 2.2).s})`, textAlign: 'center'}}><Txt size={190}>BREAKING</Txt><Txt size={190} color={YEL}>NEWS</Txt><Mono size={44} color="#fff" style={{marginTop: 20}}>VIGILANT CRIME · LIVE</Mono></div></AbsoluteFill>
-    <Stamp text="BAFFLED 🤯" t0={T('BAFFLED', s)} col={YEL} y={0.42} size={110} rot={-6} /></>; }},
+</>; }},
   {a: vt('VICTIM') - 0.2, c: 6, from: 0.3, head: 'VICTIM: ZAYDOON KABLAWI, "ENTREPRENEUR"', L: ({s}) => { const fr = useCurrentFrame(); return <>
     <Card t0={T('ZAYDOON', s)} out={T('KNOWN', s)} x={90} y={880} w={900} rot={-2}><div style={{background: '#fff', padding: '24px 30px'}}><Mono size={28} color="#888">THE VICTIM</Mono><Txt size={84} color="#111" style={{textShadow: 'none'}}>ZAYDOON KABLAWI</Txt>
       {fr >= T('SELF-DESCRIBED', s) && <Mono size={40} color={RED}>"entrepreneur" (self-described)</Mono>}</div></Card>
@@ -70,17 +72,23 @@ const SHOTS: Shot[] = [
       {fr >= T('EXTRA', s) && <><Mono size={28} color="#ccc" style={{marginTop: 14}}>PERi-ometer</Mono><div style={{height: 34, borderRadius: 17, background: '#333', overflow: 'hidden'}}><div style={{width: `${hot}%`, height: '100%', background: 'linear-gradient(90deg,#f4c430,#d0021b)'}} /></div><Txt size={48} color={YEL} style={{textShadow: 'none', marginTop: 6}}>EXTRA HOT 🔥</Txt></>}
       {fr >= T('BOTTOMLESS', s) && <Txt size={48} style={{textShadow: 'none'}}>🥤 BOTTOMLESS DRINKS</Txt>}</div></div></Card>
     <Stamp text="ANOTHER MAN" t0={T('ANOTHER', s)} col={RED} y={0.3} size={96} rot={-6} /></>; }},
-  {a: vt('WHEN') - 0.1, c: 7, from: 5, z: 1.75, oy: '8%', head: 'KABLAWI BREAKS HIS SILENCE', L: ({s}) => { const fr = useCurrentFrame(); const q = T('WALLAHI', s, 55), fo = T('HURT', s, 55) + 14; const tap = fr >= fo + 14; return <>
-    {fr >= q && <div style={{position: 'absolute', left: 70, top: 800, width: 940, padding: '26px 34px', background: 'rgba(8,8,10,.9)', borderLeft: `12px solid ${YEL}`, transform: `scale(${pop(fr - q, 6, 1.3).s})`}}>
-      <Txt size={74} color={YEL}>"WALLAHI THAT HURT MORE THAN THE RAMBO."</Txt><Mono size={34} color="#fff" style={{marginTop: 10}}>— Z. Kablawi, entrepreneur</Mono></div>}
-    {fr >= fo && <div style={{position: 'absolute', left: 250, top: 1180, width: 580, height: 120, borderRadius: 60, background: tap ? '#2a2a2a' : RED, display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${pop(fr - (tap ? fo + 14 : fo), 5, 1.4).s})`}}><Txt size={56}>{tap ? '✓ FOLLOWING' : '+ FOLLOW'}</Txt></div>}
-    {fr >= fo && <div style={{position: 'absolute', left: interpolate(fr, [fo, fo + 12], [900, 660], cl), top: interpolate(fr, [fo, fo + 12], [1500, 1260], cl), fontSize: 130}}>👆</div>}</>; }},
+  {a: vt('WHEN') - 0.1, c: 3, from: 8, head: 'KABLAWI BREAKS HIS SILENCE', L: ({s}) => <Stamp text="EXCLUSIVE 🎤" t0={T('COMMENT', s)} col={YEL} y={0.44} size={110} rot={-6} />},
 ];
 
+const tapeL = (id: string): React.FC<{s: number}> => ({s}) => { const fr = useCurrentFrame();
+  if (id === 'H1') return <div style={{position: 'absolute', top: 330, width: W, textAlign: 'center', transform: `scale(${pop(fr, 5, 2).s}) rotate(-3deg)`}}><span style={{display: 'inline-block', background: RED, padding: '8px 30px'}}><Txt size={100} style={{textShadow: 'none'}}>🚨 STABBED. OUTSIDE BOOTS.</Txt></span></div>;
+  if (id === 'H2') return <div style={{position: 'absolute', top: 330, width: W, textAlign: 'center', transform: `scale(${pop(fr, 5, 2).s}) rotate(2deg)`}}><span style={{display: 'inline-block', background: YEL, padding: '8px 30px'}}><Txt size={92} color="#0a0a0a" style={{textShadow: 'none'}}>…AND THAT'S NOT WHAT HURT 💔</Txt></span></div>;
+  if (id === 'T1') return <Chip x={540} y={380} t0={2} bg={RED} size={56}>🎤 THE VICTIM'S OWN WORDS</Chip>;
+  if (id === 'T2') return <Chip x={540} y={380} t0={2} bg={RED} size={56}>🍗 HIS SIDE OF THE STORY</Chip>;
+  const fo = 14, tap = fr >= fo + 14; return <>
+    <Chip x={540} y={380} t0={2} bg={YEL} size={56}>💬 OFFICIAL STATEMENT</Chip>
+    <div style={{position: 'absolute', left: 250, top: 560, width: 580, height: 120, borderRadius: 60, background: tap ? '#2a2a2a' : RED, display: fr >= fo ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', transform: `scale(${pop(fr - (tap ? fo + 14 : fo), 5, 1.4).s})`}}><Txt size={56}>{tap ? '✓ FOLLOWING' : '+ FOLLOW'}</Txt></div>
+    {fr >= fo && <div style={{position: 'absolute', left: interpolate(fr, [fo, fo + 12], [900, 660], cl), top: interpolate(fr, [fo, fo + 12], [900, 640], cl), fontSize: 130}}>👆</div>}</>; };
+const SHOTS: Shot[] = [...VSHOTS, ...TLS.filter((x) => x.kind === 'tape').map((x) => ({a: x.t0, c: x.c!, from: x.src!, z: 1.0, head: '', tape: true, L: tapeL(x.id)}))].sort((p, q) => p.a - q.a);
 const KEY = new Set(['BREAKING', 'NEWS', 'VIGILANT', 'CRIME', 'BAFFLED', 'VICTIM', 'ZAYDOON', 'KABLAWI', 'ENTREPRENEUR', 'TIKTOK', 'RAMBO', 'CHEFED', 'KNIFE', 'BACK', 'FLINCH', 'A&E', 'CARD', 'TEMPLATE', 'MID-STITCH', 'NOTE', '40', 'HEARTFELT', 'POETIC', 'UNNECESSARY', 'BEAT', 'RED', 'SUSPECT', 'NANDOS', 'MAN', 'HOT', 'DRINKS', 'WALLAHI', 'HURT']);
 const CH = (() => { const out: {t: number; ws: string[]}[] = []; VOW.forEach(([w, t], i) => { const l = out[out.length - 1]; const gap = i ? t - VOW[i - 1][1] : 9;
   if (l && l.ws.length < 3 && gap < 0.4 && (w.length <= 4 || l.ws.length < 2) && !KEY.has(l.ws[l.ws.length - 1]) && l.ws.join(' ').length + w.length < 15) l.ws.push(w); else out.push({t, ws: [w]}); }); return out; })();
-const Caps: React.FC = () => { const fr = useCurrentFrame(); const t = fr / FPS; let k = -1; CH.forEach((c, i) => { if (c.t <= t + 0.02) k = i; }); if (k < 0 || t < 2.05) return null; const c = CH[k]; if (t - c.t > 1.1) return null;
+const Caps: React.FC = () => { const fr = useCurrentFrame(); const t = fr / FPS; let k = -1; CH.forEach((c, i) => { if (c.t <= t + 0.02) k = i; }); if (k < 0 || TLS.some((x) => x.kind === 'tape' && t >= x.t0 && t < x.t1)) return null; const c = CH[k]; if (t - c.t > 1.1) return null;
   return <div style={{position: 'absolute', top: 690, width: W, textAlign: 'center', transform: `translateY(-50%) scale(${interpolate(t - c.t, [0, 0.08], [1.15, 1], cl)})`}}>
     {c.ws.map((w, i) => { const key = KEY.has(w); return <span key={i} style={{display: 'inline-block', margin: '0 9px', fontFamily: 'HeroBlack', fontSize: 78, color: key ? '#0a0a0a' : '#fff', background: key ? YEL : 'transparent', padding: key ? '0 16px' : 0, transform: key ? 'rotate(-2deg)' : 'none',
       textShadow: key ? 'none' : '0 4px 0 rgba(0,0,0,.7), 3px 3px 0 #000, -3px 3px 0 #000, 3px -3px 0 #000, -3px -3px 0 #000'}}>{w}</span>; })}</div>; };
@@ -93,10 +101,10 @@ export const ZkNews: React.FC = () => {
   return <AbsoluteFill style={{background: '#000'}}>
     {SHOTS.map((s, i) => { const from = f(s.a), dur = (i < SHOTS.length - 1 ? f(SHOTS[i + 1].a) : ZK_FRAMES) - from; return <Sequence key={i} from={from} durationInFrames={dur}><Clip c={s.c} from={s.from} mv={i} d={dur / FPS} z={s.z} oy={s.oy} /><s.L s={s.a} /></Sequence>; })}
     <Grain />
-    {t > 2.1 && <>
+    {<>
       <div style={{position: 'absolute', left: 36, top: 150, display: 'flex', gap: 10, alignItems: 'center'}}><div style={{padding: '8px 16px', background: RED, display: 'flex', gap: 10, alignItems: 'center'}}><div style={{width: 16, height: 16, borderRadius: 8, background: '#fff', opacity: fr % 30 < 18 ? 1 : 0.2}} /><Txt size={30} style={{textShadow: 'none', letterSpacing: 2}}>LIVE</Txt></div>
-        <div style={{padding: '8px 16px', background: YEL}}><Txt size={30} color="#0a0a0a" style={{textShadow: 'none', letterSpacing: 2}}>VIGILANT CRIME NEWS</Txt></div><div style={{padding: '8px 14px', background: 'rgba(0,0,0,.7)'}}><Mono size={24} color="#fff">PARODY</Mono></div></div>
-      <div style={{position: 'absolute', left: 0, top: 1440, width: W, overflow: 'hidden'}}>
+        <div style={{padding: '8px 16px', background: YEL}}><Txt size={30} color="#0a0a0a" style={{textShadow: 'none', letterSpacing: 2}}>VIGILANT CRIME NEWS</Txt></div><div style={{padding: '8px 14px', background: 'rgba(0,0,0,.7)'}}><Mono size={24} color="#fff">{sh.tape ? '▶ REAL AUDIO' : 'PARODY'}</Mono></div></div>
+      <div style={{position: 'absolute', left: 0, top: 1440, width: W, overflow: 'hidden', display: sh.tape || si === SHOTS.findIndex((x) => x.head === 'BREAKING NEWS') ? 'none' : 'block'}}>
         <div style={{display: 'inline-block', background: RED, padding: '6px 22px', marginLeft: 36, transform: `translateY(${(1 - lt) * 60}px)`}}><Txt size={34} style={{textShadow: 'none', letterSpacing: 3}}>BREAKING</Txt></div>
         <div style={{background: '#fff', margin: '0 36px', padding: '14px 22px', clipPath: `inset(0 ${(1 - lt) * 100}% 0 0)`}}><Txt size={46} color="#0a0a0a" style={{textShadow: 'none'}}>{sh.head}</Txt></div>
       </div>
