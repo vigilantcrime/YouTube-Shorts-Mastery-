@@ -59,3 +59,21 @@ Episode 1: VC-001 Yanko, "Life of a Rider" (`gta-short/src/VigilantCase.tsx`, 61
 - **Ending:** a TikTok-style verdict poll (DANGEROUS vs FUNNIEST) over the song's outro, then "+ FOLLOW" with a tap and the closing tape.
 - **Lyrics come from transcribing the clip's own audio** (no lyrics site was usable), and only the bars under discussion are shown. The most graphic and explicit bars are skipped.
 - **Audio:** song at 0.8, sidechained under the VO; hiss and hum bed during pauses; pause/play clicks; stamp thuds. Mixed to −18 LUFS.
+
+---
+# Format 3 — "THE TALLY" (Drill Bar Breakdown EP 2, `gta-short/src/SjTally.tsx`)
+- **Signature:** a live scoreboard pinned under the brand bar. Yellow category cells (SPLASH / WHACKED / CHING / SWIM / WING) sit beside a red CLAIMED total. Every count flashes its cell, bumps the number, punches the frame 3.5% and plays a tick.
+- **Structure:** VO hook, then "LET'S DO THE MATHS". After that it alternates **▶ THE TAPE · REAL AUDIO** clips (2–3s of the actual bars, with slam words on each hit) with VO maths sections, one gag card each:
+  - car-wash sign
+  - meal-deal sticker
+  - leisure-centre timetable
+  - "which wing?" quiz
+  - till receipt
+  - football squad
+  - upload-blocked card
+  - phone contacts
+- **No marker rings.** Only cuts, counters and cards.
+- Footage plays at 0.2–0.5× under the VO, with a new camera move on every sub-shot.
+- **4K delivery:** render with `--scale=2` (2160×3840) to an H.264 master, then `libx265 -b:v 3250k -tag:v hvc1` so the file stays under 28 MB.
+- **Source quality:** graphics are vector-sharp at 4K, but the footage can only be as sharp as the source. A 640×360 source gives soft footage, so ask for a 1080p or better source when possible.
+- On-screen disclaimer: "lyrics are performance, not evidence". Counts are labelled CLAIMED.

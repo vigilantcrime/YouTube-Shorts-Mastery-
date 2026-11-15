@@ -172,3 +172,29 @@ Pauses 1–8 are freeze frames with a VHS grade, and each uses a new device:
 7. "HE… AGREES 💀" with a CONFIRMED BY ARTIST slip.
 8. HYGIENE decoder, THESE ARE LYRICS and NOT EVIDENCE.
 End: verdict poll bars, follow tap and tape.
+
+## Video 9 — DRILL BAR BREAKDOWN EP 2 "25 bodies in 29 seconds" (OFB SJ, Plugged In; The Tally format, 63s, 4K)
+Timeline: VO A (hook), TAPE splash (source 0.95s), VO B, TAPE whacked (15.6s), VO C, TAPE ching/swim (21.4s), VO D, TAPE wing (25.5s), VO E, F, G.
+Sub-shots under the VO (source second @ rate):
+- A: 0.0@.45, 7.0@.5, 13.4@.5
+- B: 4.95, 9.0, 10.0, 5.9
+- C: 11.6, 14.0, 18.1
+- D: 19.0, 16.0
+- E: 21.4, 27.0, 24.0, 25.0
+- F: 28.6@.28, Fumez close-up 4.0@.2
+- G: 0.1, 2.6, 22.5, 29.0
+Moves cycle through 7: creep-in, pull-out, arc, snap-settle, rise, handheld, roll.
+Gag devices:
+- 330px "25 BODIES" odometer, "IN 29 SECONDS", "0.86 per second".
+- 14-tile 💦 grid with 4 "SPLA—" cut-offs.
+- "SJ's HAND CAR WASH" sign and 5-star review.
+- 5 parcel boxes, then the 2-FOR-1 MEAL DEAL sticker.
+- OFB LEISURE CENTRE timetable.
+- WHICH WING? quiz (A/B/C).
+- OPP-MART receipt.
+- Football pitch 4-3-3 plus a 14-man subs bench.
+- "FUMEZ RIGHT NOW 😐".
+- NOT GOING ON SPOTIFY card.
+- 25 / 0 / 1 stat row.
+- Phone contacts (POLICE vs WORLD RECORDS).
+- PART 2 moon-landing follow tap and closing tape.
