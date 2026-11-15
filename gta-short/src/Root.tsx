@@ -14,10 +14,12 @@ import {JigglePhysics, JIG_FRAMES} from './JigglePhysics';
 import {VigilantCase, VC1_FRAMES} from './VigilantCase';
 import {BarsBreakdown, BARS_FRAMES} from './BarsBreakdown';
 import {SjTally, SJ_FRAMES} from './SjTally';
+import {ZkNews, ZK_FRAMES} from './ZkNews';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="ZkNews" component={ZkNews} durationInFrames={ZK_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="SjTally" component={SjTally} durationInFrames={SJ_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="BarsBreakdown" component={BarsBreakdown} durationInFrames={BARS_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="VigilantCase" component={VigilantCase} durationInFrames={VC1_FRAMES} fps={FPS} width={1080} height={1920} />

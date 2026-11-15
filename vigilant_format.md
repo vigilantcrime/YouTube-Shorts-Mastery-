@@ -77,3 +77,9 @@ Episode 1: VC-001 Yanko, "Life of a Rider" (`gta-short/src/VigilantCase.tsx`, 61
 - **4K delivery:** render with `--scale=2` (2160×3840) to an H.264 master, then `libx265 -b:v 3250k -tag:v hvc1` so the file stays under 28 MB.
 - **Source quality:** graphics are vector-sharp at 4K, but the footage can only be as sharp as the source. A 640×360 source gives soft footage, so ask for a 1080p or better source when possible.
 - On-screen disclaimer: "lyrics are performance, not evidence". Counts are labelled CLAIMED.
+
+---
+# Format 4 — "VIGILANT CRIME NEWS" (parody bulletin, `gta-short/src/ZkNews.tsx`)
+- Full-screen red BREAKING NEWS slam for the first 2s, then the news chrome: LIVE bug, yellow channel badge, PARODY tag, a white lower-third headline that changes on every beat, a scrolling ticker with running jokes, and a solid bottom panel (which also hides captions burned into source clips).
+- One clip per sentence, each with a different move, and a proof card on every claim: victim ID card, real fan-comment screenshot, A&E sign, business card, product listing, voice-note bubble counting to 2:40, analyst stamps, "Seen ✓✓" chat, Instagram story with a heat meter, closing quote card and follow tap.
+- VO sped up 1.08× to land on 60s. 4K HEVC delivery as in Format 3.
