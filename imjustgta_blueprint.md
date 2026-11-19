@@ -1,10 +1,10 @@
 # @imjustgta — Production Blueprint
-## "How to get Paul Walker's Fast & Furious car in GTA 6" (16:9 long-form, 3:21)
+## "How to get Paul Walker's Fast & Furious car in GTA 6" (16:9 long-form, 5:43)
 
 Built from:
 - The reference video supplied on Drive (640×360, 12:50).
 - The owner's gameplay recording (1280×714, 14:55).
-- The 3:21 ElevenLabs voiceover, the only script used.
+- Both ElevenLabs voiceovers (3:21 part 1 and 3:22 part 2).
 
 The finished edit was rendered from `gta-short/src/PwLong.tsx` (Remotion composition `PwLong`). This document is the handoff for that edit or any re-cut.
 
@@ -98,6 +98,42 @@ The reference had almost no gameplay, because GTA 6 wasn't out when it was made.
 ---
 
 ## 3. Timestamped edit, line by line (as built)
+
+### VO structure (5:43)
+| Section | Time in video | Source |
+|---|---|---|
+| A | 0:00–1:22.7 | Part 1, from the hook up to "flick the radio onto Flash…" |
+| B | 1:23.0–4:45.4 | All of part 2: ride commentary, Paul Walker tribute, franchise, scenery, comment poll, driver update, arrival, garage, car confirmed |
+| C | 4:45.7–5:42.7 | Part 1 from "Now here's my advice": the escape, the crash, recap and CTA |
+
+Part 1's own arrival-to-confirmed walkthrough (its 1:23–2:24) is dropped. Part 2 narrates the same steps in more detail, and keeping both would repeat the walkthrough.
+
+### Section B treatments
+| Time | Script | Picture | Overlay / FX |
+|---|---|---|---|
+| 1:23 | "Here's a tip… save your game… spoiler alert, it went wrong for me." | Taxi chase cam | Pills TIP FOR THE RUN, SAVE YOUR GAME FIRST; stamp "SPOILER: IT WENT WRONG" |
+| 1:30 | "Take the taxi… battered car, police on your back…" | Bridge drive | Pills TAXI > DRIVING YOURSELF, BATTERED CAR, POLICE ON YOUR BACK, ARRIVE IN ONE PIECE |
+| 1:39 | "Let's talk about the man himself…" | Stage: garage screen | Card PAUL WALKER as Brian O'Connor; pills HEART OF THE SERIES, ALONGSIDE DOM; on "2013", a 🕊️ card |
+| 1:55 | "Furious 7… the ending…" | Stage | Title FURIOUS 7; split-road graphic where two cars part on "splitting"; quote card with the highlighter on "most famous tributes in cinema"; pills "SEE YOU AGAIN" and IF YOU DIDN'T TEAR UP… (no song audio and no movie footage, for copyright) |
+| 2:09 | "Not just a cool Easter egg… a little tribute… sort of properly." | Garage car, soft grade | Title A TRIBUTE TO PAUL; a 0.33 s crash flash-forward on "sort of" (callback) |
+| 2:21 | "10 main films, a spin-off… the first one… small, grimy…" | Stage | Count-up to 10 MAIN FILMS; FANS' FAVOURITE ERA card; THE POSTER CAR screen |
+| 2:37 | "Look at this scenery… Keys… Vice City is their Miami." | Bridges and coast | Pills PALM TREES, WATER ON BOTH SIDES, THE KEYS = FLORIDA KEYS, VICE CITY = MIAMI |
+| 2:52 | "Quick question… Dom's Charger, Brian's orange Supra?" | Stage | Animated poll bars; COMMENT pill. The bar lengths are visual only, not real data. |
+| 3:06 | "Driver's still going with this bartender story…" | Stage: taxi interior | Quote card plus stamp RESPECT 🫡 |
+| 3:17 | "Getting close… the game will tempt you… don't." | Approach | ⚠️ WARNING card; stamp "(HE DIDN'T)", the open loop for the escape |
+| 3:28 | CHAPTER 02, "And we're here…" | Arrival | Pills on each noun; then a $0 FLOORBOARD → MILLIONAIRE'S ROW split (apartment vs mansions) |
+| 3:42 | Map check, work vans (Miller's Destruction Co., Avenue Contractors), the house | Map, jog, house | Same treatments as section 2 |
+| 4:06 | CHAPTER 03, break in, lock-pick ("don't spam the button") | Lock-pick | Magnifier on the wheel; tick SFX |
+| 4:18 | "And there it is…" | Reveal | Garage-door rumble SFX, flash, title, checklist, EXACTLY LIKE THE MOVIE |
+| 4:33 | Smash the window, then the name confirmed bottom-left | 13:24 / 13:35 | Glass SFX; magnifier on the HUD name; ✓ YOU'VE GOT IT |
+| 4:45 | Section C: the escape (as in the table below, shifted by +2:21.6) | | |
+
+### Section A and C detail
+In the table below:
+- Rows up to 1:22 are section A.
+- Rows from 2:24 onward are section C; add 2:21.6 to get their time in the final video.
+- Rows from 1:22.9 to 2:17 are the part 1 walkthrough that was dropped. They're kept for reference only.
+
 Times are VO time. "src" is the gameplay timestamp in the 14:55 recording.
 
 | Time | Script | Picture | Overlay / FX |
@@ -171,11 +207,11 @@ Times are VO time. "src" is the gameplay timestamp in the 14:55 recording.
 ## 5. Sound design and music timeline
 - **VO:** the ElevenLabs file, untouched.
 - **Final loudness:** −14 LUFS integrated, −1.5 dBTP (YouTube long-form).
-- **Music [ADAPT]:** original 100 BPM Vice City synthwave (Am–F–G–Em).
+- **Music [ADAPT]:** original 100 BPM Vice City synthwave (Am–F–G–Em). It switches to a softer Dm–F–C–G pad with no drums for the Paul Walker tribute (1:39–2:21).
   - Pads plus an arpeggio for the first 4.8 s.
   - Drums enter at 4.8 s, as the feature callouts start.
   - Sits at about −24 dB under the VO; 3 s fade at the end.
-- **Gameplay audio:** kept low (14–25%) and raised for impact moments: punch 45%, crash 55%. Muted during the ×30 ride.
+- **Gameplay audio: fully muted.** The recording includes in-game radio (licensed music) during the taxi ride. Impacts are replaced with original SFX: lock-pick ticks, garage-door rumble, glass smash, punch, crash ×2.
 - **SFX:**
   - Whoosh on every shot change.
   - Impact on every chapter bumper and stamp.
@@ -220,4 +256,5 @@ See section 2. Timing rules:
 - [ ] Gameplay audio never fights the VO (VO always at least 10 dB louder).
 - [ ] Loudness −14 LUFS ±1; true peak no higher than −1.5 dBTP.
 - [ ] No movie stills or third-party logos.
-- [ ] Final runtime 3:21, matching the VO.
+- [ ] Final runtime 5:43, matching the combined VO.
+- [ ] No in-game radio or other licensed music anywhere; gameplay audio is muted.

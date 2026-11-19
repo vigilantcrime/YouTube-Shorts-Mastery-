@@ -13,12 +13,13 @@ export const PW_FRAMES = Math.ceil(data.total * FPS);
 const f = (s: number) => Math.round(s * FPS);
 const VOW = data.vo as [string, number][];
 const vt = (w: string, after = 0) => VOW.find(([x, t]) => x === w && t >= after - 0.05)?.[1] ?? after;
-const L = (w: string, s: number, after = 0) => f(vt(w, after) - s);   // word → local frame inside a shot that starts at s
+const L = (w: string, s: number, after = 0) => f(vt(w, Math.max(after, s - 0.2)) - s);   // word → local frame inside a shot that starts at s
 
 /* ---- brand system (pink/violet from the reference; @imjustgta teal for "our" UI accents) ---- */
 const PINK = '#ff5fcf', PINK2 = '#ffb8ec', VIO = '#9b5cff', TEAL = '#3ff0d0', INK = '#160c22';
 const GLOW = '0 0 0 2px rgba(255,190,245,.85), 0 0 26px rgba(255,120,220,.55), 0 30px 80px rgba(0,0,0,.6)';
 const SRC = staticFile('pw/gta.mp4');
+const Sfx: React.FC<{at: number; n: string; v?: number}> = ({at, n, v = 0.6}) => <Sequence from={Math.max(0, at)} durationInFrames={45}><Audio src={staticFile(`pw/${n}.wav`)} volume={v} /></Sequence>;
 const T: React.FC<{size: number; children: React.ReactNode; color?: string; style?: React.CSSProperties; w?: number}> = ({size, children, color = '#fff', style, w = 900}) =>
   <div style={{fontFamily: w >= 900 ? 'HeroBlack' : 'UIBold', fontSize: size, color, lineHeight: 1.02, letterSpacing: size > 60 ? -1 : 0.5, ...style}}>{children}</div>;
 
@@ -37,7 +38,7 @@ const Foot: React.FC<{src: number; rate?: number; d: number; mv?: number; spot?:
   const fr = useCurrentFrame(); const p = interpolate(fr, [0, f(d)], [0, 1], cl); const e = interpolate(fr, [0, 7], [1, 0], {...cl, easing: Easing.out(Easing.cubic)});
   const M = [{s: 1.04 + 0.08 * p, x: 0, y: 0, r: 0}, {s: 1.14 - 0.1 * p, x: 0, y: 0, r: 0}, {s: 1.08, x: 40 - 80 * p, y: 0, r: 0}, {s: 1.06 + 0.22 * e, x: 0, y: 0, r: 0},
     {s: 1.08, x: 0, y: 25 - 50 * p, r: 0}, {s: 1.1, x: Math.sin(fr / 9) * 8, y: Math.cos(fr / 11) * 6, r: Math.sin(fr / 14) * 0.4}, {s: 1.1, x: 0, y: 0, r: -1 + 2 * p}][mv % 7];
-  const v = <OffthreadVideo src={SRC} startFrom={f(src)} playbackRate={freeze ? 1 : rate} volume={rate > 1.6 || freeze ? 0 : vol} style={{width: W, height: H}} />;
+  const v = <OffthreadVideo src={SRC} startFrom={f(src)} playbackRate={freeze ? 1 : rate} muted style={{width: W, height: H}} />;
   const so = spot ? interpolate(fr, [spotT, spotT + 8], [0, 1], cl) : 0;
   return <AbsoluteFill style={{overflow: 'hidden', background: '#000'}}>
     <AbsoluteFill style={{transform: `translate(${M.x}px,${M.y}px) rotate(${M.r}deg) scale(${M.s})`, filter: grade ?? 'contrast(1.06) saturate(1.12)'}}>{freeze ? <Freeze frame={0}>{v}</Freeze> : v}</AbsoluteFill>
@@ -144,7 +145,7 @@ const SHOTS: Sh[] = [
       <div style={{position: 'absolute', left: 950, top: 470, transform: `scale(${pop(fr - pw, 6, 2).s})`}}><T size={110} color={PINK2}>≈</T></div>
       <div style={{position: 'absolute', left: 1100, top: 330, width: 700, padding: 34, borderRadius: 26, background: 'rgba(24,16,40,.94)', boxShadow: GLOW, transform: `translateX(${interpolate(fr - pw, [0, 8], [500, 0], {...cl, easing: Easing.out(Easing.cubic)})}px) rotateY(10deg)`}}>
         <T size={24} w={800} color={PINK2} style={{letterSpacing: 4}}>THE FAST AND THE FURIOUS · 2001</T><T size={64} style={{marginTop: 12}}>PAUL WALKER'S</T><T size={64} color={PINK}>MITSUBISHI ECLIPSE</T>
-        <div style={{display: 'flex', gap: 12, marginTop: 20}}><Pill t0={pw + 8} x={0} y={0} size={24}>Brian O'Connor</Pill></div></div></>}
+        </div><Pill t0={pw + 8} x={1130} y={700} size={26} icon="🎬">Brian O'Connor</Pill></>}
   </Stage>; }},
   {a: sh('YOU', 16.5), C: ({s, d}) => { const fr = useCurrentFrame(); const show = L('SHOW', s);
     const row = (t0: number, icon: string, txt: string, ok: boolean, i: number) => fr >= t0 && fr < show && <div key={i} style={{position: 'absolute', left: 260 + i * 480, top: 330, width: 420, padding: '40px 30px', borderRadius: 26, background: 'rgba(24,16,40,.94)', boxShadow: ok ? `0 0 0 3px ${TEAL}, 0 0 30px ${TEAL}66` : GLOW, textAlign: 'center', transform: `scale(${pop(fr - t0, 6, 1.6).s}) rotateX(8deg)`}}>
@@ -188,71 +189,132 @@ const SHOTS: Sh[] = [
     <Stamp t0={L('WELL', s, 77)} text="IT DID NOT GO WELL" col={PINK} x={1440} y={760} size={58} /></Stage>},
   {a: sh('FLICK'), C: ({s, d}) => <><Foot src={330} rate={1.6} d={d} mv={2} vol={0} /><Pill t0={L('RADIO', s)} x={120} y={150} icon="📻" hot>Radio → Flash</Pill><Pill t0={L('VIBE', s)} x={120} y={250}>The right vibe</Pill></>},
   // ── 03 VESPUCCI ISLAND ───────────────────────────────────────────────
-  {a: sh('HERE', 82.5), ch: ['02', 'VESPUCCI ISLAND'], C: ({s, d}) => <><Foot src={603} rate={1} d={d} mv={1} vol={0.25} />
-    <Pill t0={L('RICH', s)} x={120} y={150} icon="💰">The rich part of Leonida</Pill><Pill t0={L('PALM', s)} x={120} y={240} icon="🌴">Palm trees</Pill><Pill t0={L('MASSIVE', s, 87)} x={120} y={330} icon="🌳">Massive hedges</Pill><Pill t0={L('LUXURY', s)} x={120} y={420} icon="🏡">Luxury houses</Pill></>},
-  {a: sh('OPEN', 89.8), C: ({s, d}) => <><Foot src={720.2} rate={0.9} d={d} mv={0} vol={0.15} spot={[0.5, 0.5, 0.3, 0.42]} spotT={L('NEPTUNE', s, 93)} />
-    <Pill t0={4} x={120} y={150} icon="🗺️">Check the map</Pill><Pill t0={L('NEPTUNE', s, 93)} x={1800} y={150} anchor="r" icon="📌" hot>Neptune Circle</Pill></>},
-  {a: sh('JOG'), C: ({s, d}) => <><Foot src={668} rate={1.1} d={d} mv={5} vol={0.2} /><Pill t0={L('CONSTRUCTION', s)} x={120} y={150} icon="🚧">Past the construction vans</Pill><Pill t0={L('KEEP', s, 98)} x={120} y={240} icon="🏃">Keep going</Pill></>},
-  {a: sh('BIG', 99.9), C: ({s, d}) => <><Foot src={769.2} rate={0.6} d={d} mv={0} vol={0.2} spot={[0.5, 0.48, 0.38, 0.48]} spotT={4} />
-    <Pill t0={L('MODERN', s)} x={120} y={150} icon="⬜">Big modern white house</Pill><Pill t0={L('TWO', s, 101)} x={120} y={240} icon="🚗">Two-car garage</Pill><Stamp t0={L("THAT'S", s, 102.5)} text="THAT'S THE ONE" col={TEAL} x={W / 2} y={820} size={78} /></>},
-  // ── 04 THE GARAGE ────────────────────────────────────────────────────
-  {a: sh('WALK', 103.3), ch: ['03', 'THE GARAGE'], C: ({s, d}) => <><Foot src={772} rate={1} d={d} mv={4} vol={0.25} /><Pill t0={L('BREAK', s, 105)} x={120} y={150} icon="🔓" hot>Break in</Pill><Pill t0={L('LOCK', s, 107)} x={120} y={240} icon="🎯">Lock-picking minigame</Pill></>},
-  {a: sh("THERE'S", 108.3), C: ({s, d}) => <><Foot src={777} rate={0.95} d={d} mv={0} vol={0.3} spot={[0.5, 0.47, 0.25, 0.32]} spotT={2} />
-    <Mag t0={6} src={777 + 6 / 30 * 0.95} rate={0.95} box={[0.44, 0.38, 0.12, 0.18]} at={[1240, 200]} z={3.2} label="Spinning wheel" d={d} />
-    <Pill t0={L('TIME', s, 110)} x={120} y={150} icon="⏱️" hot>Time it right</Pill><Pill t0={L('ONCE', s, 113)} x={120} y={240}>You only want to do this once</Pill></>},
-  {a: sh('AND', 113.7), C: ({s, d}) => { const fr = useCurrentFrame(); const items: [string, string][] = [['GREEN', 'Green paint'], ['SIDE', 'Side graphics'], ['BIG', 'Big spoiler'], ['FULLY', 'Fully done up']]; return <>
-    <Foot src={783.4} rate={0.62} d={d} mv={1} vol={0.35} spot={[0.62, 0.6, 0.45, 0.5]} spotT={L('LIGHTS', s)} />
-    {fr >= L('THERE', s, 113.9) && fr < L('THERE', s, 113.9) + 4 && <AbsoluteFill style={{background: '#fff', opacity: 0.5}} />}
-    <Title t0={L('MIBATSU', s, 117)} y={110} size={96}>MIBATSU '97 PENUMBRA FF</Title>
+  // ── PART 2 · ride commentary (VO part 2) ─────────────────────────────
+  {a: sh('TIP', 82.9, 0.05), C: ({s, d}) => <><Foot src={118} rate={1.3} d={d} mv={2} />
+    <Pill t0={2} x={120} y={150} icon="💡" hot>Tip for the run</Pill><Pill t0={L('SAVE', s)} x={120} y={240} icon="💾">Save your game first</Pill>
+    <Stamp t0={L('SPOILER', s)} text="SPOILER: IT WENT WRONG" col={PINK} x={1300} y={300} size={62} /></>},
+  {a: sh('ALSO', 89), C: ({s, d}) => <><Foot src={232} rate={1.4} d={d} mv={4} />
+    <Pill t0={L('TAXI', s)} x={120} y={150} icon="🚕" hot>Taxi &gt; driving yourself</Pill><Pill t0={L('BATTERED', s)} x={120} y={240} icon="🚗💥">Battered car</Pill><Pill t0={L('POLICE', s)} x={120} y={330} icon="🚓">Police on your back</Pill><Pill t0={L('ONE', s)} x={120} y={420} icon="✅">Arrive in one piece</Pill></>},
+  {a: sh("LET'S", 99), C: ({s, d}) => { const fr = useCurrentFrame(); const y13 = L('2013', s); return <Stage>
+    <Screen src={786.5} rate={0.4} x={110} y={240} w={860} d={d} ry={14} />
+    <div style={{position: 'absolute', left: 1040, top: 210, width: 780, padding: 34, borderRadius: 26, background: 'rgba(24,16,40,.94)', boxShadow: GLOW, transform: `translateX(${interpolate(fr, [0, 9], [600, 0], {...cl, easing: Easing.out(Easing.cubic)})}px)`}}>
+      <T size={24} w={800} color={PINK2} style={{letterSpacing: 4}}>THE MAN HIMSELF</T><T size={72} style={{marginTop: 8}}>PAUL WALKER</T><T size={40} color={PINK}>as Brian O'Connor</T>
+      </div>
+    <Pill t0={L('HEART', s)} x={1080} y={470} size={28} icon="❤️">Heart of the series</Pill><Pill t0={L('DOM', s)} x={1080} y={550} size={28} icon="🤝">Alongside Dom</Pill>
+    {fr >= y13 && <div style={{position: 'absolute', left: 1040, top: 640, width: 780, padding: '24px 34px', borderRadius: 26, background: 'rgba(24,16,40,.94)', boxShadow: GLOW, transform: `scale(${pop(fr - y13, 6, 1.4).s})`, display: 'flex', alignItems: 'center', gap: 26}}>
+      <T size={96} color={PINK2}>2013</T><div><T size={34}>🕊️ Paul died in a car crash</T><T size={28} w={800} color="#cbb8e6">Rocked the fans — and the cast</T></div></div>}</Stage>; }},
+  {a: sh('FURIOUS', 112), C: ({s, d}) => { const fr = useCurrentFrame(); const sp = L('SPLITTING', s); const k = interpolate(fr, [sp - 4, sp + 30], [0, 1], {...cl, easing: Easing.inOut(Easing.sin)}); return <Stage>
+    <Title t0={0} y={90} size={96}>FURIOUS 7</Title>
+    <Quote t0={L('ENDING', s) - 4} x={1080} y={300} w={720} head="🎬 THE ENDING" text="One of the most famous tributes in cinema." hl="most famous tributes in cinema" th={L('TRIBUTES', s)} />
+    <svg width={900} height={620} style={{position: 'absolute', left: 120, top: 300}}>
+      <path d="M 450 620 L 450 330" stroke="#3a2a55" strokeWidth={120} /><path d={`M 450 340 Q 450 ${260 - 40 * k} ${450 - 330 * k} ${40}`} stroke="#3a2a55" strokeWidth={110} fill="none" /><path d={`M 450 340 Q 450 ${260 - 40 * k} ${450 + 330 * k} ${40}`} stroke="#3a2a55" strokeWidth={110} fill="none" />
+      <path d="M 450 620 L 450 330" stroke="#fff" strokeWidth={6} strokeDasharray="30 30" opacity={0.5} />
+      <text x={450 - 40 - 300 * k} y={420 - 300 * k} fontSize={70} textAnchor="middle">🚗</text><text x={450 + 40 + 300 * k} y={420 - 300 * k} fontSize={70} textAnchor="middle">🏎️</text></svg>
+    <Pill t0={L('DOM', s)} x={330} y={240} anchor="c" icon="🤝">Dom & Brian, side by side</Pill>
+    <Pill t0={L('SEE', s)} x={1440} y={700} anchor="c" icon="🎵">"See You Again"</Pill>
+    <Pill t0={L('TEAR', s)} x={1440} y={800} anchor="c" icon="🥲" hot>If you didn't tear up…</Pill></Stage>; }},
+  {a: sh('SO', 128), C: ({s, d}) => { const fr = useCurrentFrame(); const so = L('SORT', s); return <>
+    {fr >= so && fr < so + 10 ? <Foot src={885} rate={1} d={d} mv={3} grade="saturate(1.4) contrast(1.2)" /> : <Foot src={789} rate={0.4} d={d} mv={0} grade="contrast(1.05) saturate(.95) brightness(.9)" spot={[0.62, 0.6, 0.45, 0.5]} spotT={4} />}
+    <Pill t0={L('EASTER', s)} x={120} y={150} icon="🥚">Not just an Easter egg</Pill><Title t0={L('TRIBUTE', s)} y={350} size={120}>A TRIBUTE TO PAUL</Title>
+    <Pill t0={so} x={W / 2} y={780} anchor="c" icon="😬" hot>…sort of properly</Pill></>; }},
+  {a: sh('THE', 140.5), C: ({s, d}) => { const fr = useCurrentFrame(); const tn = L('TEN', s), ask = L('ASK', s), fi = L('FIRST', s); return <Stage>
+    <div style={{position: 'absolute', left: 140, top: 210, width: 760, textAlign: 'center'}}>
+      <T size={28} w={800} color={PINK2} style={{letterSpacing: 6}}>THE FRANCHISE</T>
+      <T size={240} style={{textShadow: `0 0 40px ${PINK}`}}>{Math.round(interpolate(fr, [tn - 10, tn + 6], [0, 10], cl))}</T><T size={52}>MAIN FILMS</T>
+      </div>
+    <Pill t0={L('SPINOFF', s)} x={520} y={700} anchor="c" size={28} icon="➕">A spin-off</Pill><Pill t0={L('MENTAL', s)} x={520} y={790} anchor="c" size={28} icon="🤯">Plots got more and more mental</Pill>
+    {fr >= ask && <div style={{position: 'absolute', left: 1000, top: 230, width: 800, padding: 34, borderRadius: 26, background: 'rgba(24,16,40,.94)', boxShadow: GLOW, transform: `scale(${pop(fr - ask, 6, 1.3).s})`}}>
+      <T size={24} w={800} color={PINK2} style={{letterSpacing: 4}}>FANS' FAVOURITE ERA</T><T size={70} style={{marginTop: 10}}>{fr >= fi ? 'THE FIRST ONE' : '…'}</T>
+      {['SMALL', 'GRIMY', 'CARS'].map((w, i) => fr >= L(w, s) && <span key={i} style={{display: 'inline-block', marginTop: 18, marginRight: 12, padding: '8px 18px', borderRadius: 999, background: i === 2 ? PINK : 'rgba(255,255,255,.12)'}}><T size={30}>{['Small', 'Grimy', 'All about the cars'][i]}</T></span>)}</div>}
+    <Screen src={829} rate={0.5} x={1060} y={640} w={560} d={d} ry={-10} t0={L('POSTER', s) - 6} />
+    <Pill t0={L('POSTER', s)} x={1660} y={760} anchor="c" size={26} icon="🖼️">The poster car</Pill></Stage>; }},
+  {a: sh('LOOK', 156.5), C: ({s, d}) => { const fr = useCurrentFrame(); const k = L('KEYS', s); return <><Foot src={fr < k ? 205 : 262} rate={fr < k ? 1.3 : 1.2} d={d} mv={2} />
+    <Pill t0={L('PALM', s)} x={120} y={150} icon="🌴">Palm trees</Pill><Pill t0={L('WATER', s)} x={120} y={240} icon="🌊">Water on both sides</Pill><Pill t0={L('UNREAL', s)} x={120} y={330} icon="🤩" hot>Leonida looks unreal</Pill>
+    <Pill t0={k} x={1800} y={150} anchor="r" icon="🌴">The Keys = Florida Keys</Pill><Pill t0={L('MIAMI', s)} x={1800} y={240} anchor="r" icon="🌆" hot>Vice City = Miami</Pill></>; }},
+  {a: sh('QUICK', 169), C: ({s, d}) => { const fr = useCurrentFrame(); const opts: [string, string, number][] = [['CHARGER', "Dom's Charger", 46], ['SUPRA', "Brian's orange Supra", 38], ['SOMETHING', 'Something else?', 16]]; return <Stage>
+    <div style={{position: 'absolute', left: 260, top: 160, width: 1400, padding: '36px 44px', borderRadius: 30, background: 'rgba(24,16,40,.94)', boxShadow: GLOW, transform: `scale(${pop(fr, 7, 1.3).s})`}}>
+      <T size={26} w={800} color={PINK2} style={{letterSpacing: 4}}>❓ QUICK QUESTION</T><T size={58} style={{marginTop: 10}}>One Fast & Furious car into GTA 6 — which one?</T>
+      {opts.map(([w, lab, v], i) => { const t0 = L(w, s); const on = fr >= t0; const fill = interpolate(fr, [t0, t0 + 20], [0, v], cl); return <div key={i} style={{marginTop: 22, height: 92, borderRadius: 46, background: 'rgba(255,255,255,.08)', position: 'relative', overflow: 'hidden', opacity: on ? 1 : 0.25}}>
+        <div style={{position: 'absolute', inset: 0, width: `${fill}%`, background: `linear-gradient(90deg, ${VIO}, ${PINK})`}} /><div style={{position: 'absolute', left: 34, top: 18}}><T size={48}>{lab}</T></div></div>; })}
+      <div style={{marginTop: 26}}>{fr >= L('COMMENTS', s) && <Pill t0={L('COMMENTS', s)} x={0} y={0} icon="💬" hot>Comment — it decides the next video</Pill>}</div>
+    </div></Stage>; }},
+  {a: sh('AND', 183.5), C: ({s, d}) => <Stage>
+    <Screen src={196} rate={1} x={110} y={210} w={900} d={d} ry={14} />
+    <Quote t0={6} x={1060} y={250} w={760} head="🚕 PARADISE TAXI · UPDATE" text="The driver is STILL going with the bartender story. He has not given up once." hl="has not given up once." th={L('GIVEN', s)} />
+    <Stamp t0={L('RESPECT', s)} text="RESPECT 🫡" col={TEAL} x={1440} y={760} size={70} />
+    <Pill t0={L('RUBBISH', s)} x={1440} y={880} anchor="c" icon="😂">Rubbish chat-up line? Blame Paradise Taxi</Pill></Stage>},
+  {a: sh('OK', 194), C: ({s, d}) => { const fr = useCurrentFrame(); return <><Foot src={560} rate={1.2} d={d} mv={1} />
+    <Pill t0={L('CLOSE', s)} x={120} y={150} icon="📍">Getting close</Pill>
+    {fr >= L('TEMPT', s) && <div style={{position: 'absolute', left: 1080, top: 200, width: 720, padding: 30, borderRadius: 26, background: 'rgba(40,10,24,.92)', boxShadow: `0 0 0 3px ${PINK}, 0 0 30px ${PINK}88`, transform: `scale(${pop(fr - L('TEMPT', s), 6, 1.4).s})`}}>
+      <T size={26} w={800} color={PINK2} style={{letterSpacing: 4}}>⚠️ WARNING</T><T size={56} style={{marginTop: 8}}>DON'T DO ANYTHING SILLY</T><T size={36} color="#e8d6ff" style={{marginTop: 8}}>Just drive off calmly.</T></div>}
+    <Stamp t0={L('LISTEN', s)} text="(HE DIDN'T)" col={PINK} x={1440} y={640} size={72} /></>; }},
+  {a: sh('AND', 206.5), ch: ['02', 'VESPUCCI ISLAND'], C: ({s, d}) => <><Foot src={603} rate={1} d={d} mv={1} />
+    <Pill t0={L('HOP', s)} x={120} y={150} icon="🚕">Hop out</Pill><Pill t0={L('RICH', s)} x={120} y={240} icon="💰">The rich side of Leonida</Pill><Pill t0={L('PALM', s)} x={120} y={330} icon="🌴">Palm trees</Pill>
+    <Pill t0={L('HEDGES', s)} x={120} y={420} icon="🌳">Hedges taller than a house</Pill><Pill t0={L('LUXURY', s)} x={120} y={510} icon="🏡">Luxury homes</Pill></>},
+  {a: sh("WE'VE", 215), C: ({s, d}) => { const fr = useCurrentFrame(); const m = L('MILLIONAIRES', s); return <Stage>
+    <Screen src={8} rate={0.6} x={130} y={270} w={760} d={d} ry={14} /><Pill t0={4} x={510} y={760} anchor="c" icon="🪵">$0 floorboard</Pill>
+    <div style={{position: 'absolute', left: 905, top: 420, transform: `scale(${pop(fr - 8, 6, 2).s})`}}><T size={110} color={PINK2}>→</T></div>
+    <Screen src={645} rate={0.6} x={1030} y={270} w={760} d={d} ry={-14} t0={m - 4} /><Pill t0={m} x={1410} y={760} anchor="c" icon="💎" hot>Millionaire's Row</Pill>
+    <Pill t0={L('CAB', s)} x={W / 2} y={880} anchor="c" icon="🚕">…in one cab ride</Pill></Stage>; }},
+  {a: sh('OPEN', 219.5), C: ({s, d}) => <><Foot src={720.2} rate={0.9} d={d} mv={0} spot={[0.5, 0.5, 0.3, 0.42]} spotT={L('NEPTUNE', s)} />
+    <Pill t0={4} x={120} y={150} icon="🗺️">Check the map</Pill><Pill t0={L('VESPUCCI', s)} x={120} y={240} icon="🏝️">Vespucci Island</Pill><Pill t0={L('NEPTUNE', s)} x={1800} y={150} anchor="r" icon="📌" hot>Neptune Circle</Pill></>},
+  {a: sh('NOW', 225.8), C: ({s, d}) => <><Foot src={666} rate={1.05} d={d} mv={5} />
+    <Pill t0={L('VANS', s)} x={120} y={150} icon="🚐">Work vans</Pill><Pill t0={L("MILLER'S", s)} x={120} y={240} icon="🏗️">Miller's Destruction Co.</Pill><Pill t0={L('AVENUE', s)} x={120} y={330} icon="🏗️">Avenue Contractors</Pill><Pill t0={L('HEDGES', s)} x={120} y={420} icon="🏃">Keep going past the hedges</Pill></>},
+  {a: sh('EVERY', 234.5), C: ({s, d}) => <><Foot src={769.2} rate={0.55} d={d} mv={0} spot={[0.5, 0.48, 0.38, 0.48]} spotT={L('BIG', s)} />
+    <Pill t0={L('HUGE', s)} x={120} y={150} icon="🏘️">Every house is huge</Pill><Pill t0={L('MODERN', s)} x={120} y={240} icon="⬜">Big modern white house</Pill><Pill t0={L('CLOSED', s)} x={120} y={330} icon="🚗">Closed two-car garage</Pill>
+    <Stamp t0={L("THAT'S", s)} text="THAT'S THE ONE" col={TEAL} x={W / 2} y={820} size={78} /></>},
+  {a: sh('WALK', 240.5), ch: ['03', 'THE GARAGE'], C: ({s, d}) => <><Foot src={772} rate={1} d={d} mv={4} /><Sfx at={L('BREAK', s)} n="tick" v={0.6} />
+    <Pill t0={L('BREAK', s)} x={120} y={150} icon="🔓" hot>"Break in"</Pill><Pill t0={L('LOCK', s)} x={120} y={240} icon="🎯">Lock-picking minigame</Pill></>},
+  {a: sh("THERE'S", 246.5), C: ({s, d}) => <><Foot src={777} rate={0.9} d={d} mv={0} spot={[0.5, 0.47, 0.25, 0.32]} spotT={2} />
+    <Mag t0={6} src={777 + 6 / 30 * 0.9} rate={0.9} box={[0.44, 0.38, 0.12, 0.18]} at={[1240, 200]} z={3.2} label="Spinning wheel" d={d} />
+    {[0, 1, 2, 3, 4].map((k) => <Sfx key={k} at={12 + k * 22} n="tick" v={0.35} />)}
+    <Pill t0={L('TIME', s)} x={120} y={150} icon="⏱️" hot>Time it just right</Pill><Pill t0={L('PANIC', s)} x={120} y={240} icon="🚫">Don't spam the button</Pill><Pill t0={L('BREATH', s)} x={120} y={330} icon="😮‍💨">Take a breath</Pill></>},
+  {a: sh('AND', 256.4), C: ({s, d}) => { const fr = useCurrentFrame(); const items: [string, string][] = [['GREEN', 'Green paint'], ['SIDE', 'Side graphics'], ['MASSIVE', 'Massive spoiler']]; const th = L('THERE', s); return <>
+    <Foot src={783.4} rate={0.6} d={d} mv={1} spot={[0.62, 0.6, 0.45, 0.5]} spotT={L('LIGHTS', s)} /><Sfx at={L('DOOR', s)} n="door" v={0.7} />
+    {fr >= th && fr < th + 4 && <AbsoluteFill style={{background: '#fff', opacity: 0.5}} />}
+    <Title t0={L('MIBATSU', s)} y={110} size={96}>MIBATSU '97 PENUMBRA FF</Title>
     <div style={{position: 'absolute', left: 90, top: 330, width: 560, padding: '28px 30px', borderRadius: 26, background: 'rgba(24,16,40,.9)', boxShadow: GLOW, opacity: fr >= L('GREEN', s) - 4 ? 1 : 0}}>
       <T size={24} w={800} color={PINK2} style={{letterSpacing: 4}}>MOVIE-ACCURATE CHECK</T>
-      {items.map(([w, t], i) => { const on = fr >= L(w, s, 119); return <div key={i} style={{display: 'flex', alignItems: 'center', gap: 18, marginTop: 18, opacity: on ? 1 : 0.3}}>
-        <div style={{width: 48, height: 48, borderRadius: 12, background: on ? TEAL : 'rgba(255,255,255,.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${on ? pop(fr - L(w, s, 119), 5, 1.8).s : 1})`}}><T size={34} color={INK}>{on ? '✓' : ''}</T></div><T size={42}>{t}</T></div>; })}
+      {items.map(([w, t], i) => { const on = fr >= L(w, s); return <div key={i} style={{display: 'flex', alignItems: 'center', gap: 18, marginTop: 18, opacity: on ? 1 : 0.3}}>
+        <div style={{width: 48, height: 48, borderRadius: 12, background: on ? TEAL : 'rgba(255,255,255,.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${on ? pop(fr - L(w, s), 5, 1.8).s : 1})`}}><T size={34} color={INK}>{on ? '✓' : ''}</T></div><T size={42}>{t}</T></div>; })}
     </div>
-    <Stamp t0={L('EXACTLY', s, 124)} text="EXACTLY LIKE THE MOVIE" col={TEAL} x={1240} y={900} size={70} /></>; }},
-  {a: sh('NO', 126), C: ({s, d}) => { const fr = useCurrentFrame(); return <Stage>
-    <Screen src={795} rate={0.5} x={980} y={230} w={820} d={d} ry={-14} />
-    <div style={{position: 'absolute', left: 170, top: 260, width: 700, textAlign: 'center'}}>
-      <T size={30} w={800} color={PINK2} style={{letterSpacing: 6}}>TOTAL COST</T>
-      <T size={300} color="#fff" style={{textShadow: `0 0 40px ${PINK}`}}>${Math.round(interpolate(fr, [0, 18], [85000, 0], {...cl, easing: Easing.out(Easing.cubic)})).toLocaleString('en-US')}</T></div>
-    <Pill t0={L('MOD', s, 126)} x={260} y={720} icon="🔧">No mod shop ✕</Pill><Pill t0={L('SPAWNS', s)} x={260} y={810} icon="✨" hot>It spawns like this</Pill></Stage>; }},
-  {a: sh('WALK', 129), C: ({s, d}) => { const fr = useCurrentFrame(); const g = L('GLASS', s); return <>
-    <Foot src={803.8} rate={1.25} d={d} mv={5} vol={0.45} /><Pill t0={L('LOCKED', s)} x={120} y={150} icon="🔒">Locked</Pill><Pill t0={L('SMASH', s, 132)} x={120} y={240} icon="💥" hot>Smash the window</Pill>
-    {fr >= g && fr < g + 3 && <AbsoluteFill style={{background: '#fff', opacity: 0.45}} />}<Pill t0={L('ENGINE', s, 136)} x={120} y={330} icon="🔑">Engine fires up</Pill></>; }},
-  {a: sh('CHECK', 137), C: ({s, d}) => <><Foot src={815.2} rate={0.45} d={d} mv={0} vol={0.25} />
+    <Stamp t0={L('EXACTLY', s)} text="EXACTLY LIKE THE MOVIE" col={TEAL} x={1240} y={900} size={70} /><Pill t0={L('BEAUTIFUL', s)} x={1800} y={150} anchor="r" icon="😍" hot>A beautiful sight</Pill></>; }},
+  {a: sh('WALK', 272), C: ({s, d}) => { const fr = useCurrentFrame(); const g = L('GLASS', s); return <>
+    <Foot src={803.8} rate={1.2} d={d} mv={5} /><Sfx at={g} n="glass" v={0.8} /><Pill t0={L('LOCKED', s)} x={120} y={150} icon="🔒">Locked</Pill><Pill t0={L('SMASH', s)} x={120} y={240} icon="💥" hot>Smash the window</Pill>
+    {fr >= g && fr < g + 3 && <AbsoluteFill style={{background: '#fff', opacity: 0.45}} />}<Pill t0={L('CLIMBS', s)} x={120} y={330} icon="🪟">Climbs in</Pill></>; }},
+  {a: sh('LOOK', 279), C: ({s, d}) => <><Foot src={815.2} rate={0.45} d={d} mv={0} />
     <Mag t0={L('BOTTOM', s) - 2} src={815.2 + (L('BOTTOM', s) - 2) / 30 * 0.45} rate={0.45} box={[0.005, 0.705, 0.14, 0.085]} at={[640, 260]} z={3} label="Name confirmed" d={d} />
-    <Stamp t0={L("YOU'VE", s, 143)} text="✓ YOU'VE GOT IT" col={TEAL} x={W / 2} y={170} size={84} rot={-4} /></>},
-  // ── 05 THE ESCAPE (paid-off open loop) ───────────────────────────────
-  {a: sh('NOW', 144), ch: ['04', 'THE ESCAPE'], C: ({s, d}) => { const fr = useCurrentFrame(); return <><Foot src={818.6} rate={0.7} d={d} mv={1} vol={0.3} />
+    <Stamp t0={L('CONFIRM', s) + 4} text="✓ YOU'VE GOT IT" col={TEAL} x={W / 2} y={170} size={84} rot={-4} /></>},
+  {a: sh('NOW', 285.55), ch: ['04', 'THE ESCAPE'], C: ({s, d}) => { const fr = useCurrentFrame(); return <><Foot src={818.6} rate={0.7} d={d} mv={1} vol={0.3} />
     <Pill t0={L('LEAVE', s)} x={120} y={150} icon="🤫" hot>Leave quietly</Pill>{fr >= L('HAPPENED', s) && <AbsoluteFill style={{background: 'linear-gradient(transparent 60%, rgba(255,40,120,.25))'}} />}</>; }},
-  {a: sh('AS', 147.5), C: ({s, d}) => { const fr = useCurrentFrame(); const cop = L('COP', s); return <>
+  {a: sh('AS', 289.05), C: ({s, d}) => { const fr = useCurrentFrame(); const cop = L('COP', s); return <>
     {fr < cop ? <Foot src={816} rate={1} d={d} mv={2} vol={0.35} /> : <Sequence from={cop}><Foot src={838.6} rate={0.75} d={d} mv={3} vol={0.4} spot={[0.48, 0.5, 0.22, 0.4]} spotT={2} /></Sequence>}
     <Pill t0={L('CRIME', s, 149)} x={120} y={150} icon="🚨" hot>Crime reported</Pill><Pill t0={cop + 4} x={120} y={240} icon="👮">Cop in the road</Pill><Pill t0={L('STOP', s, 153)} x={120} y={330}>"Stop!"</Pill></>; }},
-  {a: sh('JASON', 154), C: ({s, d}) => { const fr = useCurrentFrame(); const p = L('PUNCH', s, 156.5); const frz = fr >= p && fr < p + 26; return <>
+  {a: sh('JASON', 295.55), C: ({s, d}) => { const fr = useCurrentFrame(); const p = L('PUNCH', s, 156.5); const frz = fr >= p && fr < p + 26; return <>
     {frz ? <Sequence from={p}><Foot src={844.8} freeze d={1} mv={0} grade="contrast(1.25) saturate(1.3)" /></Sequence> : <Foot src={fr < p ? 842.2 : 845.7} rate={0.9} d={d} mv={5} vol={0.45} />}
-    <Pill t0={L('SORRY', s)} x={120} y={150} icon="🙏">"Sorry"</Pill>
+    <Pill t0={L('SORRY', s)} x={120} y={150} icon="🙏">"Sorry"</Pill><Sfx at={L('PUNCH', s)} n="punch" v={0.9} />
     {frz && <><AbsoluteFill style={{background: fr < p + 3 ? 'rgba(255,255,255,.5)' : 'transparent'}} /><Stamp t0={p + 1} text="ONE PUNCH 👊" col={PINK} x={W / 2} y={540} size={120} /></>}
     <Pill t0={L("DON'T", s, 157)} x={1800} y={150} anchor="r" icon="🤷">Don't ask why</Pill></>; }},
-  {a: sh('BACK', 159), C: ({s, d}) => <><Foot src={849.5} rate={1.1} d={d} mv={4} vol={0.4} /><Title t0={L('MOST', s, 161)} y={330} size={110}>THE MOST FAST & FURIOUS THING POSSIBLE</Title></>},
-  {a: sh('I', 143.3 + 20), C: ({s, d}) => { const fr = useCurrentFrame(); const tb = L('T-BONED', s); return <>
+  {a: sh('BACK', 300.55), C: ({s, d}) => <><Foot src={849.5} rate={1.1} d={d} mv={4} vol={0.4} /><Title t0={L('MOST', s, 161)} y={330} size={110}>THE MOST FAST & FURIOUS THING POSSIBLE</Title></>},
+  {a: sh('I', 304.85), C: ({s, d}) => { const fr = useCurrentFrame(); const tb = L('T-BONED', s); return <>
     <Foot src={865.2} rate={fr < tb - 10 ? 1 : 0.45} d={d} mv={3} vol={0.55} />
     <Pill t0={L('INTERSECTION', s)} x={120} y={150} icon="⚡">Way too fast</Pill><Pill t0={L('BACK', s, 165)} x={120} y={240} icon="🌀">Lost the back end</Pill>
-    {fr >= tb && fr < tb + 4 && <AbsoluteFill style={{background: '#fff', opacity: 0.5}} />}<Stamp t0={tb} text="T-BONED" col={PINK} x={1360} y={300} size={110} rot={-8} /></>; }},
-  {a: sh('SPARKS'), C: ({s, d}) => <><Foot src={869.4} rate={0.35} d={d} mv={6} vol={0.5} grade="contrast(1.15) saturate(1.3)" />
+    {fr >= tb && fr < tb + 4 && <AbsoluteFill style={{background: '#fff', opacity: 0.5}} />}<Sfx at={tb} n="crash" v={0.9} /><Stamp t0={tb} text="T-BONED" col={PINK} x={1360} y={300} size={110} rot={-8} /></>; }},
+  {a: sh('SPARKS', 309.55), C: ({s, d}) => <><Foot src={869.4} rate={0.35} d={d} mv={6} vol={0.5} grade="contrast(1.15) saturate(1.3)" />
     <Pill t0={0} x={120} y={150} icon="✨">Sparks everywhere</Pill><Pill t0={L("HOOD'S", s)} x={120} y={240} icon="🪫">Hood crumpled</Pill><Pill t0={L('ENGINE', s, 170)} x={120} y={330} icon="⚠️" hot>Engine damaged</Pill></>},
-  {a: sh('I', 172.2), C: ({s, d}) => { const fr = useCurrentFrame(); const st = L('STUCK', s); return <>
+  {a: sh('I', 313.75), C: ({s, d}) => { const fr = useCurrentFrame(); const st = L('STUCK', s); return <>
     {fr < st ? <Foot src={878} rate={1.45} d={d} mv={5} vol={0.55} /> : <Sequence from={st}><Foot src={888.4} freeze d={1} mv={0} grade="contrast(1.2) saturate(.9)" /></Sequence>}
     <Pill t0={L('OFF', s, 173)} x={120} y={150} icon="🛣️">Straight off the road</Pill><Pill t0={L('ROAD', s, 175)} x={120} y={240} icon="🚧" hot>Road closed barrier</Pill>
-    <Stamp t0={st} text="STUCK." col={PINK} x={W / 2} y={540} size={140} /></>; }},
-  {a: sh('SO', 179.6), C: ({s, d}) => <><Foot src={891} rate={0.5} d={d} mv={0} vol={0.2} grade="grayscale(.65) contrast(1.1) brightness(.85)" />
+    <Sfx at={L('SMASHED', s)} n="crash" v={0.8} /><Stamp t0={st} text="STUCK." col={PINK} x={W / 2} y={540} size={140} /></>; }},
+  {a: sh('SO', 321.15), C: ({s, d}) => <><Foot src={891} rate={0.5} d={d} mv={0} vol={0.2} grade="grayscale(.65) contrast(1.1) brightness(.85)" />
     <Pill t0={L('LESSON', s)} x={W / 2} y={200} anchor="c" icon="📚">Lesson learned</Pill><Title t0={L('BRIAN', s, 180)} y={430} size={104}>BRIAN WOULD BE ASHAMED</Title></>},
   // ── RECAP (pays off the "?" grid) + CTA ───────────────────────────────
-  {a: sh('BUT', 182), C: ({s, d}) => { const fr = useCurrentFrame(); return <Stage>
+  {a: sh('BUT', 323.55), C: ({s, d}) => { const fr = useCurrentFrame(); return <Stage>
     <Title t0={0} y={90} size={74}>THE FAST & FURIOUS CAR · GTA 6</Title>
     <Toc reveal={[-99, -99, -99, -99]} locked4={false} lit={[L('TAXI', s, 186), L('NEPTUNE', s, 188), L('GARAGE', s, 190), L('DRIVE', s, 192)]} y={260} />
     <Pill t0={L('SMASH', s, 191)} x={W / 2} y={790} anchor="c" icon="💥">Smash the window</Pill>
     <Pill t0={L('BETTER', s, 194)} x={W / 2} y={880} anchor="c" icon="😅" hot>Just drive better than I did</Pill></Stage>; }},
-  {a: sh('IF', 194.9), C: ({s, d}) => { const fr = useCurrentFrame(); const lk = L('LIKE', s, 195.5), sb = L('SUBSCRIBE', s), cm = L('COMMENT', s, 196); const tap = fr >= sb + 8; return <Stage>
+  {a: sh('IF', 336.45), C: ({s, d}) => { const fr = useCurrentFrame(); const lk = L('LIKE', s, 195.5), sb = L('SUBSCRIBE', s), cm = L('COMMENT', s, 196); const tap = fr >= sb + 8; return <Stage>
     <Screen src={786.5} rate={0.5} x={140} y={240} w={820} d={d} ry={14} />
     <div style={{position: 'absolute', left: 1080, top: 270, display: 'flex', gap: 26}}>
       <div style={{padding: '22px 36px', borderRadius: 999, background: fr >= lk + 6 ? PINK : '#2a2040', transform: `scale(${pop(fr - lk, 6, 1.6).s})`, opacity: fr >= lk ? 1 : 0}}><T size={46}>👍 LIKE</T></div>
@@ -285,7 +347,7 @@ export const PwLong: React.FC = () => {
     <div style={{position: 'absolute', left: 60, top: 60, padding: '8px 18px', borderRadius: 12, background: `linear-gradient(90deg, ${PINK}, ${VIO})`, opacity: t > 0.5 ? 1 : 0}}><T size={26} w={800} style={{letterSpacing: 2}}>@IMJUSTGTA</T></div>
     <Caps />
     <div style={{position: 'absolute', left: 0, bottom: 0, height: 6, width: `${(fr / PW_FRAMES) * 100}%`, background: `linear-gradient(90deg, ${VIO}, ${PINK})`}} />
-    <Audio src={staticFile('pw/vo.mp3')} />
+    <Audio src={staticFile('pw/vo_full.wav')} />
     <Audio src={staticFile('pw/bed.wav')} />
   </AbsoluteFill>;
 };
