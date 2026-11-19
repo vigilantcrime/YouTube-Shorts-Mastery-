@@ -104,11 +104,16 @@ const SHOTS: Sh[] = [
     <Header text="🕵️ Evidence #1 · her car boot" /><Pill t0={L('ROPE', s)} x={W / 2} y={360} icon="🪢">+ rope</Pill></>},
   {a: sh('ACID', 14.2), C: ({s, d}) => <><Plate img="yard" d={d} pos="40% 50%" z={[1.05, 1.18]} spot={[0.42, 0.33, 0.35, 0.3]} spotT={4} />
     <Header text="🕵️ Evidence #2 · her yard" /><Pill t0={0} x={W / 2} y={1040} icon="🧪" hot>Acid</Pill><Pill t0={L('SAWS', s)} x={W / 2} y={1140} icon="🪚">Saws</Pill></>},
-  {a: sh('AND', 16.0), C: ({s, d}) => { const fr = useCurrentFrame(); const g = L('GRAVE', s); const dig = interpolate(fr, [L('FRESHLY', s), g + 6], [0, 1], cl); return <Stage>
-    <Header text="🕵️ Evidence #3" /><Card x={90} y={380} w={900} h={506} ry={6}><CardVid src={80} rate={0.8} /></Card>
-    <svg width={900} height={300} style={{position: 'absolute', left: 90, top: 940}}><ellipse cx={450} cy={250} rx={380 * dig + 10} ry={70 * dig + 4} fill="#3a2614" /><ellipse cx={450} cy={232} rx={330 * dig + 6} ry={50 * dig + 3} fill="#5a3b1e" />
-      <text x={760} y={190} fontSize={140} opacity={dig}>⛏️</text><text x={250} y={210} fontSize={90} opacity={dig}>🪦</text></svg>
-    <Title t0={g} y={1190} size={92}>FRESHLY DUG GRAVE?</Title><Pill t0={L('HOUSE', s)} x={W / 2} y={920} icon="🏠">Next to her house</Pill></Stage>; }},
+  {a: sh('AND', 16.0), C: ({s, d}) => { const fr = useCurrentFrame(); const g = L('GRAVE', s); const z = interpolate(fr, [0, f(d)], [1.0, 1.12], cl); return <Stage>
+    <Header text="🕵️ Evidence #3 · next to her house" />
+    <Card x={90} y={330} w={900} h={900} ry={4}>
+      <div style={{position: 'absolute', inset: 0, transform: `scale(${z})`, transformOrigin: '58% 52%'}}>
+        <Img src={staticFile('md/grave.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(1.35) contrast(1.12) saturate(1.08)'}} />
+        <Box t0={L('DUG', s)} x={300} y={250} w={290} h={420} label="FRESHLY DUG 🕳️" />
+      </div>
+      <AbsoluteFill style={{opacity: interpolate(fr, [L('DUG', s), L('DUG', s) + 8], [0, 1], cl), background: 'radial-gradient(ellipse 34% 42% at 50% 52%, transparent 55%, rgba(8,4,16,.7) 100%)'}} />
+    </Card>
+    <Title t0={g} y={1260} size={92}>FRESHLY DUG GRAVE?</Title></Stage>; }},
   {a: sh('SHE', 19.2), C: ({s, d}) => { const fr = useCurrentFrame(); const k = L('JUST', s); return <>
     {fr < k ? <Foot src={35} rate={1} d={d} cx={0.64} mv={2} /> : <Sequence from={k}><Foot src={47} rate={1} d={d} cx={0.62} mv={0} /></Sequence>}
     <Pill t0={L('ADMITS', s)} x={W / 2} y={400} icon="🗣️">She admits it</Pill><Pill t0={L('BREAKING', s)} x={W / 2} y={500} icon="🔧" hot>Breaks appliances on purpose</Pill><Pill t0={L('ROUND', s)} x={W / 2} y={600} icon="😏">…just to get Jason round</Pill></>; }},
