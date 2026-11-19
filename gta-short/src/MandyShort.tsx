@@ -1,4 +1,4 @@
-/* @imjustgta SHORT (9:16) — "Is Mandy a serial killer?" Same visual language as PwLong (purple stage, pills, pink titles,
+/* @PatientGTA SHORT (9:16) — "Is Mandy a serial killer?" Same visual language as PwLong (purple stage, pills, pink titles,
    stamps, spotlight) adapted to vertical. Uses ALL supplied assets: Pipework gameplay, the creepy-door clip, the 4-panel
    collage, the car-boot photo and the yard photo. Game audio muted; VO + original bed + SFX. */
 import React from 'react';
@@ -153,7 +153,7 @@ export const MandyShort: React.FC = () => {
       {SHOTS.map((x, i) => { const from = f(x.a), dur = (i < SHOTS.length - 1 ? f(SHOTS[i + 1].a) : MD_FRAMES) - from;
         return <Sequence key={i} from={from} durationInFrames={dur}><x.C s={x.a} d={dur / FPS} />{i > 0 && <Sequence durationInFrames={12}><Audio src={staticFile('pw/whoosh.wav')} volume={0.3} /></Sequence>}</Sequence>; })}
     </AbsoluteFill>
-    <div style={{position: 'absolute', left: 50, top: 150, padding: '8px 18px', borderRadius: 12, background: `linear-gradient(90deg, ${PINK}, ${VIO})`}}><T size={30} w={800} style={{letterSpacing: 2}}>@IMJUSTGTA</T></div>
+    <div style={{position: 'absolute', left: 50, top: 150, padding: '8px 18px', borderRadius: 12, background: `linear-gradient(90deg, ${PINK}, ${VIO})`}}><T size={30} w={800} style={{letterSpacing: 2}}>@PATIENTGTA</T></div>
     <Caps />
     <div style={{position: 'absolute', left: 0, top: 0, height: 8, width: `${(fr / MD_FRAMES) * 100}%`, background: `linear-gradient(90deg, ${VIO}, ${PINK})`}} />
     <Audio src={staticFile('md/vo.mp3')} />
