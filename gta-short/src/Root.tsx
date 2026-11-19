@@ -17,10 +17,12 @@ import {SjTally, SJ_FRAMES} from './SjTally';
 import {ZkNews, ZK_FRAMES} from './ZkNews';
 import {PwLong, PW_FRAMES} from './PwLong';
 import {PwThumb} from './PwThumb';
+import {MandyShort, MD_FRAMES} from './MandyShort';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="MandyShort" component={MandyShort} durationInFrames={MD_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="PwThumb" component={PwThumb} durationInFrames={1} fps={30} width={1280} height={720} defaultProps={{v: 'A' as const}} />
     <Composition id="PwLong" component={PwLong} durationInFrames={PW_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="ZkNews" component={ZkNews} durationInFrames={ZK_FRAMES} fps={FPS} width={1080} height={1920} />
