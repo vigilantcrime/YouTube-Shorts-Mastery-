@@ -1,5 +1,5 @@
-# @imjustgta — Production Blueprint
-## "How to get Paul Walker's Fast & Furious car in GTA 6" (16:9 long-form, 5:43)
+# @PatientGTA — Production Blueprint
+## "How to get Paul Walker's Fast & Furious car in GTA 6" (16:9 long-form, 6:26)
 
 Built from:
 - The reference video supplied on Drive (640×360, 12:50).
@@ -11,7 +11,7 @@ The finished edit was rendered from `gta-short/src/PwLong.tsx` (Remotion composi
 Labels used throughout:
 - **[OBSERVED]** means measured or seen in the reference.
 - **[EST]** means a closest defensible estimate.
-- **[ADAPT]** means my recommendation for @imjustgta.
+- **[ADAPT]** means my recommendation for @PatientGTA.
 
 ---
 
@@ -52,7 +52,7 @@ Labels used throughout:
 
 ---
 
-## 2. Visual identity and editing style guide for @imjustgta
+## 2. Visual identity and editing style guide for @PatientGTA
 
 ### Adaptation [ADAPT]
 The reference had almost no gameplay, because GTA 6 wasn't out when it was made. Ours does, so the formula is inverted: **gameplay is the base layer**, and the reference's motion-graphics language goes on top. The purple stage is used only for explanations: the name and comparison, can't-buy, the contents grid, the driver story, price, recap and CTA.
@@ -81,7 +81,7 @@ The reference had almost no gameplay, because GTA 6 wasn't out when it was made.
 | Spotlight | Radial darkening to 78% outside the subject. Fades in over 8 f. |
 | Magnifier | White box on the detail, a line to a 2.6–3.4× inset, and a label pill. |
 | Chapter bumper | 0.9 s dim, "CHAPTER 0X" plus a pink title. A chapter pill stays top-right afterwards. |
-| Brand bug | "@IMJUSTGTA" gradient pill, top-left. |
+| Brand bug | "@PATIENTGTA" gradient pill, top-left. |
 | Progress bar | 6 px violet→pink bar along the bottom edge. |
 | Captions | Bottom-centre, 54 px Inter Display Black on a 72% dark plate, 1–4 words, key nouns in pink. |
 | Cut treatment | Every shot change gets a 5-frame blur/scale whip (10 px blur, +5%) and a whoosh. |
@@ -98,6 +98,35 @@ The reference had almost no gameplay, because GTA 6 wasn't out when it was made.
 ---
 
 ## 3. Timestamped edit, line by line (as built)
+
+### v3 changes (6:26)
+**Five "WATCH · GAME AUDIO" moments.** The narration pauses and the real gameplay plays with its own sound and subtitles:
+
+| Time | Moment | Gameplay source |
+|---|---|---|
+| 0:47.5 | 📞 The Paradise Taxi phone call | src 0:46.4–0:53.8 |
+| 1:25.8 | 📻 The date story | src 1:54.2–2:08.7. It's actually the radio DJ's banter, cut before the licensed song starts. |
+| 2:02.7 | 🚕 The driver: "Taxis are for the real ones…" | src 2:23–2:30, swear word bleeped |
+| 5:25.4 | 👮 "Look at me!" → "Sorry!" → the punch | src 13:58.5–14:06.2 |
+| 5:47.7 | 💥 The T-bone | src 14:26.6–14:31.2 |
+
+The music bed dips to 30% under these moments.
+
+**Gameplay audio policy:**
+- Game sound is on only where it was checked to be clean: 0:00–0:28, 0:54–1:18 and 12:48.5–13:32 of the recording, at up to 35% under the VO.
+- It's muted everywhere else. That covers the licensed radio music in the taxi (about 2:30–10:00) and in the green car after it starts, plus the console's spoken menu narration whenever the map or phone menu is open.
+
+**Every card scene now sits on moving gameplay** (blurred, with a violet tint) instead of the plain purple stage.
+
+**Branding:** @PatientGTA.
+
+The timings in the tables below are from the 5:43 cut. Add the inserted durations to map them onto v3:
+- **+7.65 s** after 0:47.5
+- **+14.85 s** after 1:25.8
+- **+7.25 s** after 2:02.7
+- **+8.0 s** after 5:25.4
+- **+4.9 s** after 5:47.7
+
 
 ### VO structure (5:43)
 | Section | Time in video | Source |
@@ -233,7 +262,7 @@ See section 2. Timing rules:
 | Synthwave bed, whoosh, pop, impact | ✅ generated (original, royalty-free) |
 | Fonts: Inter Display Black, Inter Bold | ✅ in repo |
 | Movie still of the 2001 Eclipse | ❌ not used. Copyrighted; a text card replaces it. |
-| GTA VI logo bug | ❌ not used. Replaced with the @IMJUSTGTA bug. |
+| GTA VI logo bug | ❌ not used. Replaced with the @PATIENTGTA bug. |
 | Optional re-shoot for a stronger cut | Close-ups of the car's livery (side graphics, wing) in a photo-mode orbit; the "bottom-left name" moment held longer; the lock-pick wheel at full screen |
 
 ## 8. Editor handoff
