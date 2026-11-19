@@ -15,10 +15,12 @@ import {VigilantCase, VC1_FRAMES} from './VigilantCase';
 import {BarsBreakdown, BARS_FRAMES} from './BarsBreakdown';
 import {SjTally, SJ_FRAMES} from './SjTally';
 import {ZkNews, ZK_FRAMES} from './ZkNews';
+import {PwLong, PW_FRAMES} from './PwLong';
 
 export const FPS = 30;
 export const Root = () => (
   <>
+    <Composition id="PwLong" component={PwLong} durationInFrames={PW_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="ZkNews" component={ZkNews} durationInFrames={ZK_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="SjTally" component={SjTally} durationInFrames={SJ_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="BarsBreakdown" component={BarsBreakdown} durationInFrames={BARS_FRAMES} fps={FPS} width={1080} height={1920} />
