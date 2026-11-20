@@ -83,3 +83,22 @@ Episode 1: VC-001 Yanko, "Life of a Rider" (`gta-short/src/VigilantCase.tsx`, 61
 - Full-screen red BREAKING NEWS slam for the first 2s, then the news chrome: LIVE bug, yellow channel badge, PARODY tag, a white lower-third headline that changes on every beat, a scrolling ticker with running jokes, and a solid bottom panel (which also hides captions burned into source clips).
 - One clip per sentence, each with a different move, and a proof card on every claim: victim ID card, real fan-comment screenshot, A&E sign, business card, product listing, voice-note bubble counting to 2:40, analyst stamps, "Seen ✓✓" chat, Instagram story with a heat meter, closing quote card and follow tap.
 - VO sped up 1.08× to land on 60s. 4K HEVC delivery as in Format 3.
+
+---
+# Format 5 — "LYRICS ON PAUSE" (Drill Lyric Breakdown Pt 2, `gta-short/src/M24Lyrics.tsx`)
+- **Background:** a streaming-app lyrics screen. Full-bleed colour gradient (`#9A1A36` → `#4E0B1C`), a header with the song and artist, and a yellow VIGILANT CRIME tape label.
+- **Lyrics:** 68 px Inter Display Black, left-aligned. They auto-scroll so the current line sits at y≈440.
+  - Words light up white as they're sung.
+  - Slang words (packs, lattz, skiz, corn, mash, feds, khalas…) light up yellow.
+  - Lines not yet sung are 42% black; sung lines are 62% white.
+- **Player bar:** progress bar, times, and ❚❚/▶ buttons. It hides during breakdowns.
+- **Footage:** only in small horizontal pop-up cards (700×394, white 5 px frame, ±3° tilt, sliding in from the side). They're synced to the song and placed on key lines, filling about 50% of song time.
+- **Pause:** the song tape-stops, then a dark annotation card slides up containing:
+  - the "BREAKDOWN · BAR n/4" badge
+  - the quoted bar
+  - the VO typed word by word in 16-word pages, with key words yellow (this is the caption)
+  - slang decoder chips that pop in on trigger words
+  - the "THE IRONY" stamp
+  - "FOLLOW FOR PART 3" at the end
+- **Audio:** song → tape-stop → click → VO over a vinyl/hum bed → play-click → next bar. Mixed to −14 LUFS.
+- **Export:** H.264 High at about 2.85 Mbps, 1080×1920 at 30 fps. Flat UI graphics stay crisp at this bitrate, and the file is about 20 MB for 74 s.
