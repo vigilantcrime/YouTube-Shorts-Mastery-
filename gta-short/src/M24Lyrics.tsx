@@ -16,6 +16,9 @@ const VOW = data.vo as [string, number][];
 const vt = (w: string, after = 0) => VOW.find(([x, t]) => x === w && t >= after - 0.05)?.[1] ?? after;
 const YEL = '#FFD400', RED = '#E01E37', BG1 = '#9a1a36', BG2 = '#4e0b1c';
 const SONG_LEN = 25.85;
+const Sfx: React.FC<{at: number; n: string; v?: number}> = ({at, n, v = 0.5}) => <Sequence from={Math.max(0, at)} durationInFrames={40}><Audio src={staticFile(`pw/${n}.wav`)} volume={v} /></Sequence>;
+/* slam words (song time) — big kinetic hits on the slang */
+const SLAMS: [number, string][] = [[2.4, 'PACKS'], [5.28, 'LATTZ'], [6.92, 'SKIZ'], [12.0, 'CLASH'], [13.24, 'CORN'], [15.44, 'MASH'], [16.08, 'FEDS'], [18.68, 'KHALAS'], [21.92, 'HARASSED'], [25.44, 'TATS']];
 
 /* lyrics (song-time word stamps) */
 const LY: [string, number][][] = [
@@ -60,7 +63,7 @@ const Lyrics: React.FC = () => {
         opacity: past ? 0.62 - dimTop * 0.3 : 1, filter: !cur && dimTop > 0 ? `blur(${dimTop * 2}px)` : 'none'}}>
         {ln.map(([w, wt], k) => { const sung = cur ? wt <= st + 0.03 : past; const slang = SLANG.has(w);
           const col = cur ? (sung ? (slang ? YEL : '#fff') : 'rgba(0,0,0,.42)') : past ? (slang ? YEL : '#fff') : 'rgba(0,0,0,.42)';
-          const just = cur && sung && st - wt < 0.12; return <span key={k} style={{color: col, display: 'inline-block', marginRight: 18, transform: `scale(${just ? 1.06 : 1})`, transformOrigin: 'left bottom',
+          const age = st - wt; const just = cur && sung && age < 0.16; return <span key={k} style={{color: col, display: 'inline-block', marginRight: 18, transform: `scale(${just ? 1.14 - age * 0.9 : 1}) translateY(${just ? -6 + age * 40 : 0}px)`, transformOrigin: 'left bottom',
             textShadow: cur && sung ? '0 2px 16px rgba(255,255,255,.18)' : 'none'}}>{w}</span>; })}
       </div>; })}
   </div>;
@@ -97,13 +100,35 @@ const toGlobal = (s: number) => { const b = TLS.find((x) => x.kind === 'bar' && 
 const PopUp: React.FC<{s0: number; s1: number; side: 'l' | 'r'; y: number}> = ({s0, s1, side, y}) => {
   const fr = useCurrentFrame(); const D = f(s1 - s0); const inn = interpolate(fr, [0, 7], [0, 1], {...cl, easing: Easing.out(Easing.back(1.5))}); const out = interpolate(fr, [D - 6, D], [0, 1], cl);
   const w = 700, h = 394, x = side === 'r' ? W - w - 50 : 50; const rot = side === 'r' ? 3 : -3; const dx = (side === 'r' ? 1 : -1) * (1 - inn) * 500;
-  return <div style={{position: 'absolute', left: x, top: y, width: w, height: h, transform: `translateX(${dx}px) rotate(${rot}deg) scale(${(0.85 + 0.15 * inn) * (1 - 0.15 * out)})`, opacity: (1 - out) * Math.min(1, inn * 2),
+  const bl = (1 - Math.min(1, inn)) * 18 + out * 10;
+  return <div style={{position: 'absolute', left: x, top: y, width: w, height: h, filter: `blur(${bl}px)`, transform: `translateX(${dx}px) rotate(${rot}deg) scale(${(0.85 + 0.15 * inn) * (1 - 0.15 * out)})`, opacity: (1 - out) * Math.min(1, inn * 2),
     borderRadius: 26, overflow: 'hidden', boxShadow: '0 30px 70px rgba(0,0,0,.55), 0 0 0 5px #fff'}}>
+    <Sfx at={0} n="whoosh" v={0.35} />
     <OffthreadVideo src={staticFile('m24/nftr.mp4')} muted startFrom={f(s0)} style={{width: w, height: h, objectFit: 'cover'}} />
     <div style={{position: 'absolute', left: 14, bottom: 12, padding: '4px 12px', borderRadius: 8, background: 'rgba(0,0,0,.6)'}}><T size={20} bold color="#fff">▶ M24 – NFTR</T></div>
   </div>;
 };
 
+/* ---------------- breakdown pop-ups (slow-mo footage while the VO talks) ---------------- */
+const PPOPS: number[][] = [[0.45, 1.9], [2.5, 6.0, 7.4], [9.4, 13.5, 14.4], [16.0, 17.5, 20.0, 22.4, 24.0]];
+const PausePops: React.FC<{p: TL}> = ({p}) => {
+  const fr = useCurrentFrame(); const list = PPOPS[p.n - 1]; const D = f(p.t1 - p.t0) - 20; const each = Math.floor(D / list.length);
+  return <>{list.map((src, i) => { const from = 14 + i * each; const lf = fr - from; if (lf < 0 || lf >= each) return null;
+    const inn = interpolate(lf, [0, 8], [0, 1], {...cl, easing: Easing.out(Easing.back(1.6))}); const out = interpolate(lf, [each - 6, each], [0, 1], cl); const side = i % 2 ? 1 : -1;
+    const z = interpolate(lf, [0, each], [1.0, 1.12], cl);
+    return <div key={i} style={{position: 'absolute', left: 540 - 300, top: 330, width: 600, height: 338, borderRadius: 24, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,.55), 0 0 0 5px #fff',
+      transform: `translateX(${side * (1 - inn) * 700}px) rotate(${side * -2.5}deg) scale(${1 - 0.12 * out})`, opacity: 1 - out, filter: `blur(${(1 - inn) * 16 + out * 8}px)`}}>
+      <Sequence from={from}><Sfx at={0} n="whoosh" v={0.3} /><div style={{width: 600, height: 338, transform: `scale(${z})`}}><OffthreadVideo src={staticFile('m24/nftr.mp4')} muted startFrom={f(src)} playbackRate={0.5} style={{width: 600, height: 338, objectFit: 'cover'}} /></div></Sequence>
+      <div style={{position: 'absolute', left: 12, bottom: 10, padding: '3px 10px', borderRadius: 8, background: 'rgba(0,0,0,.6)'}}><T size={18} bold>▶ 0.5×</T></div></div>; })}</>;
+};
+/* ---------------- slam words ---------------- */
+const Slams: React.FC = () => {
+  const fr = useCurrentFrame(); const t = fr / FPS;
+  return <>{SLAMS.map(([s0, w], i) => { const g = toGlobal(s0); const lf = (t - g) * FPS; if (lf < 0 || lf > 14) return null;
+    const sc = interpolate(lf, [0, 3, 14], [1.9, 1, 0.94], cl); const o = interpolate(lf, [0, 1, 10, 14], [0, 1, 1, 0], cl);
+    return <div key={i} style={{position: 'absolute', left: 0, right: 0, top: 760, textAlign: 'center', transform: `scale(${sc}) rotate(${i % 2 ? 4 : -4}deg)`, opacity: o}}>
+      <span style={{fontFamily: 'HeroBlack', fontSize: 190, letterSpacing: -6, color: YEL, WebkitTextStroke: '10px #0a0a0a', paintOrder: 'stroke fill', filter: 'drop-shadow(0 14px 0 rgba(0,0,0,.45))'}}>{w}</span></div>; })}</>;
+};
 /* ---------------- breakdown card ---------------- */
 const QUOTE = ['"A new generation got so much packs"', '"When I wake up, I smoke on lattz…"', '"…corn gets dashed / when I send my young boys…"', '"Feds at my door again… it\'s always us man getting harassed"'];
 const KEYW = new Set(['PACKS', 'LYRICS', 'ROUTINE', 'SMOKING', 'SUBSTANCES', 'UNWIND', 'INSPIRATION', 'MUSIC', 'LIFESTYLE', 'STREET', 'VIOLENCE', 'WEAPON', 'THREATENING', 'INTERESTING', 'POLICE', 'DOOR', 'NOTHING', 'CRIMES', 'IRONY', 'OPENLY', 'ENVIRONMENT', 'DOORSTEP']);
@@ -115,7 +140,7 @@ const CHIPS: Chip[][] = [
   [['POLICE', 'FEDS = police', YEL], ['CRIMES', 'KHALAS = "finished" (Arabic)', YEL], ['ENVIRONMENT', '🤔 the irony', RED]],
 ];
 const Card: React.FC<{p: TL}> = ({p}) => {
-  const fr = useCurrentFrame(); const t = p.t0 + fr / FPS; const inn = interpolate(fr, [6, 16], [0, 1], {...cl, easing: Easing.out(Easing.cubic)}); const out = interpolate(fr, [f(p.t1 - p.t0) - 7, f(p.t1 - p.t0)], [0, 1], cl);
+  const fr = useCurrentFrame(); const t = p.t0 + fr / FPS; const inn = interpolate(fr, [6, 16], [0, 1], {...cl, easing: Easing.out(Easing.back(1.25))}); const out = interpolate(fr, [f(p.t1 - p.t0) - 7, f(p.t1 - p.t0)], [0, 1], cl);
   const ws = VOW.filter(([, wt]) => wt >= p.t0 && wt < p.t1);
   // page the VO into ≤16-word chunks so it always fits
   const pages: [string, number][][] = []; ws.forEach((w, i) => { if (!pages.length || pages[pages.length - 1].length >= 16 && i < ws.length - 2) pages.push([]); pages[pages.length - 1].push(w); });
@@ -129,12 +154,14 @@ const Card: React.FC<{p: TL}> = ({p}) => {
     <div style={{marginTop: 26, paddingLeft: 22, borderLeft: `8px solid ${YEL}`}}><T size={36} bold color="rgba(255,255,255,.85)" style={{fontStyle: 'italic'}}>{QUOTE[p.n - 1]}</T></div>
     <div style={{marginTop: 30, minHeight: 360}}>
       {pg.map(([w, wt], i) => { const on = wt <= t + 0.02; const key = KEYW.has(w); return <span key={i} style={{display: 'inline-block', marginRight: 14, fontFamily: 'HeroBlack', fontSize: 56, lineHeight: '70px', letterSpacing: -1,
-        color: on ? (key ? YEL : '#fff') : 'rgba(255,255,255,.14)', transform: `translateY(${on && t - wt < 0.1 ? -4 : 0}px)`}}>{w.toLowerCase()}</span>; })}
+        color: on ? (key ? YEL : '#fff') : 'rgba(255,255,255,.14)', transform: `scale(${on && t - wt < 0.12 ? 1.16 - (t - wt) * 1.3 : 1})`, transformOrigin: 'left bottom'}}>{w.toLowerCase()}</span>; })}
     </div>
     <div style={{position: 'absolute', left: 46, right: 46, bottom: 40, display: 'flex', flexWrap: 'wrap', gap: 14}}>
+      {CHIPS[p.n - 1].map(([w], i) => <Sfx key={'s' + i} at={f(vt(w, p.t0) - p.t0)} n="pop" v={0.4} />)}
       {chips.map(([w, lab, col], i) => { const s = pop(f(t - vt(w, p.t0)), 6, 1.6).s; return <div key={i} style={{padding: '12px 22px', borderRadius: 999, background: col === '#fff' ? 'transparent' : col, border: col === '#fff' ? '3px solid rgba(255,255,255,.7)' : 'none', transform: `scale(${s})`}}>
         <T size={32} color={col === YEL ? '#0a0a0a' : '#fff'}>{lab}</T></div>; })}
     </div>
+    {p.n === 4 && <Sfx at={f(irony - p.t0)} n="impact" v={0.6} />}{p.n === 4 && <Sfx at={f(end - p.t0)} n="pop" v={0.5} />}
     {iro > 0 && <div style={{position: 'absolute', right: 40, top: 560, transform: `rotate(-8deg) scale(${iro})`, padding: '6px 22px', border: `7px solid ${RED}`, borderRadius: 14, background: 'rgba(0,0,0,.4)'}}><T size={70} color={RED}>THE IRONY</T></div>}
     {t >= end && <div style={{position: 'absolute', left: 0, right: 0, top: 680, textAlign: 'center', transform: `scale(${pop(f(t - end), 6, 1.6).s})`}}><span style={{display: 'inline-block', padding: '14px 30px', borderRadius: 999, background: RED}}><T size={40}>FOLLOW FOR PART 3 👇</T></span></div>}
   </div>;
@@ -144,13 +171,24 @@ export const M24Lyrics: React.FC = () => {
   const ready = useFontsReady('m24'); const fr = useCurrentFrame(); if (!ready) return <AbsoluteFill style={{background: BG2}} />;
   const t = fr / FPS; const p = pauseAt(t); const dim = p ? interpolate(t - p.t0, [0, 0.4], [0, 1], cl) : 0;
   const hit = TLS.some((x) => x.kind === 'pause' && fr >= f(x.t0) && fr < f(x.t0) + 3);
+  const sl = SLAMS.map(([s0]) => (t - toGlobal(s0)) * FPS).filter((x) => x >= 0 && x < 7)[0]; const punch = sl !== undefined ? 1 + 0.045 * (1 - sl / 7) : 1; const shk = sl !== undefined && sl < 5 ? Math.sin(sl * 3.3) * 9 * (1 - sl / 5) : 0;
+  const glyph = TLS.map((x) => ({g: x.kind === 'pause' ? '❚❚' : '▶', lf: fr - f(x.t0)})).filter((x) => x.lf >= 0 && x.lf < 12 && fr > 2)[0];
   return <AbsoluteFill style={{background: `linear-gradient(180deg, ${BG1} 0%, #7a1530 45%, ${BG2} 100%)`, overflow: 'hidden'}}>
+    <AbsoluteFill style={{background: `radial-gradient(circle 700px at ${540 + Math.sin(fr / 40) * 260}px ${700 + Math.cos(fr / 55) * 300}px, rgba(255,90,140,.22), transparent 70%)`}} />
+    <AbsoluteFill style={{transform: `translate(${shk}px,${shk * 0.5}px) scale(${punch})`}}>
     <Lyrics />
     <AbsoluteFill style={{background: `rgba(10,2,6,${0.35 * dim})`}} />
     {POPS.map(([s0, s1, side, y], i) => <Sequence key={i} from={f(toGlobal(s0))} durationInFrames={f(s1 - s0)}><PopUp s0={s0} s1={s1} side={side} y={y} /></Sequence>)}
     <AbsoluteFill style={{background: `linear-gradient(180deg, ${BG1} 0%, ${BG1} 300px, rgba(154,26,54,0) 420px, rgba(78,11,28,0) 1330px, ${BG2} 1420px)`}} />
+    <Slams />
+    </AbsoluteFill>
+    {sl !== undefined && sl < 4 && <AbsoluteFill style={{background: YEL, opacity: 0.1 * (1 - sl / 4)}} />}
     <Header /><Player />
-    {TLS.filter((x) => x.kind === 'pause').map((x, i) => <Sequence key={i} from={f(x.t0)} durationInFrames={f(x.t1) - f(x.t0)}><Card p={x} /></Sequence>)}
+    {TLS.filter((x) => x.kind === 'pause').map((x, i) => <Sequence key={i} from={f(x.t0)} durationInFrames={f(x.t1) - f(x.t0)}><PausePops p={x} /><Card p={x} /><Sfx at={0} n="tick" v={0.6} /></Sequence>)}
+    {TLS.filter((x) => x.kind === 'bar' && x.t0 > 0).map((x, i) => <Sfx key={'b' + i} at={f(x.t0) - 2} n="tick" v={0.6} />)}
+    {SLAMS.map(([s0], i) => <Sfx key={'sl' + i} at={f(toGlobal(s0))} n="impact" v={0.28} />)}
+    {glyph && <div style={{position: 'absolute', left: 0, right: 0, top: 820, textAlign: 'center', opacity: interpolate(glyph.lf, [0, 2, 8, 12], [0, 1, 1, 0], cl), transform: `scale(${interpolate(glyph.lf, [0, 4], [1.6, 1], cl)})`}}>
+      <span style={{display: 'inline-flex', width: 230, height: 230, borderRadius: 115, background: 'rgba(255,255,255,.92)', alignItems: 'center', justifyContent: 'center', boxShadow: '0 20px 60px rgba(0,0,0,.4)'}}><T size={110} color="#111" style={{marginLeft: glyph.g === '▶' ? 16 : 0, letterSpacing: glyph.g === '▶' ? 0 : -14}}>{glyph.g}</T></span></div>}
     {hit && <AbsoluteFill style={{background: '#fff', opacity: 0.18}} />}
     <Audio src={staticFile('m24/mix.wav')} />
   </AbsoluteFill>;

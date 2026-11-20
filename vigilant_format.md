@@ -100,5 +100,13 @@ Episode 1: VC-001 Yanko, "Life of a Rider" (`gta-short/src/VigilantCase.tsx`, 61
   - slang decoder chips that pop in on trigger words
   - the "THE IRONY" stamp
   - "FOLLOW FOR PART 3" at the end
-- **Audio:** song → tape-stop → click → VO over a vinyl/hum bed → play-click → next bar. Mixed to −14 LUFS.
+- **Audio:** song → tape-stop → tick → VO over the song itself, low-passed at 420 Hz and quiet ("playing in the next room"), so the beat never drops → tick → next bar. No static or vinyl noise. Mixed to −14 LUFS.
+- **Extra energy (v2):**
+  - **Slang slams:** 190 px yellow words with a black stroke (PACKS, LATTZ, SKIZ, CLASH, CORN, MASH, FEDS, KHALAS, HARASSED, TATS). Each comes with a 4.5% camera punch, a shake, a yellow flash and an impact sound.
+  - **Lyric words** bounce (1.14×) as they're sung.
+  - **Pop-ups** whip in with motion blur and a whoosh.
+  - **Pause and play:** big ❚❚ / ▶ glyph flashes on each switch.
+  - **Breakdowns:** slow-motion (0.5×) footage pop-ups cycle above the card every 3–4 s.
+  - **Card text:** chips pop with a sound, typed words punch in at 1.16×, and the card springs in.
+  - **Background:** a drifting pink light behind everything.
 - **Export:** H.264 High at about 2.85 Mbps, 1080×1920 at 30 fps. Flat UI graphics stay crisp at this bitrate, and the file is about 20 MB for 74 s.
