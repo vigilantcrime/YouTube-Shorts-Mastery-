@@ -20,12 +20,14 @@ import {PwThumb} from './PwThumb';
 import {MandyShort, MD_FRAMES} from './MandyShort';
 import {M24Lyrics, M24_FRAMES} from './M24Lyrics';
 import {FbSplit, FB_FRAMES} from './FbSplit';
+import {FbSplit2, FB2_FRAMES} from './FbSplit2';
 import {AgentReel, AB_FRAMES} from './AgentReel';
 
 export const FPS = 30;
 export const Root = () => (
   <>
     <Composition id="AgentReel" component={AgentReel} durationInFrames={AB_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="FbSplit2" component={FbSplit2} durationInFrames={FB2_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="FbSplit" component={FbSplit} durationInFrames={FB_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="M24Lyrics" component={M24Lyrics} durationInFrames={M24_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="MandyShort" component={MandyShort} durationInFrames={MD_FRAMES} fps={30} width={1080} height={1920} />
