@@ -75,7 +75,7 @@ const Gags: React.FC = () => {
 const Gameplay: React.FC = () => {
   const fr = useCurrentFrame(); const z = interpolate(fr, [0, FB_FRAMES], [1.0, 1.08], cl);
   return <div style={{position: 'absolute', left: 0, top: SEAM, width: W, height: H - SEAM, overflow: 'hidden', background: '#000'}}>
-    <OffthreadVideo src={staticFile('fb2/gta.mp4')} muted style={{position: 'absolute', left: -388, top: 0, width: 1856, height: 1046, transform: `scale(${z})`, transformOrigin: '50% 50%'}} />
+    <OffthreadVideo src={staticFile('fb2/gta.mp4')} muted style={{position: 'absolute', left: -300, top: 0, width: 1858, height: 1046, transform: `scale(${z})`, transformOrigin: '50% 50%'}} />
   </div>;
 };
 
