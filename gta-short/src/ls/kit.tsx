@@ -14,6 +14,13 @@ export const ramp = (t: number, a: number, b: number, from = 0, to = 1, e = eo) 
 export const useT = () => useCurrentFrame() / FPS;
 export const f = (s: number) => Math.round(s * FPS);
 export const HERO = 'HeroBlack', UI = 'UIBold';
+/* measure text with the loaded font and shrink it to fit a box: overflow becomes impossible */
+let _ctx: CanvasRenderingContext2D | null = null;
+export const fit = (text: string, font: string, base: number, maxW: number, spacing = 0) => {
+  if (typeof document === 'undefined') return base; if (!_ctx) _ctx = document.createElement('canvas').getContext('2d');
+  if (!_ctx) return base; _ctx.font = `${base}px ${font}`; const w = _ctx.measureText(text).width + spacing * text.length;
+  return w > maxW ? Math.floor((base * maxW) / w) : base;
+};
 
 /* ---------- motion wrapper: every pop-up enters with rise+scale+blur and exits with a quick shrink ---------- */
 export const Beat: React.FC<{t0: number; t1: number; x: number; y: number; w?: number; tilt?: number; from?: 'up' | 'left' | 'right' | 'down'; delay?: number; float?: boolean; origin?: string; children: React.ReactNode}> =
@@ -192,8 +199,8 @@ export const Wordmark: React.FC<{size: number}> = ({size}) =>
 export type Seg = {t: number; clip: string; src: number; move: number};
 /* clips with spoken dialogue have burned-in game subtitles (some with swearing) at the bottom: crop them out */
 const CROP = new Set(['g1', 'g2', 'g3', 'g7', 'g8']);
-export const Background: React.FC<{segs: Seg[]; end: number}> = ({segs, end}) => {
-  const t = useT();
+export const Background: React.FC<{segs: Seg[]; end: number; punches?: number[]}> = ({segs, end, punches = []}) => {
+  const t = useT(); const pk = punches.reduce((a, p) => a + (t >= p && t < p + 0.6 ? 0.07 * Math.exp(-(t - p) * 7) * Math.cos((t - p) * 14) : 0), 0);
   let k = 0; segs.forEach((s, i) => { if (s.t <= t) k = i; });
   const draw = (i: number, lt: number, extra: string, blur: number) => {
     const s = segs[i]; const nxt = i + 1 < segs.length ? segs[i + 1].t : end; const dur = nxt - s.t; const p = Math.max(0, Math.min(1, lt / dur));
@@ -215,9 +222,9 @@ export const Background: React.FC<{segs: Seg[]; end: number}> = ({segs, end}) =>
   };
   const lt = t - segs[k].t; const TR = 0.3;
   const inP = ramp(lt, 0, TR, 0, 1, eo);
-  return <AbsoluteFill style={{background: '#000', overflow: 'hidden'}}>
+  return <AbsoluteFill style={{background: '#000', overflow: 'hidden'}}><AbsoluteFill style={{transform: `scale(${1 + pk})`}}>
     {k > 0 && lt < TR && draw(k - 1, t - segs[k - 1].t, `translateX(${-inP * 240}px)`, inP * 26)}
-    <AbsoluteFill style={{opacity: k > 0 ? ramp(lt, 0, TR * 0.6) : 1}}>{draw(k, lt, k > 0 ? `translateX(${(1 - inP) * 300}px)` : '', k > 0 ? (1 - inP) * 26 : 0)}</AbsoluteFill>
+    <AbsoluteFill style={{opacity: k > 0 ? ramp(lt, 0, TR * 0.6) : 1}}>{draw(k, lt, k > 0 ? `translateX(${(1 - inP) * 300}px)` : '', k > 0 ? (1 - inP) * 26 : 0)}</AbsoluteFill></AbsoluteFill>
     <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(10,3,20,.62) 100%)'}} />
     <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(19,10,34,.35) 0%, transparent 18%, transparent 78%, rgba(19,10,34,.55) 100%)'}} />
   </AbsoluteFill>;

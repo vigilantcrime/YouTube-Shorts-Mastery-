@@ -3,7 +3,7 @@
    rear-view mirror, toll receipt, car stereo, windshield + wiper). Chapters are gears 1–6 and exits on the road. */
 import React from 'react';
 import {Easing, interpolate} from 'remotion';
-import {C, GRAD, HERO, UI, cl, eio, eo, ramp, useT, FPS} from './kit';
+import {C, GRAD, HERO, UI, cl, eio, eo, ramp, useT, FPS, fit} from './kit';
 
 export const GREEN = '#0B6B46', BLUE = '#1257A8', YELLOW = '#FFCB05', ASPH = '#1d1c22';
 const sign = (bg: string): React.CSSProperties => ({background: bg, borderRadius: 18, padding: 9, boxShadow: '0 26px 44px rgba(0,0,0,.55), 0 2px 0 rgba(255,255,255,.25) inset'});
@@ -18,7 +18,7 @@ export const ExitSign: React.FC<{exit?: string; title: string; sub?: string; arr
     <div style={{position: 'relative', ...sign(color)}}>
       <div style={{border: '4px solid #fff', borderRadius: 12, padding: `${size * 0.28}px ${size * 0.45}px`, display: 'flex', alignItems: 'center', gap: size * 0.4}}>
         <div style={{flex: 1}}>
-          <div style={{fontFamily: HERO, fontSize: size, color: '#fff', lineHeight: 1, letterSpacing: -1, whiteSpace: 'nowrap'}}>{title}</div>
+          <div style={{fontFamily: HERO, fontSize: w ? fit(title, HERO, size, w - size * 2.2) : size, color: '#fff', lineHeight: 1, letterSpacing: -1, whiteSpace: 'nowrap'}}>{title}</div>
           {sub && <div style={{fontFamily: UI, fontSize: size * 0.3, color: '#fff', opacity: 0.9, letterSpacing: 3, marginTop: size * 0.16, whiteSpace: 'nowrap', textTransform: 'uppercase'}}>{sub}</div>}
         </div>
         {arrow && <div style={{fontFamily: HERO, fontSize: size * 1.05, color: '#fff', lineHeight: 1}}>{arrow}</div>}
@@ -58,9 +58,9 @@ export const NextExit: React.FC<{t0: number; t1: number; label: string; dist?: s
 export const ScoreSign: React.FC<{top: string; big: string; bottom?: string; w?: number; ink?: string}> = ({top, big, bottom, w = 300, ink = '#111'}) =>
   <div style={{position: 'relative', width: w, ...sign('#f7f7f2'), padding: 10}}>
     <div style={{border: `${w * 0.022}px solid ${ink}`, borderRadius: 12, padding: `${w * 0.06}px 0 ${w * 0.05}px`, textAlign: 'center'}}>
-      <div style={{fontFamily: UI, fontSize: w * 0.12, letterSpacing: w * 0.012, color: ink, lineHeight: 1.05}}>{top}</div>
-      <div style={{fontFamily: HERO, fontSize: w * 0.56, color: ink, lineHeight: 0.95, letterSpacing: -w * 0.02}}>{big}</div>
-      {bottom && <div style={{fontFamily: UI, fontSize: w * 0.085, letterSpacing: w * 0.01, color: ink, marginTop: w * 0.02}}>{bottom}</div>}
+      <div style={{fontFamily: UI, fontSize: fit(top, UI, w * 0.12, w * 0.8, w * 0.012), letterSpacing: w * 0.012, color: ink, lineHeight: 1.05, whiteSpace: 'nowrap'}}>{top}</div>
+      <div style={{fontFamily: HERO, fontSize: fit(big, HERO, w * 0.56, w * 0.8), color: ink, lineHeight: 0.95, letterSpacing: -w * 0.02, whiteSpace: 'nowrap'}}>{big}</div>
+      {bottom && <div style={{fontFamily: UI, fontSize: fit(bottom, UI, w * 0.085, w * 0.8, w * 0.01), letterSpacing: w * 0.01, color: ink, marginTop: w * 0.02, whiteSpace: 'nowrap'}}>{bottom}</div>}
     </div>{sheen}
   </div>;
 
@@ -73,7 +73,7 @@ export const Warn: React.FC<{lines: string[]; size?: number; t0?: number; icon?:
     </div>
     <div style={{position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
       {icon && <div style={{fontSize: size * 0.16, lineHeight: 1, marginBottom: size * 0.02}}>{icon}</div>}
-      {lines.map((l, i) => <div key={i} style={{fontFamily: HERO, fontSize: size * (l.length > 9 ? 0.085 : 0.11), color: '#111', lineHeight: 1.02, letterSpacing: -0.5, whiteSpace: 'nowrap'}}>{l}</div>)}
+      {lines.map((l, i) => <div key={i} style={{fontFamily: HERO, fontSize: fit(l, HERO, size * 0.11, size * (lines.length > 2 && (i === 0 || i === lines.length - 1) ? 0.46 : 0.56)), color: '#111', lineHeight: 1.02, letterSpacing: -0.5, whiteSpace: 'nowrap'}}>{l}</div>)}
     </div>
   </div>;
 };
@@ -88,9 +88,9 @@ export const NoSign: React.FC<{word: string; size?: number}> = ({word, size = 26
 /* ---------- printed citation slip (sources) ---------- */
 export const Citation: React.FC<{t0: number; lines: string[]; w?: number; rot?: number}> = ({t0, lines, w = 470, rot = -2}) => {
   const t = useT(); const p = ramp(t, t0, t0 + 0.45, 0, 100, Easing.out(Easing.quad));
-  const zig = Array.from({length: 24}, (_, i) => `${(i / 23) * 100}% ${i % 2 ? 100 : 96}%`).join(',');
+  const zig = Array.from({length: 24}, (_, i) => `${100 - (i / 23) * 100}% ${i % 2 ? 100 : 96}%`).join(',');   // right → left so the outline never crosses itself
   return <div style={{width: w, transform: `rotate(${rot}deg)`, filter: 'drop-shadow(0 14px 18px rgba(0,0,0,.5))', clipPath: `inset(0 0 ${100 - p}% 0)`}}>
-    <div style={{background: '#FFF6E2', padding: '16px 22px 24px', clipPath: `polygon(0 0,100% 0,${zig},0 100%)`, fontFamily: UI, color: '#2a2230', textTransform: 'uppercase'}}>
+    <div style={{background: '#FFF6E2', padding: '16px 22px 24px', clipPath: `polygon(0 0,100% 0,${zig})`, fontFamily: UI, color: '#2a2230', textTransform: 'uppercase'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', fontSize: 14, letterSpacing: 3, color: '#c2185b', borderBottom: '2px dashed #d9c9b0', paddingBottom: 8, marginBottom: 10}}><span>◉ SOURCE CITATION</span><span>LS-01</span></div>
       {lines.map((l, i) => <div key={i} style={{fontSize: i === 0 ? 24 : 17, letterSpacing: i === 0 ? 1.5 : 1.8, lineHeight: 1.35, color: i === 0 ? '#16101c' : '#5a4e60'}}>{l}</div>)}
     </div>
@@ -98,13 +98,15 @@ export const Citation: React.FC<{t0: number; lines: string[]; w?: number; rot?: 
 };
 
 /* ---------- gas-station price board ---------- */
-export const PriceBoard: React.FC<{title: string; rows: {label: string; node: React.ReactNode; dim?: boolean}[]; w?: number}> = ({title, rows, w = 760}) =>
-  <div style={{width: w, borderRadius: 22, overflow: 'hidden', background: '#0b0b0e', border: '6px solid #e9e9ee', boxShadow: '0 30px 60px rgba(0,0,0,.6)'}}>
+export const PriceBoard: React.FC<{title: string; rows: {label: string; node: React.ReactNode; dim?: boolean; at?: number}[]; w?: number}> = ({title, rows, w = 760}) => {
+  const t = useT(); return <div style={{width: w, borderRadius: 22, overflow: 'hidden', background: '#0b0b0e', border: '6px solid #e9e9ee', boxShadow: '0 30px 60px rgba(0,0,0,.6)'}}>
     <div style={{background: GRAD, padding: '14px 26px', fontFamily: HERO, fontSize: 34, color: '#fff', letterSpacing: 1}}>{title}</div>
-    {rows.map((r, i) => <div key={i} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 26px', borderTop: i ? '2px solid #26262c' : undefined, opacity: r.dim ? 0.75 : 1}}>
+    {rows.map((r, i) => { const hot = r.at !== undefined && t >= r.at ? Math.exp(-(t - r.at) * 1.6) : 0; return <div key={i} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 26px', borderTop: i ? '2px solid #26262c' : undefined, opacity: r.dim ? 0.8 : 1,
+      background: `rgba(255,154,60,${0.22 * hot})`, boxShadow: hot > 0.05 ? `inset 6px 0 0 rgba(255,79,176,${hot})` : undefined, transform: `translateY(${r.at !== undefined ? ramp(t, r.at, r.at + 0.3, 18, 0, eo) : 0}px)`}}>
       <div style={{fontFamily: UI, fontSize: 26, color: '#fff', letterSpacing: 2, textTransform: 'uppercase', whiteSpace: 'pre-line'}}>{r.label}</div>
-      <div>{r.node}</div></div>)}
+      <div>{r.node}</div></div>; })}
   </div>;
+};
 export const Led: React.FC<{children: React.ReactNode; size?: number; color?: string}> = ({children, size = 86, color = '#FFB000'}) =>
   <div style={{fontFamily: HERO, fontSize: size, color, letterSpacing: 1, lineHeight: 1, textShadow: `0 0 18px ${color}, 0 0 4px ${color}`, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap'}}>{children}</div>;
 
@@ -173,14 +175,15 @@ export const Billboard: React.FC<{w: number; h: number; children: React.ReactNod
   </div>;
 
 /* ---------- toll-booth receipt ---------- */
-export const Receipt: React.FC<{t0: number; title: string; rows: [string, string][]; w?: number; foot?: string}> = ({t0, title, rows, w = 520, foot}) => {
+export const Receipt: React.FC<{t0: number; title: string; rows: [string, string][]; w?: number; foot?: string; hl?: number[]}> = ({t0, title, rows, w = 520, foot, hl = []}) => {
   const t = useT(); const p = ramp(t, t0, t0 + 0.9, 0, 100, Easing.out(Easing.quad));
   return <div style={{width: w, clipPath: `inset(0 0 ${100 - p}% 0)`, filter: 'drop-shadow(0 18px 22px rgba(0,0,0,.5))'}}>
     <div style={{background: '#FBF7EE', padding: '26px 30px 34px', fontFamily: UI, color: '#1b1720', textTransform: 'uppercase', clipPath: 'polygon(0 0,100% 0,100% 97%,96% 100%,92% 97%,88% 100%,84% 97%,80% 100%,76% 97%,72% 100%,68% 97%,64% 100%,60% 97%,56% 100%,52% 97%,48% 100%,44% 97%,40% 100%,36% 97%,32% 100%,28% 97%,24% 100%,20% 97%,16% 100%,12% 97%,8% 100%,4% 97%,0 100%)'}}>
       <div style={{textAlign: 'center', fontFamily: HERO, fontSize: 34, letterSpacing: 1}}>{title}</div>
       <div style={{textAlign: 'center', fontSize: 15, letterSpacing: 3, color: '#7a6e80', margin: '6px 0 14px'}}>LEONIDA SHIFTS · PATCH TOLL</div>
       <div style={{borderTop: '2px dashed #c9bfae', margin: '8px 0'}} />
-      {rows.map(([a, b], i) => <div key={i} style={{display: 'flex', justifyContent: 'space-between', fontSize: 23, letterSpacing: 1.4, padding: '8px 0'}}><span style={{color: '#5d5363'}}>{a}</span><span style={{fontFamily: HERO}}>{b}</span></div>)}
+      {rows.map(([a, b], i) => { const h = hl[i] !== undefined && t >= hl[i] ? ramp(t, hl[i], hl[i] + 0.35, 0, 100, eo) : 0; return <div key={i} style={{display: 'flex', justifyContent: 'space-between', fontSize: 23, letterSpacing: 1.4, padding: '8px 6px', borderRadius: 6,
+        backgroundImage: `linear-gradient(90deg, rgba(255,203,5,.75) ${h}%, transparent ${h}%)`}}><span style={{color: '#5d5363'}}>{a}</span><span style={{fontFamily: HERO}}>{b}</span></div>; })}
       <div style={{borderTop: '2px dashed #c9bfae', margin: '10px 0'}} />
       {foot && <div style={{textAlign: 'center', fontSize: 15, letterSpacing: 2.4, color: '#7a6e80'}}>{foot}</div>}
       <div style={{marginTop: 14, height: 46, backgroundImage: 'repeating-linear-gradient(90deg,#1b1720 0 3px,transparent 3px 6px,#1b1720 6px 7px,transparent 7px 11px)'}} />
@@ -220,8 +223,8 @@ export const Stereo: React.FC<{w?: number; line1: string; line2: string; freq: s
     <div style={{width: 96, height: 96, borderRadius: 48, background: 'radial-gradient(circle,#55565e,#1c1c22)', border: '3px solid #777', boxShadow: 'inset 0 4px 8px rgba(0,0,0,.6)'}} />
     <div style={{flex: 1, height: 130, borderRadius: 10, background: 'linear-gradient(180deg,#1a1405,#0d0a02)', border: '2px solid #000', padding: '14px 20px', boxShadow: 'inset 0 0 24px rgba(255,176,0,.18)'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', fontFamily: UI, fontSize: 18, color: '#FFB000', letterSpacing: 3, opacity: 0.85}}><span>FM ▸ {freq}</span><span>ST ◉</span></div>
-      <div style={{fontFamily: HERO, fontSize: 46, color: '#FFB000', textShadow: '0 0 14px #FFB000', marginTop: 6, whiteSpace: 'nowrap'}}>{line1}</div>
-      <div style={{fontFamily: UI, fontSize: 20, color: '#FFB000', letterSpacing: 3, opacity: 0.85, whiteSpace: 'nowrap'}}>{line2}</div>
+      <div style={{fontFamily: HERO, fontSize: fit(line1, HERO, 46, w - 420), color: '#FFB000', textShadow: '0 0 14px #FFB000', marginTop: 6, whiteSpace: 'nowrap'}}>{line1}</div>
+      <div style={{fontFamily: UI, fontSize: fit(line2, UI, 20, w - 420, 3), color: '#FFB000', letterSpacing: 3, opacity: 0.85, whiteSpace: 'nowrap'}}>{line2}</div>
     </div>
     <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 52px)', gap: 10}}>{[1, 2, 3, 4, 5, 6].map((n) => <div key={n} style={{height: 40, borderRadius: 8, background: n === lit ? '#FFB000' : '#2a2b31', color: n === lit ? '#111' : '#bbb', fontFamily: UI, fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: n === lit ? '0 0 16px #FFB000' : 'none'}}>{n}</div>)}</div>
   </div>;
@@ -286,8 +289,8 @@ export const Plate: React.FC<{top: string; main: string; bottom?: string; w?: nu
   <div style={{position: 'relative', width: w, height: w * 0.5, borderRadius: w * 0.05, background: '#f8f6f0', border: '4px solid #2a2530', boxShadow: '0 20px 34px rgba(0,0,0,.55)', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
     <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: w * 0.1, background: GRAD}} />
     <div style={{position: 'absolute', top: w * 0.012, fontFamily: UI, fontSize: w * 0.055, color: '#fff', letterSpacing: w * 0.012}}>{top}</div>
-    <div style={{fontFamily: HERO, fontSize: Math.min(w * 0.17, (w * 0.86) / (main.length * 0.62)), color: '#1a1424', letterSpacing: 1, marginTop: w * 0.05, whiteSpace: 'nowrap'}}>{main}</div>
-    {bottom && <div style={{fontFamily: UI, fontSize: w * 0.045, color: '#6b5f73', letterSpacing: w * 0.01, marginTop: 2}}>{bottom}</div>}
+    <div style={{fontFamily: HERO, fontSize: fit(main, HERO, w * 0.17, w * 0.84), color: '#1a1424', letterSpacing: 1, marginTop: w * 0.05, whiteSpace: 'nowrap'}}>{main}</div>
+    {bottom && <div style={{fontFamily: UI, fontSize: fit(bottom, UI, w * 0.045, w * 0.84, w * 0.01), color: '#6b5f73', letterSpacing: w * 0.01, marginTop: 2, whiteSpace: 'nowrap'}}>{bottom}</div>}
     {[[0.06, 0.2], [0.94, 0.2], [0.06, 0.85], [0.94, 0.85]].map(([x, y], i) => <div key={i} style={{position: 'absolute', left: w * x - 6, top: w * 0.5 * y - 6, width: 12, height: 12, borderRadius: 6, background: '#a7a3ad'}} />)}
   </div>;
 
@@ -300,7 +303,7 @@ export const HUD: React.FC<{chapters: {t: number; name: string}[]; end: number; 
     {/* gear cluster top-right */}
     {cur && <div style={{position: 'absolute', right: 44, top: 36, display: 'flex', alignItems: 'center', gap: 16, padding: '10px 20px 10px 12px', borderRadius: 16, background: 'rgba(12,8,20,.82)', border: '2px solid rgba(255,255,255,.22)', transform: `translateX(${shiftK}px)`}}>
       <div style={{width: 62, height: 62, borderRadius: 12, background: '#0c0c10', border: '2px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: HERO, fontSize: 46, color: C.teal, textShadow: `0 0 14px ${C.teal}`}}>{g}</div>
-      <div><div style={{fontFamily: UI, fontSize: 15, letterSpacing: 3, color: C.mute}}>GEAR {g} OF 6</div><div style={{fontFamily: HERO, fontSize: 28, color: '#fff', whiteSpace: 'nowrap'}}>{cur.name}</div></div>
+      <div><div style={{fontFamily: UI, fontSize: 15, letterSpacing: 3, color: C.mute}}>GEAR {g} OF 6</div><div style={{fontFamily: HERO, fontSize: fit(cur.name, HERO, 28, 260), color: '#fff', whiteSpace: 'nowrap'}}>{cur.name}</div></div>
     </div>}
     {/* road progress */}
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 22, background: ASPH, borderTop: '2px solid #3a3a42'}}>
