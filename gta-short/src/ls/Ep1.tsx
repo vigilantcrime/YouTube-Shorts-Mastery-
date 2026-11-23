@@ -211,7 +211,7 @@ const Overlays: React.FC = () => {
     <Beat t0={22.45} t1={24.75} x={1060} y={300} from="right"><div style={{display: 'flex', gap: 26}}>
       <Plate top="LEONIDA" main="NOV 18" bottom="REVIEWS GO LIVE" w={360} /><div style={pop(t, 24.2)}><Plate top="LEONIDA" main="NOV 19" bottom="LAUNCH DAY" w={360} /></div></div></Beat>
     <Beat t0={24.8} t1={28.25} x={160} y={170} from="up" road><div style={{display: 'flex', alignItems: 'flex-end', gap: 40}}>
-      <ScoreSign top="METASCORE" big={t >= 26.8 ? '99' : '··'} bottom="PS5 · UNIVERSAL ACCLAIM" w={380} />
+      <ScoreSign top="METASCORE" big={t >= 26.8 ? '99' : '??'} bottom="PS5 · UNIVERSAL ACCLAIM" w={380} />
       <div style={{marginBottom: 30}}><Citation t0={27.6} lines={['METACRITIC · PS5', 'CRITIC SCORE · NOV 18, 2026']} /></div></div></Beat>
     <Beat t0={28.3} t1={33.25} x={330} y={170} float={false}><div style={{display: 'flex', alignItems: 'center', gap: 44}}>
       <ScoreSign top="GTA VI · 2026" big="99" bottom="METASCORE" w={360} />
@@ -242,9 +242,9 @@ const Overlays: React.FC = () => {
       <div style={pop(t, 61.6)}><ScoreSign top="PLAYERS" big={t >= 64.9 ? '▼' : '?'} bottom={t >= 64.9 ? 'NOTICEABLY LOWER' : 'USER SCORE'} w={360} ink={t >= 64.9 ? '#c8102e' : '#111'} /></div></div>
       {t >= 62.6 && <div style={{marginTop: 28, display: 'flex', justifyContent: 'center', ...pop(t, 62.6)}}><Pill text="A VERY DIFFERENT STORY" icon="⚠" v="warn" size={30} /></div>}</Beat>
     <Beat t0={66.3} t1={69.0} x={470} y={230} float={false}><Fork t0={66.5} a="REVIEW BOMBING?" b="REAL COMPLAINTS?" tb={68.2} /></Beat>
-    <Beat t0={69.1} t1={72.2} x={140} y={360} from="left"><Pill text="TELL ME IN THE COMMENTS" icon="💬" v="hot" size={44} />
+    <Beat t0={69.1} t1={71.9} x={140} y={360} from="left"><Pill text="TELL ME IN THE COMMENTS" icon="💬" v="hot" size={44} />
       {t >= 70.4 && <div style={{marginTop: 22, ...pop(t, 70.4)}}><Pill text="DEEP DIVE IN A FUTURE EPISODE" icon="🔒" size={28} /></div>}</Beat>
-    <NextExit t0={68.6} t1={72.2} label="THE NUMBERS" />
+    <NextExit t0={68.6} t1={71.9} label="THE NUMBERS" />
 
     {/* ============ EXIT 2 · THE NUMBERS ============ */}
     <Gantry t0={72.3} t1={74.6} exit="EXIT 2" title="THE NUMBERS" sub="SALES · CONSOLES · HOLLYWOOD" />
@@ -289,8 +289,8 @@ const Overlays: React.FC = () => {
       <div style={pop(t, 117.0)}><Pill text="HUGE PRE-ORDERS" icon="📦" size={30} /></div>
       <div style={{marginTop: 18, ...pop(t, 120.2)}}><Pill text="MORE SALES LANDED ON DAY ONE?" icon="📅" size={30} /></div>
       <div style={{marginTop: 26, ...pop(t, 124.3)}}><Warn t0={124.3} lines={['SALES MAY', 'SLOW', 'AHEAD']} size={420} /></div></Beat>
-    <Beat t0={125.8} t1={128.8} x={130} y={300} from="left" road><ExitSign exit="NEXT REPORT" title="OFFICIAL NUMBERS" sub="WATCH TAKE-TWO'S NEXT EARNINGS" size={64} /></Beat>
-    <NextExit t0={125.2} t1={128.8} label="THE HYPE" />
+    <Beat t0={125.8} t1={128.5} x={130} y={300} from="left" road><ExitSign exit="NEXT REPORT" title="OFFICIAL NUMBERS" sub="WATCH TAKE-TWO'S NEXT EARNINGS" size={64} /></Beat>
+    <NextExit t0={125.2} t1={128.5} label="THE HYPE" />
 
     {/* ============ EXIT 3 · THE HYPE ============ */}
     <Gantry t0={128.9} t1={131.2} exit="EXIT 3" title="THE HYPE" sub="PLAYING · WATCHING · SKIPPING SCHOOL" />
@@ -322,9 +322,9 @@ const Overlays: React.FC = () => {
       <div style={{marginTop: 12}}><Citation t0={151.4} lines={['ITV NEWS CENTRAL · ALSO LBC', 'SCHOOL: NINESTILES, AN ACADEMY']} /></div></Beat>
     <Beat t0={155.7} t1={162.0} x={110} y={210} from="left"><BlueSign title="NINESTILES · LAUNCH WEEK" w={840} rows={[
       {icon: '🚐', text: 'MINIBUS PICK-UPS', at: 155.9}, {icon: '📝', text: 'MOCK EXAMS MOVED INTO LAUNCH WEEK', at: 156.8}, {icon: '🎟️', text: 'PRIZE DRAW · 100% ATTENDANCE', at: 159.1}]} /></Beat>
-    <Tape t0={163.8} t1={166.6} text="SCHOOL ZONE · DO NOT SKIP" y={250} rot={-5} />
-    <Tape t0={164.4} t1={166.6} text="COUNTER-OPERATIONS IN PROGRESS" y={720} rot={4} color="#ff4fb0" />
-    <Beat t0={162.1} t1={166.7} x={620} y={440} float={false}><Stamp t0={164.8} text="COUNTER-OPERATIONS" color="#fff" size={76} rot={-3} /></Beat>
+    <Tape t0={163.8} t1={166.3} text="SCHOOL ZONE · DO NOT SKIP" y={250} rot={-5} />
+    <Tape t0={164.4} t1={166.3} text="COUNTER-OPERATIONS IN PROGRESS" y={720} rot={4} color="#ff4fb0" />
+    <Beat t0={162.1} t1={166.4} x={620} y={440} float={false}><Stamp t0={164.8} text="COUNTER-OPERATIONS" color="#fff" size={76} rot={-3} /></Beat>
 
     {/* ============ EXIT 4 · THE FIRST PATCH ============ */}
     <Gantry t0={v2(0)} t1={v2(3.5)} exit="EXIT 4" title="THE FIRST PATCH" sub="STILL AHEAD · MISSABLE TROPHY + SECRET STATION" />
@@ -364,9 +364,9 @@ const Overlays: React.FC = () => {
       <div style={pop(t, v2(48.3))}><Pill text="SMOOTHER GAMEPLAY?" icon="📈" size={40} /></div>
       <div style={{marginTop: 20, ...pop(t, v2(49.6))}}><Pill text="BETTER VISUALS?" icon="✨" size={40} /></div>
       <div style={{marginTop: 30, ...pop(t, v2(51.6))}}><Warn t0={v2(51.6)} lines={['PLACEBO', 'EFFECT?']} size={360} /></div></Beat>
-    <Beat t0={v2(53.0)} t1={v2(58.3)} x={1300} y={120} from="right" road><Meter t0={v2(53.3)} dur={3.0} w={280} />
+    <Beat t0={v2(53.0)} t1={v2(58.0)} x={1300} y={120} from="right" road><Meter t0={v2(53.3)} dur={3.0} w={280} />
       {t >= v2(57.0) && <div style={{marginTop: -170, marginLeft: -340, ...pop(t, v2(57.0))}}><Pill text="USE IT WHILE YOU CAN" icon="⏱" v="hot" size={30} /></div>}</Beat>
-    <NextExit t0={v2(54.6)} t1={v2(58.3)} label="TROPHY WARNING" />
+    <NextExit t0={v2(54.6)} t1={v2(58.0)} label="TROPHY WARNING" />
 
     {/* ============ EXIT 5 · TROPHY WARNING ============ */}
     <Gantry t0={v2(58.4)} t1={v2(61.5)} exit="EXIT 5" title="TROPHY WARNING" sub="⚠ THIS ONE COULD RUIN YOUR PLATINUM" />
@@ -387,11 +387,11 @@ const Overlays: React.FC = () => {
       <ScoreSign top="AT RISK" big="200" bottom="HOURS · A PLATINUM" w={360} /><div style={{fontFamily: HERO, fontSize: 90, color: '#fff'}}>VS</div>
       <div style={pop(t, v2(101.3))}><ScoreSign top="THE FIX" big="1" bottom="MEDITATION" w={360} ink="#0a7a4f" /></div></div>
       {t >= v2(101.7) && <div style={{marginTop: 26, marginLeft: 300}}><Stamp t0={v2(101.7)} text="JUST MEDITATE 🧘" color={C.teal} size={64} /></div>}</Beat>
-    <Beat t0={v2(103.0)} t1={v2(110.2)} x={180} y={200} from="left"><div style={{display: 'flex', alignItems: 'center', gap: 50}}>
+    <Beat t0={v2(103.0)} t1={v2(110.0)} x={180} y={200} from="left"><div style={{display: 'flex', alignItems: 'center', gap: 50}}>
       <NoSign word="CHEATS" size={340} />
       <div style={pop(t, v2(105.4))}><Big size={66} style={{textShadow: '0 4px 18px rgba(0,0,0,.85)'}}>CHEATS ON =<br /><span style={{color: '#ff5470'}}>NO TROPHIES</span></Big>
         {t >= v2(108.6) && <div style={{marginTop: 22, fontFamily: UI, fontSize: 34, color: C.teal, letterSpacing: 3, ...pop(t, v2(108.6))}}>&gt; TYPING CODE{'_'.repeat(1 + (Math.floor(t * 4) % 3))}</div>}</div></div></Beat>
-    <NextExit t0={v2(106.6)} t1={v2(110.3)} label="SECRET STATION" />
+    <NextExit t0={v2(106.6)} t1={v2(110.0)} label="SECRET STATION" />
 
     {/* ============ EXIT 6 · SECRET STATION ============ */}
     <Gantry t0={v2(110.4)} t1={v2(113.3)} exit="EXIT 6" title="SECRET STATION" sub="MOST PLAYERS HAVEN'T FOUND IT YET" />
@@ -472,7 +472,7 @@ const SoundOn: React.FC = () => {
 export const LeonidaEp1: React.FC = () => {
   const ready = useFontsReady('ls1'); const road = useRoadFonts(); const rt = useCurrentFrame() / FPS;
   if (!ready || !road) return <AbsoluteFill style={{background: '#000'}} />;
-  const insK = (TL.ins as {t: number; d: number}[]).reduce((m, i) => Math.max(m, rt >= i.t - 0.15 && rt < i.t + i.d ? ramp(rt, i.t - 0.15, i.t + 0.05) * ramp(rt, i.t + i.d - 0.12, i.t + i.d, 1, 0) : 0), 0);
+  const insK = (TL.ins as {t: number; d: number}[]).reduce((m, i) => Math.max(m, rt >= i.t - 0.15 && rt < i.t + i.d + 0.1 ? ramp(rt, i.t - 0.15, i.t + 0.05) * ramp(rt, i.t + i.d, i.t + i.d + 0.1, 1, 0) : 0), 0);
   return <AbsoluteFill style={{background: '#000', overflow: 'hidden'}}>
     <Background segs={TL.segs as Seg[]} end={TL.end} punches={PUNCH.map(R)} />
     <TimeCtx.Provider value={(fr) => virt(fr / FPS)}><AbsoluteFill style={{opacity: 1 - insK}}><Overlays /></AbsoluteFill></TimeCtx.Provider>
