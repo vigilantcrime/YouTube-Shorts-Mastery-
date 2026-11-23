@@ -22,12 +22,14 @@ import {M24Lyrics, M24_FRAMES} from './M24Lyrics';
 import {FbSplit, FB_FRAMES} from './FbSplit';
 import {FbSplit2, FB2_FRAMES} from './FbSplit2';
 import {FbSplit3, FB3_FRAMES} from './FbSplit3';
+import {FbSplit4, FB4_FRAMES} from './FbSplit4';
 import {AgentReel, AB_FRAMES} from './AgentReel';
 
 export const FPS = 30;
 export const Root = () => (
   <>
     <Composition id="AgentReel" component={AgentReel} durationInFrames={AB_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="FbSplit4" component={FbSplit4} durationInFrames={FB4_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="FbSplit3" component={FbSplit3} durationInFrames={FB3_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="FbSplit2" component={FbSplit2} durationInFrames={FB2_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="FbSplit" component={FbSplit} durationInFrames={FB_FRAMES} fps={30} width={1080} height={1920} />
