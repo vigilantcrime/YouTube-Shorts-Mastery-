@@ -2,27 +2,29 @@
    VO1 at 0 s, VO2 at O2 = 166.9 s (trimmed after "in-game podcasts"), 12 s outro / end-screen.
    Gameplay always runs underneath; every fact is a roadside / in-car object; chapters = exits & gears 1–6. */
 import React from 'react';
-import {AbsoluteFill, Audio, Img, Sequence, staticFile, interpolate, Easing} from 'remotion';
+import {AbsoluteFill, Audio, Img, Sequence, staticFile, interpolate, Easing, continueRender, delayRender, useCurrentFrame} from 'remotion';
 import {useFontsReady} from '../kit3d';
-import {Background, Beat, Big, C, Count, Emblem, Flip, GRAD, HERO, MapPin, MapSvg, Pill, S, Seg, Small, Stamp, Title, UI, Wordmark, cl, eio, eo, pop, ramp, useT, Hi, FPS, fit} from './kit';
+import {Background, Beat, Big, C, Count, Emblem, Flip, GRAD, HERO, MapPin, MapSvg, Pill, S, Seg, Small, Stamp, Title, UI, Wordmark, cl, eio, eo, pop, ramp, useT, Hi, FPS, fit, TimeCtx, MONO} from './kit';
 import {BlueSign, Billboard, Citation, Departures, ExitSign, GREEN, Gantry, Gauge, Led, Meter, Mirror, NextExit, NoSign, Odometer, Plate, PriceBoard, Receipt, SatNav, ScoreSign, Splat, Stereo, Tape, Warn, Wiper, YELLOW, springIn, wipeClear, HUD} from './road';
 import geo from './geo.json';
+import TL from './ep1_timeline.json';
 
-export const EP1_FRAMES = Math.round(310.85 * FPS);
-const O2 = 166.9; const v2 = (s: number) => O2 + s; const END = 310.85; const OUTRO = 298.85;
+export const EP1_FRAMES = Math.round(TL.end * FPS);
+const O2 = 166.9; const v2 = (s: number) => O2 + s; const OUTRO = 298.85;
+/* VO clock ("virtual") vs real clock: each gameplay break pauses the VO and everything synced to it */
+const INSV = TL.insV as {p: number; d: number}[];
+const R = (v: number) => v + INSV.reduce((a, i) => a + (i.p <= v + 1e-6 ? i.d : 0), 0);
+const virt = (r: number) => { let off = 0; for (const i of INSV) { const s0 = i.p + off; if (r < s0) return r - off; if (r < s0 + i.d) return i.p - 0.001; off += i.d; } return r - off; };
+const SV: React.FC<{at: number; n: string; v?: number}> = ({at, n, v}) => <SV at={R(at)} n={n} v={v} />;
+const useRoadFonts = () => {
+  const [h] = React.useState(() => delayRender('road-fonts')); const [ok, setOk] = React.useState(false);
+  React.useEffect(() => { Promise.all([['Road', 'road900'], ['RoadB', 'road700'], ['RoadMono', 'mono700']].map(([n, f]) => new FontFace(n, `url(${staticFile(`ls/fonts/${f}.woff2`)})`).load()))
+    .then((fs) => { fs.forEach((x) => document.fonts.add(x)); setOk(true); continueRender(h); }); }, [h]);
+  return ok;
+};
 const CHAPTERS = [{t: 17.3, name: 'THE REVIEWS'}, {t: 72.3, name: 'THE NUMBERS'}, {t: 128.9, name: 'THE HYPE'}, {t: v2(0), name: 'THE FIRST PATCH'}, {t: v2(58.4), name: 'TROPHY WARNING'}, {t: v2(110.4), name: 'SECRET STATION'}];
 
-/* gameplay bed: highlight-driven (motion + impact analysis of all 8 clips); each source range used once */
-const SEGS: Seg[] = [
-  {t: 0, clip: 'g6', src: 36.8, move: 1}, {t: 2.0, clip: 'g2', src: 20.0, move: 0}, {t: 4.4, clip: 'g2', src: 10.0, move: 2}, {t: 8.8, clip: 'g6', src: 48.5, move: 3},
-  {t: 12.7, clip: 'g4', src: 0, move: 0}, {t: 17.3, clip: 'g5', src: 0, move: 3}, {t: 28.3, clip: 'g6', src: 0, move: 4}, {t: 42.9, clip: 'g5', src: 40, move: 5},
-  {t: 57.6, clip: 'g8', src: 0, move: 0}, {t: 72.3, clip: 'g6', src: 14.6, move: 2}, {t: 92.9, clip: 'g2', src: 0, move: 1}, {t: 102.7, clip: 'g4', src: 5.0, move: 3},
-  {t: 112.2, clip: 'g5', src: 11.0, move: 4}, {t: 123.2, clip: 'g2', src: 14.4, move: 1}, {t: 128.9, clip: 'g5', src: 55, move: 0}, {t: 147.3, clip: 'g7', src: 0, move: 5}, {t: 162.0, clip: 'g1', src: 8.0, move: 1},
-  {t: 166.9, clip: 'g5', src: 74, move: 2}, {t: 176.9, clip: 'g2', src: 24.0, move: 3}, {t: 188.3, clip: 'g8', src: 14.7, move: 0}, {t: 201.2, clip: 'g5', src: 22.0, move: 4},
-  {t: 212.0, clip: 'g2', src: 40.0, move: 5}, {t: 225.3, clip: 'g7', src: 15.0, move: 1}, {t: 252.0, clip: 'g5', src: 86.0, move: 2}, {t: 266.0, clip: 'g6', src: 40.0, move: 3},
-  {t: 274.5, clip: 'g4', src: 14.5, move: 0}, {t: 277.3, clip: 'g6', src: 52.4, move: 4}, {t: 284.6, clip: 'g8', src: 29.0, move: 5}, {t: 291.4, clip: 'g7', src: 43.0, move: 1},
-  {t: 298.85, clip: 'g7', src: 50.45, move: 2},
-];
+/* gameplay bed + gameplay-with-sound breaks: see ep1_timeline.json (built by build_tl.py from the highlight analysis) */
 /* camera punches on gameplay action peaks (boost, fight, crash-out, truck pass, chair crash, bike crash, robbery, kicks, mud fall) */
 const PUNCH = [1.4, 3.0, 6.0, 11.1, 97.6, 141.7, 195.2, 201.7, 208.7, 246.7, 251.0];
 
@@ -146,18 +148,16 @@ const UK = geo.uk as {n: string; d: string}[]; const FL = geo.fl as {n: string; 
 const [bx, by] = geo.ukPins.Birmingham as number[]; const [mx, my] = geo.flPins.Miami as number[];
 
 /* ------------------------------------------------------------------ the episode */
-export const LeonidaEp1: React.FC = () => {
-  const ready = useFontsReady('ls1'); const t = useT();
-  if (!ready) return <AbsoluteFill style={{background: '#000'}} />;
+const Overlays: React.FC = () => {
+  const t = useT();
   const hudVis = ramp(t, 17.3, 18.0) * ramp(t, OUTRO - 0.3, OUTRO, 1, 0);
   const logoDim = t >= 12.6 && t < 17.6 ? ramp(t, 12.6, 12.9) * ramp(t, 17.2, 17.6, 1, 0) : 0;
   const outroDim = ramp(t, OUTRO - 0.2, OUTRO + 0.4);
   const splatsT = [v2(33.7), v2(34.0), v2(34.25), v2(34.5)]; const wipeT = v2(37.2); const sc = wipeClear(t, wipeT);
-  return <AbsoluteFill style={{background: '#000', overflow: 'hidden'}}>
-    <Background segs={SEGS} end={END} punches={PUNCH} />
-    {/* reference device: spotlight on the subject during the hook */}
-    {t < 1.95 && <AbsoluteFill style={{background: 'radial-gradient(ellipse 520px 380px at 960px 690px, transparent 0%, transparent 55%, rgba(8,2,16,.72) 100%)', opacity: ramp(t, 0, 0.3) * ramp(t, 1.6, 1.95, 1, 0)}} />}
-    <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 50%, rgba(25,8,40,.55), rgba(8,2,16,.92))', opacity: Math.max(logoDim * 0.85, outroDim * 0.8)}} />
+  return <AbsoluteFill style={{overflow: 'hidden'}}>
+    {/* no grade on the gameplay: only a soft shadow behind the logo, and a light dim for the end screen */}
+    <AbsoluteFill style={{background: 'radial-gradient(ellipse 1050px 420px at 50% 50%, rgba(8,2,16,.62), transparent 72%)', opacity: logoDim}} />
+    <AbsoluteFill style={{background: 'rgba(10,4,18,.42)', opacity: outroDim}} />
 
     {/* ============ COLD OPEN ============ */}
     <Beat t0={0.05} t1={1.9} x={110} y={250} from="left" float={false}>
@@ -210,7 +210,7 @@ export const LeonidaEp1: React.FC = () => {
       {t >= 21.4 && <div style={{marginTop: 30}}><Stamp t0={21.4} text="CRITICS: YES ✓" color={C.teal} size={70} /></div>}</Beat>
     <Beat t0={22.45} t1={24.75} x={1060} y={300} from="right"><div style={{display: 'flex', gap: 26}}>
       <Plate top="LEONIDA" main="NOV 18" bottom="REVIEWS GO LIVE" w={360} /><div style={pop(t, 24.2)}><Plate top="LEONIDA" main="NOV 19" bottom="LAUNCH DAY" w={360} /></div></div></Beat>
-    <Beat t0={24.8} t1={28.25} x={160} y={170} from="up"><div style={{display: 'flex', alignItems: 'flex-end', gap: 40}}>
+    <Beat t0={24.8} t1={28.25} x={160} y={170} from="up" road><div style={{display: 'flex', alignItems: 'flex-end', gap: 40}}>
       <ScoreSign top="METASCORE" big={t >= 26.8 ? '99' : '··'} bottom="PS5 · UNIVERSAL ACCLAIM" w={380} />
       <div style={{marginBottom: 30}}><Citation t0={27.6} lines={['METACRITIC · PS5', 'CRITIC SCORE · NOV 18, 2026']} /></div></div></Beat>
     <Beat t0={28.3} t1={33.25} x={330} y={170} float={false}><div style={{display: 'flex', alignItems: 'center', gap: 44}}>
@@ -258,7 +258,7 @@ export const LeonidaEp1: React.FC = () => {
       <div style={{marginTop: 16}}><Citation t0={78.3} lines={['FORBES · SENSOR TOWER ESTIMATE', 'REPORTED NOV 19, 2026 · NOT OFFICIAL']} /></div>
     </Beat>
     <Beat t0={83.6} t1={89.2} x={1010} y={420} float={false}><Stamp t0={83.6} text="MORE THAN 2× GTA V" color={C.orange} size={72} rot={5} /></Beat>
-    <Beat t0={93.0} t1={102.6} x={1010} y={130} from="right">
+    <Beat t0={93.0} t1={102.6} x={1010} y={130} from="right" road>
       <Billboard w={820} h={430}>
         <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#2a0f3e,#120a20)', padding: '26px 34px'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 18}}><div style={{fontSize: 54}}>🎬</div><Big size={fit('HOLLYWOOD VS GTA VI', HERO, 50, 560)} style={{whiteSpace: 'nowrap'}}>HOLLYWOOD <span style={{color: C.orange}}>VS</span> GTA VI</Big><div style={{fontSize: 54}}>🎮</div></div>
@@ -284,12 +284,12 @@ export const LeonidaEp1: React.FC = () => {
       </div>
       <div style={{marginTop: 16, display: 'flex', justifyContent: 'center'}}><Citation t0={108.2} lines={['ANALYST ESTIMATES', 'VIA ONEINDIA · LAUNCH WEEK']} w={420} rot={0} /></div>
     </Beat>
-    <Beat t0={112.2} t1={116.6} x={150} y={220} from="left" float={false}><Warn t0={112.2} lines={['ANALYST', 'ESTIMATES', 'NOT OFFICIAL']} size={480} /></Beat>
+    <Beat t0={112.2} t1={116.6} x={150} y={220} from="left" float={false} road><Warn t0={112.2} lines={['ANALYST', 'ESTIMATES', 'NOT OFFICIAL']} size={480} /></Beat>
     <Beat t0={116.7} t1={125.7} x={1120} y={170} from="right">
       <div style={pop(t, 117.0)}><Pill text="HUGE PRE-ORDERS" icon="📦" size={30} /></div>
       <div style={{marginTop: 18, ...pop(t, 120.2)}}><Pill text="MORE SALES LANDED ON DAY ONE?" icon="📅" size={30} /></div>
       <div style={{marginTop: 26, ...pop(t, 124.3)}}><Warn t0={124.3} lines={['SALES MAY', 'SLOW', 'AHEAD']} size={420} /></div></Beat>
-    <Beat t0={125.8} t1={128.8} x={130} y={300} from="left"><ExitSign exit="NEXT REPORT" title="OFFICIAL NUMBERS" sub="WATCH TAKE-TWO'S NEXT EARNINGS" size={64} /></Beat>
+    <Beat t0={125.8} t1={128.8} x={130} y={300} from="left" road><ExitSign exit="NEXT REPORT" title="OFFICIAL NUMBERS" sub="WATCH TAKE-TWO'S NEXT EARNINGS" size={64} /></Beat>
     <NextExit t0={125.2} t1={128.8} label="THE HYPE" />
 
     {/* ============ EXIT 3 · THE HYPE ============ */}
@@ -305,7 +305,7 @@ export const LeonidaEp1: React.FC = () => {
         <div style={{flex: 1, height: 24, borderRadius: 12, background: 'rgba(255,255,255,.12)'}}><div style={{width: `${((v as number) / 3.4) * 100 * ramp(t, 141.6 + i * 0.25, 142.4 + i * 0.25)}%`, height: '100%', borderRadius: 12, background: GRAD}} /></div>
         <div style={{width: 90, fontFamily: HERO, fontSize: 28, color: '#fff'}}>{v}M</div></div>)}</div>
       <div style={{marginTop: 8, ...pop(t, 142.7)}}><Pill text="ALMOST 8 MILLION AT THE SAME MOMENT" icon="🔴" size={22} /></div></Beat>
-    <Beat t0={145.4} t1={148.9} x={180} y={170} from="up"><Billboard w={760} h={330}>
+    <Beat t0={145.4} t1={148.9} x={180} y={170} from="up" road><Billboard w={760} h={330}>
       <div style={{position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#3b0f40,#0f0a20)'}}>
         <div style={{fontSize: 90}}>📺</div><Big size={60} style={{textAlign: 'center'}}>BIGGER THAN A LOT<br />OF TV EVENTS</Big></div></Billboard>
       {t >= 147.9 && <div style={{marginTop: -60, marginLeft: 380}}><Stamp t0={147.9} text="→ REAL LIFE" color={C.teal} size={60} rot={-4} /></div>}</Beat>
@@ -353,18 +353,18 @@ export const LeonidaEp1: React.FC = () => {
     {t >= splatsT[0] && t < wipeT + 1 && <AbsoluteFill style={{opacity: sc, pointerEvents: 'none'}}>
       <Splat x={420} y={310} t0={splatsT[0]} s={0.95} seed={1} /><Splat x={1480} y={260} t0={splatsT[1]} s={0.8} seed={3} /><Splat x={1250} y={760} t0={splatsT[2]} s={1.1} seed={5} /><Splat x={600} y={790} t0={splatsT[3]} s={0.75} seed={7} /><Splat x={980} y={200} t0={splatsT[3] + 0.15} s={0.7} seed={9} />
     </AbsoluteFill>}
-    <Beat t0={v2(33.8)} t1={v2(37.0)} x={720} y={430} float={false}><Warn t0={v2(33.8)} lines={['RANDOM', 'BUGS', 'AHEAD']} size={380} /></Beat>
+    <Beat t0={v2(33.8)} t1={v2(37.0)} x={720} y={430} float={false} road><Warn t0={v2(33.8)} lines={['RANDOM', 'BUGS', 'AHEAD']} size={380} /></Beat>
     <Wiper t0={wipeT} />
     <Beat t0={v2(37.6)} t1={v2(43.0)} x={130} y={230} from="left"><Pill text="PROGRESSION BUG FIXED" icon="✓" v="teal" size={46} />
       <div style={{marginTop: 18, ...pop(t, v2(39.4))}}><Pill text="PS5 + XBOX SERIES X|S" size={30} /></div>
       <div style={{marginTop: 18}}><Citation t0={v2(38.0)} lines={['EUROGAMER (AS REPORTED)', 'PROGRESSION BUG FIX · PS5 / XBOX SERIES X|S']} /></div></Beat>
     <Money t0={v2(45.4)} t1={v2(47.6)} />
-    <Beat t0={v2(43.1)} t1={v2(47.3)} x={1180} y={160} from="right"><ScoreSign top="MONEY GLITCH" big="$$$" bottom="STILL WORKS? · PLAYER REPORTS" w={420} /></Beat>
+    <Beat t0={v2(43.1)} t1={v2(47.3)} x={1180} y={160} from="right" road><ScoreSign top="MONEY GLITCH" big="$$$" bottom="STILL WORKS? · PLAYER REPORTS" w={420} /></Beat>
     <Beat t0={v2(47.4)} t1={v2(52.95)} x={130} y={250} from="left">
       <div style={pop(t, v2(48.3))}><Pill text="SMOOTHER GAMEPLAY?" icon="📈" size={40} /></div>
       <div style={{marginTop: 20, ...pop(t, v2(49.6))}}><Pill text="BETTER VISUALS?" icon="✨" size={40} /></div>
       <div style={{marginTop: 30, ...pop(t, v2(51.6))}}><Warn t0={v2(51.6)} lines={['PLACEBO', 'EFFECT?']} size={360} /></div></Beat>
-    <Beat t0={v2(53.0)} t1={v2(58.3)} x={1300} y={120} from="right"><Meter t0={v2(53.3)} dur={3.0} w={280} />
+    <Beat t0={v2(53.0)} t1={v2(58.3)} x={1300} y={120} from="right" road><Meter t0={v2(53.3)} dur={3.0} w={280} />
       {t >= v2(57.0) && <div style={{marginTop: -170, marginLeft: -340, ...pop(t, v2(57.0))}}><Pill text="USE IT WHILE YOU CAN" icon="⏱" v="hot" size={30} /></div>}</Beat>
     <NextExit t0={v2(54.6)} t1={v2(58.3)} label="TROPHY WARNING" />
 
@@ -372,7 +372,7 @@ export const LeonidaEp1: React.FC = () => {
     <Gantry t0={v2(58.4)} t1={v2(61.5)} exit="EXIT 5" title="TROPHY WARNING" sub="⚠ THIS ONE COULD RUIN YOUR PLATINUM" />
     <Beat t0={v2(62.4)} t1={v2(70.0)} x={150} y={170} from="left"><Gauge t0={v2(64.7)} value={4} max={10} label="ESTIMATED TROPHY DIFFICULTY" big={t >= v2(64.7) ? '4/10' : '—'} size={460} col={C.teal} /></Beat>
     <Beat t0={v2(65.8)} t1={v2(70.0)} x={760} y={250} from="up"><Small size={26} color="#fff" style={{marginBottom: 16}}>HOURS TO PLATINUM</Small><Odometer t0={v2(66.4)} to={200} digits={3} size={120} dur={1.3} suffix="HRS" /></Beat>
-    <Beat t0={v2(68.3)} t1={v2(70.9)} x={1360} y={190} from="right" float={false}><Warn t0={v2(69.3)} lines={['1 MISSABLE', 'TROPHY', 'AHEAD']} size={420} /></Beat>
+    <Beat t0={v2(68.3)} t1={v2(70.9)} x={1360} y={190} from="right" float={false} road><Warn t0={v2(69.3)} lines={['1 MISSABLE', 'TROPHY', 'AHEAD']} size={420} /></Beat>
     <Beat t0={v2(66.0)} t1={v2(70.9)} x={760} y={500} float={false}><Citation t0={v2(66.6)} lines={['POWERPYX TROPHY ROADMAP', '4/10 · ~200 HRS · POTENTIALLY 1 MISSABLE']} w={520} /></Beat>
     <Beat t0={v2(71.0)} t1={v2(77.2)} x={510} y={250} from="up"><Trophy t0={v2(71.0)} />
       {t >= v2(73.4) && <div style={{marginTop: 26, display: 'flex', justifyContent: 'center', ...pop(t, v2(73.4))}}><Pill text="THE FIRST MEDITATION IS MISSABLE · CHAPTER 1" icon="⚠" v="red" size={30} /></div>}
@@ -382,7 +382,7 @@ export const LeonidaEp1: React.FC = () => {
       {[['1', 'FINISH MISSION "DOWN TO EARTH"', v2(85.4)], ['2', 'LUCIA OFFERS A MEDITATION TUTORIAL', v2(87.4)], ['3', 'MEDITATE WITH HER ON THE BALCONY', v2(89.6)]].map(([n, s, at], i) =>
         <div key={i} style={pop(t, at as number)}><ExitSign exit={`STEP ${n}`} title={s as string} size={58} arrow={i < 2 ? '↓' : '✓'} /></div>)}</div></Beat>
     <Beat t0={v2(90.5)} t1={v2(94.2)} x={490} y={600} from="up"><Prompt tYes={v2(92.4)} tSkip={v2(93.4)} /></Beat>
-    <Beat t0={v2(94.3)} t1={v2(99.1)} x={1220} y={170} from="right" float={false}><Warn t0={v2(95.5)} lines={['LOCKOUT', 'NOT', 'CONFIRMED']} size={440} /></Beat>
+    <Beat t0={v2(94.3)} t1={v2(99.1)} x={1220} y={170} from="right" float={false} road><Warn t0={v2(95.5)} lines={['LOCKOUT', 'NOT', 'CONFIRMED']} size={440} /></Beat>
     <Beat t0={v2(99.2)} t1={v2(102.9)} x={330} y={300} float={false}><div style={{display: 'flex', alignItems: 'center', gap: 40}}>
       <ScoreSign top="AT RISK" big="200" bottom="HOURS · A PLATINUM" w={360} /><div style={{fontFamily: HERO, fontSize: 90, color: '#fff'}}>VS</div>
       <div style={pop(t, v2(101.3))}><ScoreSign top="THE FIX" big="1" bottom="MEDITATION" w={360} ink="#0a7a4f" /></div></div>
@@ -431,32 +431,52 @@ export const LeonidaEp1: React.FC = () => {
     <HUD chapters={CHAPTERS} end={OUTRO} vis={hudVis} />
 
     {/* ============ AUDIO: VO + SFX (music is mixed with ducking after render) ============ */}
-    <Audio src={staticFile('ls/vo.wav')} />
-    <S at={0.05} n="ls/sfx/swish" v={0.35} />{[0.2, 0.35, 0.5, 0.65, 0.8, 0.95, 1.1].map((a) => <S key={a} at={a} n="ls/sfx/flap" v={0.25} />)}
-    <S at={1.45} n="pw/impact" v={0.3} /><S at={2.0} n="ls/sfx/click" v={0.4} /><S at={2.25} n="ls/sfx/click" v={0.4} /><S at={2.7} n="pw/pop" v={0.3} />
-    <S at={4.3} n="ls/sfx/swish" v={0.3} />{[4.8, 6.1, 8.0].map((a) => <S key={a} at={a} n="ls/sfx/blip" v={0.3} />)}<S at={6.8} n="fb3/beep" v={0.15} />
-    <S at={8.8} n="ls/sfx/swish" v={0.3} /><S at={9.7} n="ls/sfx/blip" v={0.3} /><S at={10.9} n="pw/impact" v={0.35} /><S at={13.9} n="ls/sfx/click" v={0.5} /><S at={15.3} n="pw/pop" v={0.3} />
-    {CHAPTERS.map((c) => <React.Fragment key={c.t}><S at={c.t} n="ls/sfx/swish" v={0.35} /><S at={c.t + 0.28} n="ls/sfx/click" v={0.55} /><S at={c.t + 0.3} n="pw/door" v={0.18} /></React.Fragment>)}
-    <S at={21.4} n="pw/impact" v={0.3} /><S at={22.45} n="pw/pop" v={0.25} /><S at={24.2} n="pw/pop" v={0.25} /><S at={26.8} n="ls/sfx/boom" v={0.35} /><S at={27.6} n="pw/tick" v={0.3} />
-    <S at={28.9} n="pw/pop" v={0.3} /><S at={29.6} n="pw/pop" v={0.3} /><S at={31.0} n="fb3/chime" v={0.3} /><S at={33.9} n="pw/tick" v={0.3} /><S at={38.6} n="ls/sfx/blip" v={0.3} />
-    {[43.7, 45.8, 47.1].map((a) => <S key={a} at={a} n="ls/sfx/click" v={0.45} />)}<S at={50.2} n="ls/sfx/swish" v={0.25} /><S at={55.4} n="fb3/chime" v={0.3} />
-    <S at={58.5} n="ls/sfx/glitch" v={0.45} /><S at={64.9} n="pw/impact" v={0.3} /><S at={66.3} n="ls/sfx/swish" v={0.3} /><S at={69.1} n="pw/pop" v={0.3} />
-    <S at={76.8} n="ls/sfx/cash" v={0.4} /><S at={79.6} n="ls/sfx/flap" v={0.3} /><S at={78.3} n="pw/tick" v={0.3} /><S at={83.6} n="pw/impact" v={0.35} /><S at={84.9} n="ls/sfx/click" v={0.35} /><S at={90.7} n="ls/sfx/click" v={0.35} />
-    <S at={93.0} n="ls/sfx/swish" v={0.3} /><S at={97.8} n="pw/pop" v={0.3} /><S at={99.4} n="pw/pop" v={0.3} /><S at={105.9} n="ls/sfx/swish" v={0.25} /><S at={110.0} n="ls/sfx/swish" v={0.25} />
-    <S at={112.2} n="fb3/beep" v={0.25} /><S at={124.3} n="fb3/beep" v={0.2} /><S at={125.8} n="ls/sfx/swish" v={0.3} />
-    <S at={132.8} n="pw/tick" v={0.3} /><S at={139.9} n="ls/sfx/swish" v={0.3} /><S at={145.4} n="pw/pop" v={0.3} /><S at={149.3} n="ls/sfx/blip" v={0.35} /><S at={150.6} n="ls/sfx/blip" v={0.3} />
-    <S at={152.6} n="pw/tick" v={0.3} />{[155.9, 156.8, 159.1].map((a) => <S key={a} at={a} n="ls/sfx/click" v={0.35} />)}<S at={163.8} n="ls/sfx/swish" v={0.35} /><S at={164.8} n="pw/impact" v={0.4} />
-    <S at={v2(3.8)} n="ls/sfx/type" v={0.35} /><S at={v2(13.4)} n="ls/sfx/blip" v={0.3} /><S at={v2(16.4)} n="ls/sfx/blip" v={0.3} />{[0, 0.35, 0.7].map((a) => <S key={a} at={v2(21.6) + a} n="ls/sfx/flap" v={0.3} />)}
-    <S at={v2(25.4)} n="pw/pop" v={0.3} /><S at={v2(29.6)} n="pw/impact" v={0.3} /><S at={v2(31.6)} n="fb3/ching" v={0.3} />
-    {splatsT.map((a) => <S key={a} at={a} n="pw/punch" v={0.3} />)}<S at={wipeT} n="ls/sfx/swish" v={0.5} /><S at={v2(37.6)} n="fb3/chime" v={0.3} />
-    <S at={v2(43.1)} n="ls/sfx/cash" v={0.35} /><S at={v2(48.3)} n="pw/pop" v={0.25} /><S at={v2(49.6)} n="pw/pop" v={0.25} /><S at={v2(51.6)} n="fb3/beep" v={0.2} /><S at={v2(56.3)} n="fb3/beep" v={0.25} />
-    <S at={v2(64.7)} n="ls/sfx/swish" v={0.25} /><S at={v2(66.4)} n="pw/tick" v={0.3} /><S at={v2(69.3)} n="fb3/beep" v={0.2} /><S at={v2(71.0)} n="fb3/chime" v={0.35} /><S at={v2(73.4)} n="pw/impact" v={0.3} />
-    <S at={v2(79.6)} n="ls/sfx/blip" v={0.25} /><S at={v2(82.6)} n="pw/pop" v={0.3} />{[85.4, 87.4, 89.6].map((a) => <S key={a} at={v2(a)} n="ls/sfx/click" v={0.35} />)}
-    <S at={v2(92.4)} n="ls/sfx/blip" v={0.35} /><S at={v2(93.4)} n="pw/tick" v={0.3} /><S at={v2(95.5)} n="fb3/beep" v={0.2} /><S at={v2(101.7)} n="pw/impact" v={0.3} />
-    <S at={v2(104.6)} n="pw/impact" v={0.3} /><S at={v2(108.6)} n="ls/sfx/type" v={0.35} />
-    <S at={v2(113.3)} n="ls/sfx/glitch" v={0.25} /><S at={v2(116.5)} n="ls/sfx/blip" v={0.3} /><S at={v2(119.8)} n="ls/sfx/scan" v={0.35} /><S at={v2(121.2)} n="ls/sfx/unlock" v={0.4} />
-    <S at={v2(122.0)} n="ls/sfx/click" v={0.35} /><S at={v2(126.2)} n="ls/sfx/swish" v={0.3} /><S at={v2(130.6)} n="ls/sfx/click" v={0.35} />
-    {PUNCH.map((p) => <S key={'pk' + p} at={p} n="pw/impact" v={0.12} />)}
-    <S at={OUTRO + 2.5} n="ls/sfx/click" v={0.5} /><S at={OUTRO + 3.0} n="fb4/ding" v={0.35} />
+    <SV at={0.05} n="ls/sfx/swish" v={0.35} />{[0.2, 0.35, 0.5, 0.65, 0.8, 0.95, 1.1].map((a) => <SV key={a} at={a} n="ls/sfx/flap" v={0.25} />)}
+    <SV at={1.45} n="pw/impact" v={0.3} /><SV at={2.0} n="ls/sfx/click" v={0.4} /><SV at={2.25} n="ls/sfx/click" v={0.4} /><SV at={2.7} n="pw/pop" v={0.3} />
+    <SV at={4.3} n="ls/sfx/swish" v={0.3} />{[4.8, 6.1, 8.0].map((a) => <SV key={a} at={a} n="ls/sfx/blip" v={0.3} />)}<SV at={6.8} n="fb3/beep" v={0.15} />
+    <SV at={8.8} n="ls/sfx/swish" v={0.3} /><SV at={9.7} n="ls/sfx/blip" v={0.3} /><SV at={10.9} n="pw/impact" v={0.35} /><SV at={13.9} n="ls/sfx/click" v={0.5} /><SV at={15.3} n="pw/pop" v={0.3} />
+    {CHAPTERS.map((c) => <React.Fragment key={c.t}><SV at={c.t} n="ls/sfx/swish" v={0.35} /><SV at={c.t + 0.28} n="ls/sfx/click" v={0.55} /><SV at={c.t + 0.3} n="pw/door" v={0.18} /></React.Fragment>)}
+    <SV at={21.4} n="pw/impact" v={0.3} /><SV at={22.45} n="pw/pop" v={0.25} /><SV at={24.2} n="pw/pop" v={0.25} /><SV at={26.8} n="ls/sfx/boom" v={0.35} /><SV at={27.6} n="pw/tick" v={0.3} />
+    <SV at={28.9} n="pw/pop" v={0.3} /><SV at={29.6} n="pw/pop" v={0.3} /><SV at={31.0} n="fb3/chime" v={0.3} /><SV at={33.9} n="pw/tick" v={0.3} /><SV at={38.6} n="ls/sfx/blip" v={0.3} />
+    {[43.7, 45.8, 47.1].map((a) => <SV key={a} at={a} n="ls/sfx/click" v={0.45} />)}<SV at={50.2} n="ls/sfx/swish" v={0.25} /><SV at={55.4} n="fb3/chime" v={0.3} />
+    <SV at={58.5} n="ls/sfx/glitch" v={0.45} /><SV at={64.9} n="pw/impact" v={0.3} /><SV at={66.3} n="ls/sfx/swish" v={0.3} /><SV at={69.1} n="pw/pop" v={0.3} />
+    <SV at={76.8} n="ls/sfx/cash" v={0.4} /><SV at={79.6} n="ls/sfx/flap" v={0.3} /><SV at={78.3} n="pw/tick" v={0.3} /><SV at={83.6} n="pw/impact" v={0.35} /><SV at={84.9} n="ls/sfx/click" v={0.35} /><SV at={90.7} n="ls/sfx/click" v={0.35} />
+    <SV at={93.0} n="ls/sfx/swish" v={0.3} /><SV at={97.8} n="pw/pop" v={0.3} /><SV at={99.4} n="pw/pop" v={0.3} /><SV at={105.9} n="ls/sfx/swish" v={0.25} /><SV at={110.0} n="ls/sfx/swish" v={0.25} />
+    <SV at={112.2} n="fb3/beep" v={0.25} /><SV at={124.3} n="fb3/beep" v={0.2} /><SV at={125.8} n="ls/sfx/swish" v={0.3} />
+    <SV at={132.8} n="pw/tick" v={0.3} /><SV at={139.9} n="ls/sfx/swish" v={0.3} /><SV at={145.4} n="pw/pop" v={0.3} /><SV at={149.3} n="ls/sfx/blip" v={0.35} /><SV at={150.6} n="ls/sfx/blip" v={0.3} />
+    <SV at={152.6} n="pw/tick" v={0.3} />{[155.9, 156.8, 159.1].map((a) => <SV key={a} at={a} n="ls/sfx/click" v={0.35} />)}<SV at={163.8} n="ls/sfx/swish" v={0.35} /><SV at={164.8} n="pw/impact" v={0.4} />
+    <SV at={v2(3.8)} n="ls/sfx/type" v={0.35} /><SV at={v2(13.4)} n="ls/sfx/blip" v={0.3} /><SV at={v2(16.4)} n="ls/sfx/blip" v={0.3} />{[0, 0.35, 0.7].map((a) => <SV key={a} at={v2(21.6) + a} n="ls/sfx/flap" v={0.3} />)}
+    <SV at={v2(25.4)} n="pw/pop" v={0.3} /><SV at={v2(29.6)} n="pw/impact" v={0.3} /><SV at={v2(31.6)} n="fb3/ching" v={0.3} />
+    {splatsT.map((a) => <SV key={a} at={a} n="pw/punch" v={0.3} />)}<SV at={wipeT} n="ls/sfx/swish" v={0.5} /><SV at={v2(37.6)} n="fb3/chime" v={0.3} />
+    <SV at={v2(43.1)} n="ls/sfx/cash" v={0.35} /><SV at={v2(48.3)} n="pw/pop" v={0.25} /><SV at={v2(49.6)} n="pw/pop" v={0.25} /><SV at={v2(51.6)} n="fb3/beep" v={0.2} /><SV at={v2(56.3)} n="fb3/beep" v={0.25} />
+    <SV at={v2(64.7)} n="ls/sfx/swish" v={0.25} /><SV at={v2(66.4)} n="pw/tick" v={0.3} /><SV at={v2(69.3)} n="fb3/beep" v={0.2} /><SV at={v2(71.0)} n="fb3/chime" v={0.35} /><SV at={v2(73.4)} n="pw/impact" v={0.3} />
+    <SV at={v2(79.6)} n="ls/sfx/blip" v={0.25} /><SV at={v2(82.6)} n="pw/pop" v={0.3} />{[85.4, 87.4, 89.6].map((a) => <SV key={a} at={v2(a)} n="ls/sfx/click" v={0.35} />)}
+    <SV at={v2(92.4)} n="ls/sfx/blip" v={0.35} /><SV at={v2(93.4)} n="pw/tick" v={0.3} /><SV at={v2(95.5)} n="fb3/beep" v={0.2} /><SV at={v2(101.7)} n="pw/impact" v={0.3} />
+    <SV at={v2(104.6)} n="pw/impact" v={0.3} /><SV at={v2(108.6)} n="ls/sfx/type" v={0.35} />
+    <SV at={v2(113.3)} n="ls/sfx/glitch" v={0.25} /><SV at={v2(116.5)} n="ls/sfx/blip" v={0.3} /><SV at={v2(119.8)} n="ls/sfx/scan" v={0.35} /><SV at={v2(121.2)} n="ls/sfx/unlock" v={0.4} />
+    <SV at={v2(122.0)} n="ls/sfx/click" v={0.35} /><SV at={v2(126.2)} n="ls/sfx/swish" v={0.3} /><SV at={v2(130.6)} n="ls/sfx/click" v={0.35} />
+    {PUNCH.map((p) => <SV key={'pk' + p} at={p} n="pw/impact" v={0.12} />)}
+    <SV at={OUTRO + 2.5} n="ls/sfx/click" v={0.5} /><SV at={OUTRO + 3.0} n="fb4/ding" v={0.35} />
+  </AbsoluteFill>;
+};
+
+/* gameplay-with-sound break tag */
+const SoundOn: React.FC = () => {
+  const t = useCurrentFrame() / FPS; const ins = (TL.ins as {t: number; d: number}[]).find((i) => t >= i.t && t < i.t + i.d); if (!ins) return null;
+  const e = ramp(t, ins.t, ins.t + 0.25, 0, 1, eo) * ramp(t, ins.t + ins.d - 0.2, ins.t + ins.d, 1, 0);
+  return <div style={{position: 'absolute', left: 44, bottom: 44, display: 'flex', alignItems: 'center', gap: 14, padding: '12px 20px', borderRadius: 14, background: 'rgba(10,8,16,.78)', border: '2px solid rgba(255,255,255,.35)', opacity: e, transform: `translateX(${(1 - e) * -40}px)`}}>
+    <div style={{display: 'flex', alignItems: 'flex-end', gap: 4, height: 30}}>{[0, 1, 2, 3, 4].map((i) => <div key={i} style={{width: 6, borderRadius: 3, background: C.teal, height: 8 + Math.abs(Math.sin(t * (9 + i * 2.3) + i)) * 22}} />)}</div>
+    <div style={{fontFamily: UI, fontSize: 22, letterSpacing: 3, color: '#fff'}}>SOUND ON · GAMEPLAY</div>
+  </div>;
+};
+export const LeonidaEp1: React.FC = () => {
+  const ready = useFontsReady('ls1'); const road = useRoadFonts(); const rt = useCurrentFrame() / FPS;
+  if (!ready || !road) return <AbsoluteFill style={{background: '#000'}} />;
+  const insK = (TL.ins as {t: number; d: number}[]).reduce((m, i) => Math.max(m, rt >= i.t - 0.15 && rt < i.t + i.d ? ramp(rt, i.t - 0.15, i.t + 0.05) * ramp(rt, i.t + i.d - 0.12, i.t + i.d, 1, 0) : 0), 0);
+  return <AbsoluteFill style={{background: '#000', overflow: 'hidden'}}>
+    <Background segs={TL.segs as Seg[]} end={TL.end} punches={PUNCH.map(R)} />
+    <TimeCtx.Provider value={(fr) => virt(fr / FPS)}><AbsoluteFill style={{opacity: 1 - insK}}><Overlays /></AbsoluteFill></TimeCtx.Provider>
+    <SoundOn />
+    <Audio src={staticFile('ls/vo_real.wav')} />
   </AbsoluteFill>;
 };

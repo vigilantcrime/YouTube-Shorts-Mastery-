@@ -3,7 +3,7 @@
    rear-view mirror, toll receipt, car stereo, windshield + wiper). Chapters are gears 1–6 and exits on the road. */
 import React from 'react';
 import {Easing, interpolate} from 'remotion';
-import {C, GRAD, HERO, UI, cl, eio, eo, ramp, useT, FPS, fit} from './kit';
+import {C, GRAD, HERO, UI, MONO, cl, eio, eo, ramp, useT, FPS, fit} from './kit';
 
 export const GREEN = '#0B6B46', BLUE = '#1257A8', YELLOW = '#FFCB05', ASPH = '#1d1c22';
 const sign = (bg: string): React.CSSProperties => ({background: bg, borderRadius: 18, padding: 9, boxShadow: '0 26px 44px rgba(0,0,0,.55), 0 2px 0 rgba(255,255,255,.25) inset'});
@@ -86,7 +86,14 @@ export const NoSign: React.FC<{word: string; size?: number}> = ({word, size = 26
   </div>;
 
 /* ---------- printed citation slip (sources) ---------- */
-export const Citation: React.FC<{t0: number; lines: string[]; w?: number; rot?: number}> = ({t0, lines, w = 470, rot = -2}) => {
+export const Citation: React.FC<{t0: number; lines: string[]; w?: number; rot?: number}> = ({t0, lines}) => {
+  const t = useT(); const p = ramp(t, t0, t0 + 0.4, 0, 100, Easing.out(Easing.quad));
+  return <div style={{display: 'inline-flex', alignItems: 'stretch', borderRadius: 8, overflow: 'hidden', boxShadow: '0 10px 24px rgba(0,0,0,.55)', clipPath: `inset(0 ${100 - p}% 0 0)`, whiteSpace: 'nowrap'}}>
+    <div style={{padding: '8px 12px', background: GRAD, fontFamily: UI, fontSize: 17, letterSpacing: 2.5, color: '#fff'}}>SOURCE</div>
+    <div style={{padding: '8px 14px', background: 'rgba(10,8,16,.9)', fontFamily: MONO, fontSize: 17, letterSpacing: 0.5, color: '#fff', textTransform: 'uppercase'}}>{lines.join('  ·  ')}</div>
+  </div>;
+};
+const _OldCitation: React.FC<{t0: number; lines: string[]; w?: number; rot?: number}> = ({t0, lines, w = 470, rot = -2}) => {
   const t = useT(); const p = ramp(t, t0, t0 + 0.45, 0, 100, Easing.out(Easing.quad));
   const zig = Array.from({length: 24}, (_, i) => `${100 - (i / 23) * 100}% ${i % 2 ? 100 : 96}%`).join(',');   // right → left so the outline never crosses itself
   return <div style={{width: w, transform: `rotate(${rot}deg)`, filter: 'drop-shadow(0 14px 18px rgba(0,0,0,.5))', clipPath: `inset(0 0 ${100 - p}% 0)`}}>

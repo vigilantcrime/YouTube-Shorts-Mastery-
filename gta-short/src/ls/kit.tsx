@@ -11,9 +11,11 @@ export const GRAD = `linear-gradient(100deg, ${C.pink}, ${C.orange})`;
 export const cl = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 export const eo = Easing.out(Easing.cubic), eio = Easing.inOut(Easing.cubic), eback = Easing.out(Easing.back(1.5));
 export const ramp = (t: number, a: number, b: number, from = 0, to = 1, e = eo) => interpolate(t, [a, b], [from, to], {...cl, easing: e});
-export const useT = () => useCurrentFrame() / FPS;
+export const TimeCtx = React.createContext<((frame: number) => number) | null>(null);
+export const useT = () => { const fr = useCurrentFrame(); const m = React.useContext(TimeCtx); return m ? m(fr) : fr / FPS; };
+export const useRealT = () => useCurrentFrame() / FPS;
 export const f = (s: number) => Math.round(s * FPS);
-export const HERO = 'HeroBlack', UI = 'UIBold';
+export const HERO = 'Road', UI = 'RoadB', MONO = 'RoadMono';
 /* measure text with the loaded font and shrink it to fit a box: overflow becomes impossible */
 let _ctx: CanvasRenderingContext2D | null = null;
 export const fit = (text: string, font: string, base: number, maxW: number, spacing = 0) => {
@@ -23,10 +25,17 @@ export const fit = (text: string, font: string, base: number, maxW: number, spac
 };
 
 /* ---------- motion wrapper: every pop-up enters with rise+scale+blur and exits with a quick shrink ---------- */
-export const Beat: React.FC<{t0: number; t1: number; x: number; y: number; w?: number; tilt?: number; from?: 'up' | 'left' | 'right' | 'down'; delay?: number; float?: boolean; origin?: string; children: React.ReactNode}> =
-  ({t0, t1, x, y, w, tilt = 0, from = 'up', delay = 0, float = true, origin = '50% 50%', children}) => {
+export const Beat: React.FC<{t0: number; t1: number; x: number; y: number; w?: number; tilt?: number; from?: 'up' | 'left' | 'right' | 'down'; delay?: number; float?: boolean; origin?: string; road?: boolean; children: React.ReactNode}> =
+  ({t0, t1, x, y, w, tilt = 0, from = 'up', delay = 0, float = true, origin = '50% 50%', road = false, children}) => {
     const t = useT(); const s0 = t0 + delay;
     if (t < s0 || t > t1 + 0.3) return null;
+    if (road) {   /* a roadside sign: approaches from down the road, holds, then whips past the camera */
+      const a = ramp(t, s0, s0 + 0.55, 0, 1, Easing.out(Easing.cubic)), p = ramp(t, t1 - 0.05, t1 + 0.3, 0, 1, Easing.in(Easing.quad));
+      const hx = 960 - x, hy = 470 - y; const k = 1 - a;
+      const tx = hx * 0.78 * k - hx * 0.9 * p, ty = hy * 0.6 * k - hy * 0.5 * p, sc = (0.22 + 0.78 * a) * (1 + 0.9 * p);
+      return <div style={{position: 'absolute', left: x, top: y, width: w, transformOrigin: '50% 50%', opacity: Math.min(1, a * 3) * (1 - p),
+        transform: `perspective(1600px) translate(${tx}px, ${ty}px) rotateY(${(x > 960 ? -10 : 10) * (0.4 + 0.6 * k)}deg) scale(${sc})`, filter: p > 0.02 || a < 0.9 ? `blur(${p * 14 + k * 3}px)` : undefined}}>{children}</div>;
+    }
     const e = ramp(t, s0, s0 + 0.34, 0, 1, eback), x1 = ramp(t, t1, t1 + 0.24, 0, 1, Easing.in(Easing.cubic));
     const vis = Math.min(ramp(t, s0, s0 + 0.18), 1 - x1);
     const d = (1 - e) * 60; const [dx, dy] = from === 'up' ? [0, d] : from === 'down' ? [0, -d] : from === 'left' ? [-d * 1.6, 0] : [d * 1.6, 0];
@@ -196,27 +205,28 @@ export const Wordmark: React.FC<{size: number}> = ({size}) =>
   </div>;
 
 /* ---------- gameplay background with rotating camera moves + shift transitions ---------- */
-export type Seg = {t: number; clip: string; src: number; move: number};
+export type Seg = {t: number; clip: string; src: number; move: number; ins?: boolean; zoom?: number};
 /* clips with spoken dialogue have burned-in game subtitles (some with swearing) at the bottom: crop them out */
-const CROP = new Set(['g1', 'g2', 'g3', 'g7', 'g8']);
+
 export const Background: React.FC<{segs: Seg[]; end: number; punches?: number[]}> = ({segs, end, punches = []}) => {
-  const t = useT(); const pk = punches.reduce((a, p) => a + (t >= p && t < p + 0.6 ? 0.07 * Math.exp(-(t - p) * 7) * Math.cos((t - p) * 14) : 0), 0);
+  const t = useRealT(); const pk = punches.reduce((a, p) => a + (t >= p && t < p + 0.6 ? 0.07 * Math.exp(-(t - p) * 7) * Math.cos((t - p) * 14) : 0), 0);
   let k = 0; segs.forEach((s, i) => { if (s.t <= t) k = i; });
   const draw = (i: number, lt: number, extra: string, blur: number) => {
     const s = segs[i]; const nxt = i + 1 < segs.length ? segs[i + 1].t : end; const dur = nxt - s.t; const p = Math.max(0, Math.min(1, lt / dur));
     let tr = '';
-    switch (s.move % 6) {
-      case 0: tr = `scale(${1.04 + 0.08 * p})`; break;                                           // creep in
-      case 1: tr = `scale(${1.13 - 0.08 * p})`; break;                                           // pull out
-      case 2: tr = `scale(1.1) translateX(${-34 + 68 * p}px)`; break;                             // glide right
-      case 3: tr = `scale(1.1) translateX(${34 - 68 * p}px)`; break;                              // glide left
-      case 4: tr = `scale(1.1) translateY(${22 - 44 * p}px)`; break;                              // rise
-      default: tr = `scale(${1.08 + 0.03 * p}) rotate(${-0.8 + 1.6 * p}deg)`;                     // slow roll
+    const z = s.zoom ?? 1;
+    switch (s.move) {
+      case -1: tr = `scale(${z + 0.03 * p})`; break;                                             // gameplay break: clean, slight push on the action
+      case 0: tr = `scale(${1.0 + 0.04 * p})`; break;                                            // creep in
+      case 1: tr = `scale(${1.04 - 0.04 * p})`; break;                                           // pull out
+      case 2: tr = `scale(1.03) translateX(${-16 + 32 * p}px)`; break;                            // glide right
+      case 3: tr = `scale(1.03) translateX(${16 - 32 * p}px)`; break;                             // glide left
+      case 4: tr = `scale(1.03) translateY(${10 - 20 * p}px)`; break;                             // rise
+      default: tr = `scale(${1.025 + 0.015 * p}) rotate(${-0.35 + 0.7 * p}deg)`;                 // slow roll
     }
-    return <AbsoluteFill key={i} style={{transform: `${extra} ${tr}`, filter: `saturate(1.12) contrast(1.05) brightness(.86)${blur ? ` blur(${blur}px)` : ''}`}}>
+    return <AbsoluteFill key={i} style={{transform: `${extra} ${tr}`, filter: blur ? `blur(${blur}px)` : undefined}}>
       <Sequence from={-f(s.src - s.t) - 0} layout="none">
-        <div style={{width: W, height: H, transform: CROP.has(s.clip) ? 'scale(1.17)' : undefined, transformOrigin: '50% 0%'}}>
-          <OffthreadVideo src={staticFile(`ls/${s.clip}.mp4`)} muted style={{width: W, height: H, objectFit: 'cover'}} /></div>
+        <OffthreadVideo src={staticFile(`ls/${s.clip}.mp4`)} muted style={{width: W, height: H, objectFit: 'cover'}} />
       </Sequence>
     </AbsoluteFill>;
   };
@@ -225,8 +235,6 @@ export const Background: React.FC<{segs: Seg[]; end: number; punches?: number[]}
   return <AbsoluteFill style={{background: '#000', overflow: 'hidden'}}><AbsoluteFill style={{transform: `scale(${1 + pk})`}}>
     {k > 0 && lt < TR && draw(k - 1, t - segs[k - 1].t, `translateX(${-inP * 240}px)`, inP * 26)}
     <AbsoluteFill style={{opacity: k > 0 ? ramp(lt, 0, TR * 0.6) : 1}}>{draw(k, lt, k > 0 ? `translateX(${(1 - inP) * 300}px)` : '', k > 0 ? (1 - inP) * 26 : 0)}</AbsoluteFill></AbsoluteFill>
-    <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(10,3,20,.62) 100%)'}} />
-    <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(19,10,34,.35) 0%, transparent 18%, transparent 78%, rgba(19,10,34,.55) 100%)'}} />
   </AbsoluteFill>;
 };
 
