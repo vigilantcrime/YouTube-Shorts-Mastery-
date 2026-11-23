@@ -15,7 +15,7 @@ const O2 = 166.9; const v2 = (s: number) => O2 + s; const OUTRO = 298.85;
 const INSV = TL.insV as {p: number; d: number}[];
 const R = (v: number) => v + INSV.reduce((a, i) => a + (i.p <= v + 1e-6 ? i.d : 0), 0);
 const virt = (r: number) => { let off = 0; for (const i of INSV) { const s0 = i.p + off; if (r < s0) return r - off; if (r < s0 + i.d) return i.p - 0.001; off += i.d; } return r - off; };
-const SV: React.FC<{at: number; n: string; v?: number}> = ({at, n, v}) => <SV at={R(at)} n={n} v={v} />;
+const SV: React.FC<{at: number; n: string; v?: number}> = ({at, n, v}) => <S at={R(at)} n={n} v={v} />;
 const useRoadFonts = () => {
   const [h] = React.useState(() => delayRender('road-fonts')); const [ok, setOk] = React.useState(false);
   React.useEffect(() => { Promise.all([['Road', 'road900'], ['RoadB', 'road700'], ['RoadMono', 'mono700']].map(([n, f]) => new FontFace(n, `url(${staticFile(`ls/fonts/${f}.woff2`)})`).load()))
