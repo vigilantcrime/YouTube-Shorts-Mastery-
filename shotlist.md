@@ -219,4 +219,9 @@ All gameplay is our swamp clip **g7**, cropped 9:16 from a Lanczos 3414×1920 up
 | 14 | 17.10 | MEANT SMUGGLING A TIGER | tiger walking (44.9s) | tracked spotlight box (+33 brightness) |
 | 15 | 18.37 | THROUGH LEONIDA AND NOW | wide dusk road (46.4s) | green "LEONIDA" title, 5-print paw trail |
 | 16 | 19.65 | IT'S LOOSE RIGHT NEXT TO YOU | player sprints, camera whips, tiger behind him (40.02s) | mint flash + "+1 TIGER" notification |
-| End | 21.07 | SUBSCRIBE … GTA 6 | channel page (Leonida Shifts), typed search, Ep. 1 card playing g6 bridge clip | subscribe click → Subscribed + bell |
+| 17 | 21.07 | SUBSCRIBE / TO LEONIDA | tiger charges you in the purple aim mode, shot 1 (49.8s) | subscribe chip + cursor click → Subscribed |
+| 18 | 22.36 | SHIFTS / BECAUSE WE'RE | tighter on the charging tiger, hit markers, shot 2 (51.2s, z1.12) | punch-in |
+| 19 | 23.17 | PUTTING IN / THAT SHIFT | the lunge… and it drops dead beside you (52.3s) | 10% punch on the lunge, impact boom |
+| 20 | 24.12 | TO MAKE SURE / YOU SEE | true 60 fps half-speed replay of the lunge and fall (52.55s) | slowed game audio |
+| 21 | 25.06 | EVERYTHING | standing over the tiger at dusk (56.6s) | — |
+| End | 25.80 | RELATED TO / GTA 6 | channel page (already Subscribed), typed search, Ep. 1 card playing the g6 bridge clip | 1.5 s like R4 |

@@ -19,7 +19,7 @@ const io = Easing.inOut(Easing.cubic), eo = Easing.out(Easing.cubic);
 /* ---------------- shots (cut frames = caption swaps) ---------------- */
 type Key = {s: number; cx: number; cy?: number; z?: number};
 type Punch = {t: number; a: number};
-type Shot = {f0: number; f1: number; src: number; keys: Key[]; punches: Punch[]; o?: [number, number]; kind?: 'map' | 'end'};
+type Shot = {f0: number; f1: number; src: number; keys: Key[]; punches: Punch[]; o?: [number, number]; kind?: 'map' | 'end'; file?: 'b' | 'slo'; rate?: number};
 const SH: Shot[] = [
   {f0: 0, f1: T(1.98), src: 12.0, keys: [{s: 12, cx: 0.6, z: 1.18}, {s: 12.9, cx: 0.6, z: 1.18}, {s: 13.98, cx: 0.67, z: 1.18}], punches: [{t: 0.98, a: 0.05}], o: [700, 960]},          // NPC waves you over
   {f0: T(1.98), f1: T(4.15), src: 9.9, keys: [{s: 9.9, cx: 0.6}], punches: [{t: 2.87, a: 0.08}, {t: 3.54, a: 0.05}]},    // straining at the stuck van
@@ -37,7 +37,13 @@ const SH: Shot[] = [
   {f0: T(17.1), f1: T(18.37), src: 44.9, keys: [{s: 44.9, cx: 0.43}], punches: [{t: 17.29, a: 0.06}, {t: 17.95, a: 0.06}]},
   {f0: T(18.37), f1: T(19.65), src: 46.4, keys: [{s: 46.4, cx: 0.52}], punches: [{t: 18.56, a: 0.05}]},                // wide dusk road — LEONIDA
   {f0: T(19.65), f1: T(21.07), src: 40.02, keys: [{s: 40.02, cx: 0.42}, {s: 40.5, cx: 0.42}, {s: 40.97, cx: 0.3, z: 1.18, cy: 0.4237}, {s: 41.44, cx: 0.3, z: 1.18, cy: 0.4237}], punches: [{t: 19.93, a: 0.06}, {t: 20.89, a: 0.08}]},
-  {f0: T(21.07), f1: NS_FRAMES, src: 0, keys: [], punches: [], kind: 'end'},
+  /* the kill (g7 49.8–57.3), under "Subscribe to Leonida Shifts because we're putting in that shift…" */
+  {f0: T(21.07), f1: T(22.36), src: 49.8, file: 'b', keys: [{s: 49.8, cx: 0.47}], punches: [{t: 21.69, a: 0.07}], o: [600, 900]},          // tiger charges — aim mode, shot 1
+  {f0: T(22.36), f1: T(23.17), src: 51.2, file: 'b', keys: [{s: 51.2, cx: 0.49, cy: 0.47, z: 1.12}], punches: [{t: 22.45, a: 0.06}], o: [620, 880]}, // closer, hit markers, shot 2
+  {f0: T(23.17), f1: T(24.12), src: 52.3, file: 'b', keys: [{s: 52.3, cx: 0.49}], punches: [{t: 23.62, a: 0.1}], o: [600, 860]},          // the lunge… and it drops
+  {f0: T(24.12), f1: T(25.06), src: 52.55, file: 'slo', rate: 0.5, keys: [{s: 52.55, cx: 0.5}], punches: [{t: 24.3, a: 0.06}], o: [580, 880]}, // 60fps slow-mo replay of the kill
+  {f0: T(25.06), f1: T(25.8), src: 56.6, file: 'b', keys: [{s: 56.6, cx: 0.47}], punches: [{t: 25.1, a: 0.05}]},                          // standing over the tiger
+  {f0: T(25.8), f1: NS_FRAMES, src: 0, keys: [], punches: [], kind: 'end'},
 ];
 const shotIdx = (f: number) => { let k = 0; SH.forEach((s, i) => { if (f >= s.f0) k = i; }); return k; };
 
@@ -72,13 +78,14 @@ const place = (s: Shot, f: number, u: number, v: number) => {
 };
 
 const Footage: React.FC<{s: Shot; f: number}> = ({s, f}) => {
-  const st = s.src + (f - s.f0) / FPS; const k = interpKeys(s.keys, st); const zb = k.z ?? 1; const vw = VW * zb, vh = VH * zb;
+  const st = s.src + (f - s.f0) / FPS * (s.rate ?? 1); const k = interpKeys(s.keys, st); const zb = k.z ?? 1; const vw = VW * zb, vh = VH * zb;
   const L = Math.min(0, Math.max(W - vw, 540 - k.cx * vw)), Tp = Math.min(0, Math.max(H - vh, 960 - (k.cy ?? 0.5) * vh));
   const {z, blur, wash} = shotZoom(s, f, s.f0 === 0); const [ox, oy] = s.o ?? [540, 960];
   return <AbsoluteFill style={{overflow: 'hidden'}}>
     <AbsoluteFill style={{transform: `scale(${z})`, transformOrigin: `${ox}px ${oy}px`, filter: blur ? `blur(${blur}px)` : undefined}}>
       <Sequence from={s.f0} layout="none">
-        <OffthreadVideo src={staticFile('ls/g7hq.mp4')} muted trimBefore={Math.round((s.src - SRC0) * FPS)} style={{position: 'absolute', left: L, top: Tp, width: vw, height: vh}} />
+        <OffthreadVideo src={staticFile(s.file === 'b' ? 'ls/g7hq_b.mp4' : s.file === 'slo' ? 'ls/g7slo.mp4' : 'ls/g7hq.mp4')} muted
+          trimBefore={Math.round((s.file === 'b' ? s.src - 44.0 : s.file === 'slo' ? (s.src - 52.45) * 2 : s.src - SRC0) * FPS)} style={{position: 'absolute', left: L, top: Tp, width: vw, height: vh}} />
       </Sequence>
     </AbsoluteFill>
     {wash > 0 && <AbsoluteFill style={{background: wash > 0.15 ? '#B4B4B4' : '#DCDCDC', opacity: wash}} />}
@@ -339,14 +346,14 @@ const EndCard: React.FC<{s: Shot; f: number}> = ({s, f}) => {
   const bl = interpolate(e, [0, 1, 4, 6, 8], [44, 24, 6, 2, 0], cl);
   const push = 1 + 0.008 * Math.max(0, e - 8) / FPS; const pe = f - T(25.06); const pun = pe < 0 ? 0 : pe < 8 ? 0.04 * io(pe / 8) : 0.04 - 0.015 * io(Math.min(1, (pe - 8) / 5));
   const typed = NAME.slice(0, Math.max(0, Math.min(NAME.length, e))); const curOn = e < NAME.length + 1 || Math.floor((e - NAME.length) / 8) % 2 === 0;
-  const sw = interpolate(f, [T(21.58), T(21.58) + 10], [-0.3, 1.3], cl); const sweeping = f >= T(21.58) && f <= T(21.58) + 10;
-  const tw = f - T(22.36); const twS = tw >= 0 && tw < 10 ? Math.sin((tw / 10) * Math.PI) : 0;
-  const click = T(22.79); const subd = f >= click; const ck = f - click;
+  const sw = interpolate(e, [10, 20], [-0.3, 1.3], cl); const sweeping = e >= 10 && e <= 20;
+  const tw = e - 24; const twS = tw >= 0 && tw < 10 ? Math.sin((tw / 10) * Math.PI) : 0;
+  const click = NS_FRAMES + 99; const subd = true; const ck = -1;
   const curX = interpolate(f, [T(22.4), click - 1, click + 14], [960, 452, 520], {...cl, easing: io}); const curY = interpolate(f, [T(22.4), click - 1, click + 14], [1020, 538, 600], {...cl, easing: io});
-  const curO = interpolate(f, [T(22.4), T(22.4) + 3, click + 10, click + 16], [0, 1, 1, 0], cl); const curS = ck >= 0 && ck < 4 ? 0.86 : 1;
+  const curO = 0; const curS = 1;   // the click happens on the SubCard (word SUBSCRIBE); no cursor on the closing card
   const btnS = ck >= 0 && ck < 5 ? interpolate(ck, [0, 2, 5], [0.94, 1.04, 1], cl) : 1; const bell = ck >= 0 && ck < 14 ? 16 * Math.sin(ck * 1.4) * (1 - ck / 14) : 0;
   const secs = 2 + Math.floor(e / FPS); const prog = 34 + (secs / 332) * 1012;
-  const cg = interpolate(f, [T(25.06), T(25.06) + 12], [-0.3, 1.3], cl);
+  const cg = interpolate(f, [T(26.2), T(26.2) + 12], [-0.3, 1.3], cl);
   return <AbsoluteFill style={{overflow: 'hidden', background: '#16293a'}}>
     <AbsoluteFill style={{transform: `translateY(${ty}px) scale(${sc * push * (1 + pun)})`, filter: bl ? `blur(${bl}px)` : undefined}}>
       {/* background: the card image blurred to mush, darker at the top */}
@@ -375,8 +382,8 @@ const EndCard: React.FC<{s: Shot; f: number}> = ({s, f}) => {
         {subd ? 'Subscribed' : 'Subscribe'}</div>
       {/* video card (the long-form), "playing" */}
       <div style={{position: 'absolute', left: 34, top: 620, width: 1012, height: 568, borderRadius: 21, overflow: 'hidden', boxShadow: '0 16px 36px rgba(0,0,0,0.5)'}}>
-        {f < T(22.83) ? <Img src={staticFile('ls/img/ep1_cardB.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-          : <Sequence from={T(22.83)} layout="none"><OffthreadVideo src={staticFile('ls/card_clip.mp4')} muted style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}} /></Sequence>}
+        {e < 4 ? <Img src={staticFile('ls/img/ep1_cardB.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+          : <Sequence from={s.f0 + 4} layout="none"><OffthreadVideo src={staticFile('ls/card_clip.mp4')} muted style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}} /></Sequence>}
         <AbsoluteFill style={{background: 'linear-gradient(90deg, rgba(10,14,30,0.55) 0%, rgba(10,14,30,0.15) 50%, rgba(0,0,0,0) 70%), linear-gradient(0deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%)'}} />
         <div style={{position: 'absolute', left: 58, top: 70, transform: 'rotate(-4deg)'}}><Emblem size={128} gear={1} /></div>
         <div style={{position: 'absolute', left: 54, top: 238, fontFamily: 'Cap', fontSize: 92, lineHeight: 1, color: '#fff', WebkitTextStroke: '3px #fff', paintOrder: 'stroke fill', filter: 'drop-shadow(0 5px 6px rgba(0,0,0,0.6))'}}>WEEK 1</div>
@@ -394,6 +401,32 @@ const EndCard: React.FC<{s: Shot; f: number}> = ({s, f}) => {
       {ck >= 0 && ck < 10 && <div style={{position: 'absolute', left: 452 - 60 * (ck / 10) - 20, top: 508 - 60 * (ck / 10) - 20, width: 40 + 120 * (ck / 10), height: 40 + 120 * (ck / 10), borderRadius: '50%', border: '4px solid rgba(255,255,255,0.8)', opacity: 1 - ck / 10}} />}
     </AbsoluteFill>
   </AbsoluteFill>;
+};
+
+/* ---------------- subscribe chip + cursor click on "SUBSCRIBE" ---------------- */
+const SubCard: React.FC<{f: number}> = ({f}) => {
+  const a = T(21.07), out = T(22.55), end = T(22.75); if (f < a || f >= end) return null; const k = f - a;
+  const click = T(21.75), ck = f - click, subd = ck >= 0;
+  const sc = f >= out ? interpolate(f, [out, end], [1, 0.82], cl) : interpolate(k, [0, 3, 6], [0.6, 1.08, 1], cl);
+  const op = f >= out ? interpolate(f, [out, end], [1, 0], cl) : interpolate(k, [0, 2], [0, 1], cl);
+  const btnS = ck >= 0 && ck < 6 ? interpolate(ck, [0, 2, 6], [0.9, 1.05, 1], cl) : 1; const bell = ck >= 0 && ck < 16 ? 18 * Math.sin(ck * 1.4) * (1 - ck / 16) : 0;
+  const cx = interpolate(f, [T(21.3), click - 1, click + 12], [1010, 790, 860], {...cl, easing: io}), cy = interpolate(f, [T(21.3), click - 1, click + 12], [620, 372, 470], {...cl, easing: io});
+  const co = interpolate(f, [T(21.3), T(21.3) + 3, click + 9, click + 15], [0, 1, 1, 0], cl);
+  return <>
+    <div style={{position: 'absolute', left: 160, top: 290, width: 760, height: 150, borderRadius: 75, background: 'rgba(18,18,20,0.88)', border: '2px solid rgba(255,255,255,0.12)', boxShadow: '0 14px 30px rgba(0,0,0,0.5)',
+      transform: `scale(${sc})`, opacity: op, display: 'flex', alignItems: 'center', padding: '0 22px', gap: 22}}>
+      <div style={{width: 106, height: 106, borderRadius: 53, flex: 'none', background: 'radial-gradient(circle at 40% 35%, #4a1d6b, #1a0828)', boxShadow: '0 0 0 4px #E8C04C', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Emblem size={70} gear={1} /></div>
+      <div style={{flex: 1, minWidth: 0}}><div style={{fontFamily: 'Pill7', fontSize: 42, color: '#fff', whiteSpace: 'nowrap', letterSpacing: -0.5}}>Leonida Shifts</div>
+        <div style={{fontFamily: 'Pill5', fontSize: 25, color: 'rgba(235,235,235,0.75)', marginTop: 2}}>GTA 6 news · every week</div></div>
+      <div style={{flex: 'none', height: 84, padding: '0 30px', borderRadius: 42, display: 'flex', alignItems: 'center', gap: 10, transform: `scale(${btnS})`, background: subd ? '#3b3b3f' : '#e8202a',
+        fontFamily: 'UIBold', fontSize: 34, color: '#fff', boxShadow: subd ? 'none' : '0 0 18px rgba(232,32,42,0.55)'}}>
+        {subd && <svg width={32} height={32} viewBox="0 0 24 24" style={{transform: `rotate(${bell}deg)`, transformOrigin: '50% 10%'}}><path d="M12 3 C8.5 3 6.5 5.6 6.5 9 V13 L4.5 16 H19.5 L17.5 13 V9 C17.5 5.6 15.5 3 12 3 Z" fill="#fff" /><circle cx={12} cy={19} r={2.2} fill="#fff" /></svg>}
+        {subd ? 'Subscribed' : 'Subscribe'}</div>
+    </div>
+    {ck >= 0 && ck < 10 && <div style={{position: 'absolute', left: 790 - 20 - 60 * (ck / 10), top: 372 - 20 - 60 * (ck / 10), width: 40 + 120 * (ck / 10), height: 40 + 120 * (ck / 10), borderRadius: '50%', border: '4px solid rgba(255,255,255,0.85)', opacity: 1 - ck / 10}} />}
+    {co > 0 && <svg width={66} height={66} viewBox="0 0 24 24" style={{position: 'absolute', left: cx, top: cy, opacity: co, transform: `scale(${ck >= 0 && ck < 4 ? 0.86 : 1})`, transformOrigin: '0 0', filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.55))'}}>
+      <path d="M3 2 L3 19 L7.5 15 L10.5 22 L13.5 20.7 L10.6 14 L16.5 14 Z" fill="#fff" stroke="#111" strokeWidth={1.3} strokeLinejoin="round" /></svg>}
+  </>;
 };
 
 /* ---------------- fonts / sfx helpers ---------------- */
@@ -420,6 +453,7 @@ const Visuals: React.FC = () => {
     <Badge f={f} />
     <MintFlash f={f} />
     <Gain f={f} />
+    <SubCard f={f} />
     <Logo f={f} />
     <Vignette />
     <Caption f={f} />
@@ -442,7 +476,9 @@ export const NpcShort: React.FC = () => {
     <S at={14.6} n="sfx2/pop" v={0.3} /><S at={17.3} n="sfx2/pop" v={0.28} />
     {[0, 1, 2, 3, 4].map((i) => <S key={i} at={18.55 + i * 0.2} n="sfx2/tap" v={0.4} />)}
     <S at={19.7} n="sfx2/chime" v={0.32} /><S at={19.72} n="sfx2/sparkle" v={0.2} />
-    {Array.from({length: 14}, (_, i) => <S key={'k' + i} at={21.1 + i / 30} n="sfx2/key" v={0.25} />)}
-    <S at={22.79} n="sfx/click" v={0.6} /><S at={22.83} n="sfx2/ding" v={0.3} />
+    <Sequence from={T(21.07)} layout="none"><Audio src={staticFile('ls/ns2_kill.wav')} volume={0.55} /></Sequence>
+    <S at={21.07} n="sfx2/pop" v={0.35} /><S at={21.75} n="sfx/click" v={0.6} /><S at={21.79} n="sfx2/ding" v={0.3} />
+    <S at={23.87} n="sfx/boom" v={0.3} /><S at={24.12} n="sfx2/sparkle" v={0.18} />
+    {Array.from({length: 14}, (_, i) => <S key={'k' + i} at={25.83 + i / 30} n="sfx2/key" v={0.22} />)}
   </AbsoluteFill>;
 };
