@@ -26,6 +26,7 @@ import {FbSplit4, FB4_FRAMES} from './FbSplit4';
 import {LeonidaEp1, EP1_FRAMES} from './ls/Ep1';
 import {LsThumb} from './ls/LsThumb';
 import {NpcShort, NS_FRAMES} from './ls/NpcShort';
+import {SixStar, SIX_FRAMES} from './ls/SixStar';
 import {AgentReel, AB_FRAMES} from './AgentReel';
 
 export const FPS = 30;
@@ -33,6 +34,7 @@ export const Root = () => (
   <>
     <Composition id="AgentReel" component={AgentReel} durationInFrames={AB_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="NpcShort" component={NpcShort} durationInFrames={NS_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="SixStar" component={SixStar} durationInFrames={SIX_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="LsThumb" component={LsThumb} durationInFrames={1} fps={30} width={1280} height={720} />
     <Composition id="LeonidaEp1" component={LeonidaEp1} durationInFrames={EP1_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="FbSplit4" component={FbSplit4} durationInFrames={FB4_FRAMES} fps={30} width={1080} height={1920} />

@@ -225,3 +225,39 @@ All gameplay is our swamp clip **g7**, cropped 9:16 from a Lanczos 3414×1920 up
 | 20 | 24.12 | TO MAKE SURE / YOU SEE | true 60 fps half-speed replay of the lunge and fall (52.55s) | slowed game audio |
 | 21 | 25.06 | EVERYTHING | standing over the tiger at dusk (56.6s) | — |
 | End | 25.80 | RELATED TO / GTA 6 | channel page (already Subscribed), typed search, Ep. 1 card playing the g6 bridge clip | 1.5 s like R4 |
+
+## Leonida Shifts Short — "There's only one way to lose 6 stars in GTA 6" (R4 format, 52.5s, ElevenLabs VO)
+All gameplay from the 6-star Drive clip (1080p60, Lanczos 3414×1920 upscale, 9:16 crops); no AI footage; the deputy head-shot close-up is excluded.
+| # | Time | Line | Clip moment | Overlay / move |
+|---|------|------|-------------|----------------|
+| 1 | 0.00 | THERE'S ONLY … SIX STARS | police SUV launched off the sand pile, flipping (123.85) | R4 stutter open + pink leak, logo sting |
+| 2 | 2.16 | IN GTA 6 | SUV crashing into the yard, 0.6× slow-mo (126.45) | punch |
+| 3 | 3.55 | AND YOU'RE NOT GONNA LIKE IT | running up the garden path, bullets sparking (132.55) | punch |
+| 4 | 4.91 | GTA 5 | overpass firefight, prone cops (24.3) | — |
+| 5 | 5.79 | CAPPED YOU AT FIVE STARS | peeking from cover (45.0) | star bar 1→5 + locked 6th slot |
+| 6 | 7.31 | ROCKSTAR BROUGHT THE SIXTH ONE BACK | scope on a burning car, 0.5× (58.25) | real HUD crop: 6 stars cascade in, bracket on the new star |
+| 7 | 8.96 | AND IT'S THE FIRST TIME WE'VE HAD IT | blast aftermath under the overpass (60.55) | punch |
+| 8 | 10.50 | SINCE 2009 | driving into the sun flare (104.1) | odometer pop 2026→2009 |
+| 9 | 12.06 | GETTING THERE TAKES WORK | crouched among bodies (18.3) | punch |
+| 10 | 13.63 | KILL A COP | dark cover fire, muzzle flash on "COP" (10.2) | punch |
+| 11 | 14.33 | AND YOU'RE ON THREE STARS | scope (41.0) | star bar 1→3 |
+| 12 | 16.06 | FOR SIX YOU NEED | rifle muzzle flash (33.95) | star bar 4→6 + red glow |
+| 13 | 17.01 | PROPER CARNAGE | scope explosion (54.42) | 10% punch |
+| 15 | 18.00 | LIKE STEALING A TANK OFF A MILITARY BASE | military Humvee pulls alongside (97.95), crop pans with it | tracked yellow brackets |
+| 16 | 19.92 | AND BLOWING UP EVERYTHING AROUND YOU | fireball + sparks fountain + orange blast wave (141.15) | punches |
+| 17 | 22.02 | AND FORGET THE OLD TRICK OF BREAKING | running through the patio gate (146.3) | — |
+| 18 | 23.59 | LINE OF SIGHT AND WAITING | hiding under the shelter (162.3) | star bar flashing grey (the old trick) |
+| 19–20 | 25.40 | THE COPS NOW TRACK YOUR FACE / CLOTHES / CAR | driving (87.0 / 92.0) | real HUD crop, bracket jumps head → hanger → car |
+| 21 | 28.47 | EVEN CCTV | sparks under the SUV (109.8) | CCTV feed gag (B&W, REC, CAM 07) |
+| 22 | 30.22 | NORMALLY YOU DITCH THE WHIP | climbing out of the wrecked SUV (129.33) | punch |
+| 23 | 31.68 | CHANGE YOUR FIT | the real item wheel, headwear OFF (140.58, 0.68×) | bracket on the cap tile |
+| 24 | 32.42 | OR SPLIT JASON AND LUCIA UP | fence run + vault (133.95) | prompt badge SWITCH → NOT TODAY |
+| 25 | 34.78 | AT SIX STARS | among the bodies right after the 6th star (63.55) | punch |
+| 26 | 36.14 | NONE OF THAT WORKS | jacking a police SUV (67.0) | car / hanger / swap icons, stamped ✕ |
+| 27 | 37.50 | THE HEAT DOESN'T DROP | police SUVs under the overpass (76.0) | — |
+| 28 | 39.10 | THE COPS AND THE MILITARY HUNT YOU | Humvees ahead opening fire (122.0) | spotlight box |
+| 29 | 40.92 | ACROSS THE WHOLE MAP | Leonida map zooming OUT from Vice City | police blips spread, "All of Leonida" pill |
+| 30–32 | 42.46 | SO HOW DO YOU ESCAPE SIX STARS? YOU DON'T. | lot run (165.2), patio (144.8), gate (149.3) | the game's own notification, "Escape is impossible" highlighted |
+| 33–34 | 45.66 | YOUR ONLY WAY OUT IS DYING | at the sedan (167.3) → death blast (171.7) | punch |
+| 35 | 47.80 | (WASTED) BE HONEST, HOW LONG DID YOU LAST | the real WASTED screen, fitted | timer pop 0:00→1:55 |
+| End | 50.82 | DROP YOUR TIME IN THE COMMENTS | YouTube comments sheet, pinned @LeonidaShifts | typed "I lasted", gold cursor |
