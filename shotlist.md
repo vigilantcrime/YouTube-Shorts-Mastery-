@@ -198,3 +198,25 @@ Gag devices:
 - 25 / 0 / 1 stat row.
 - Phone contacts (POLICE vs WORLD RECORDS).
 - PART 2 moon-landing follow tap and closing tape.
+
+## Leonida Shifts Short v2 — "NPCs in GTA 6 will ask you for help" (Roddy R4 format, 27.3s, ElevenLabs VO)
+All gameplay is our swamp clip **g7**, cropped 9:16 from a Lanczos 3414×1920 upscale; no AI footage.
+| # | Time | Line | g7 moment (crop) | Move / overlay |
+|---|------|------|------------------|----------------|
+| 1 | 0.00 | NPCS IN / GTA 6 | NPC waving you over at the van (12.0s, cx .60→.67, z1.18) | stutter-zoom open + pink leak, 3D emblem with 2 glints, fly-out 2.87s |
+| 2 | 1.98 | WILL ASK YOU … REGRET IT | NPC straining against the stuck van (9.9s) | punch-ins on HELP / REGRET |
+| 3 | 4.15 | HEAD OUT TO THE SWAMP AT SUNSET | stylised Natural-Earth "Leonida" map | ×3 zoom on the Everglades, dashed ring, "The Swamp" pill |
+| 4 | 5.68 | WHERE TWO GUYS HAVE THEIR VAN | sunset, van in the water (6.65s, pan .40→.55) | punch on VAN |
+| 5 | 7.20 | STUCK IN THE MUD | tight on the sunk front wheel (8.55s, z1.25) | punch on MUD |
+| 6 | 8.08 | WALK UP AND THEY'LL | arriving at the van's rear (14.5s) | — |
+| 7 | 9.07 | ASK YOU TO PUSH | the game's own OPEN/PUSH prompt (28.8s) | 12% punch into the prompt |
+| 8 | 9.94 | DIG YOUR HEELS IN | both pushing (33.2s) | punch on HEELS |
+| 9 | 10.79 | THEN ASK WHAT THEY'RE DOING OUT HERE | face-off with the NPC (16.45s) | prompt badge TALK (R1) → JUST STUFF (L2) |
+| 10 | 12.32 | KEEP PUSHING UNTIL THEY OPEN | rear push, tail lights (31.5s) | 2 punches |
+| 11 | 13.61 | THE BACK DOORS | hand on the door (35.3s) | punch on DOORS |
+| 12 | 14.37 | AND A TIGER CLIMBS OUT | tiger roaring in the doorway (36.87s) | tracked yellow brackets on its face |
+| 13 | 15.80 | TURNS OUT JUST STUFF | tiger out by the van (42.85s) | punch on STUFF |
+| 14 | 17.10 | MEANT SMUGGLING A TIGER | tiger walking (44.9s) | tracked spotlight box (+33 brightness) |
+| 15 | 18.37 | THROUGH LEONIDA AND NOW | wide dusk road (46.4s) | green "LEONIDA" title, 5-print paw trail |
+| 16 | 19.65 | IT'S LOOSE RIGHT NEXT TO YOU | player sprints, camera whips, tiger behind him (40.02s) | mint flash + "+1 TIGER" notification |
+| End | 21.07 | SUBSCRIBE … GTA 6 | channel page (Leonida Shifts), typed search, Ep. 1 card playing g6 bridge clip | subscribe click → Subscribed + bell |

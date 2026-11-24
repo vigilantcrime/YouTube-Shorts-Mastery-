@@ -177,3 +177,69 @@ Measured from all three intros at 10 fps:
 - The A/B/C look rotation, cards with tilt and float, side-by-sides with REAL LIFE/GTA 6 labels, highlight boxes and badges, icon pops.
 - Animated numbers, article highlighter sweeps, the recap collage, and the subscribe-click ending.
 - The audio mixed to −18 LUFS with the voice on top, rendered at 1080×1920 and sized to send first time (under about 28 MB).
+
+---
+
+## 8. R4 — frame-exact spec ("This Dog Digging Spot in GTA 6 Pays A…", 24.9 s)
+
+Measured frame by frame (all 743 frames) with OpenCV (ECC/ORB transforms, colour fits, font fitting against 24 + 21 open fonts), librosa and `ebur128`.
+Source is 720×1280 / 30 fps; every value below is already converted to **1080×1920** (×1.5) unless marked "@720".
+
+### 8.1 Numbers
+| | R4 | Rule for us |
+|---|---|---|
+| Length | 24.9 s, VO 0.0–24.6 s, video ends 0.3 s after the last word | end 0.3 s after the last word |
+| Cuts | 17 (avg shot 1.45 s, 1.0–2.2 s) | a cut on a caption swap every 1–2.2 s |
+| Loudness | −14.7 LUFS, LRA 1.9 LU, TP −0.4 | VO-dominant, LRA ≈ 2 (we master at −18 per CLAUDE.md) |
+| Bed | ≈ 18 dB under the VO, almost no energy above 2 kHz | muffled low bed + quiet game audio |
+
+### 8.2 Opening (frames 0–12)
+- **Stutter zoom:** frame 0 is the shot at **77 % scale** (wider), frames 1–2 are *flash-forwards* (exact copies of frames 9 and 14), frames 3→12 ease from 82 % to 100 % (ease-out), then the shot keeps creeping in (~+1.5 %/s).
+- **Pink light-leak:** a magenta radial wash (centre ≈ 45 % x / 55 % y, radius ≈ 35 % of the width, colour ≈ RGB +60/+20/+50) on frame 0, **off on frames 1–2**, back on frame 3 and fading out linearly by frame 10.
+
+### 8.3 Logo (0 – 3.03 s)
+- GTA VI logo (we use our own emblem): bbox 309×250, centre **(564, 249)**, 3D-extruded, slight perspective tilt that drifts, vertical float ±6 px (≈2 s period). On screen from frame 0, no entrance.
+- **Two glints:** a soft diagonal white band sweeps left→right at **0.10–0.37 s** and again at **0.80–1.07 s** (8 frames each). A sparkle SFX sits on the first glint.
+- **Exit 2.87–3.03 s:** moves up and slightly left with motion blur, accelerating, fading in the last 2 frames.
+
+### 8.4 Captions (all 41 chunks measured)
+- **Font: Archivo Black / Archivo 900 at width ≈105** (best of 45 fonts: ~1 px per-glyph error) **plus a 2.25 px same-colour outer stroke** (faux-bold), letter-spacing 0, word space ≈ 18 px (narrower than the font's).
+- Cap height 52.5 px (incl. stroke). Centred at x 540, caps from **y 1411 to 1463** (centre 74.8 %). Never moves; **hard swap, no pop, no fade**.
+- Colours: white #FEFEFE, **yellow #F7E327** (nouns/places/objects: DOG, JET SKI, GTA 6, GAMBIT BAY, BEACH, FOOTBALL, $1,200, CHANNEL), **magenta #ED25AB** (verbs/emphasis: RESCUE, EVERYTHING, DRIVING, FOLLOW). Key word = last word(s) of the chunk; ~50 % of chunks are all white.
+- Shadow: dark halo = text dilated ~7.5 px, blurred σ≈9 px, offset (3, 3), 74 % black.
+- Timing: swaps land 0.05–0.14 s **after** the word onset; 1–3 words; 10–32 frames each.
+
+### 8.5 Lens / grade
+- **Vignette only** (no blur, no haze, no tint): black, elliptical, centre (540, 961), radii **856 × 1143 px**; opacity 0 inside r = 0.555 → 0.285 at r = 0.80 → 0.53 at r ≥ 1.0 (linear segments; corners end up at 50 % brightness, top/bottom edges ≈ 66–73 %, sides ≈ 92 %). Sits **above everything** (gameplay, map, end card) – only the captions are unaffected.
+
+### 8.6 Cuts = zoom-blur transitions (every cut, ~6 frames)
+| frame | outgoing −2 | outgoing −1 | **incoming 0** | +1 | +2 | +3 |
+|---|---|---|---|---|---|---|
+| extra zoom | +3 % | +10–20 % | +10–12 % | +4–8 % | +1.5 % | +0.5 % |
+| blur σ (px @1080) | ~2 | 8–25 | **20–40** | 6–20 | ~1.5 | 0 |
+| contrast/lift | – | – | ×0.8 + white lift | ×0.9 + lift | – | – |
+- The new caption appears on incoming frame 0. One cut (618) uses a slower 3-frame blur-out/1-frame blur-in.
+
+### 8.7 In-shot motion
+- Base creep ≈ +1.5 %/s. **Punch-ins on key words:** +5–14 % over 8–14 frames (ease-in-out) with a 1–2 % settle-back over 3–4 frames; they accumulate within a shot. Often a second smaller step later in the shot.
+
+### 8.8 Overlays (in order of appearance)
+1. **Map zoom (3.33–5.00 s):** stylised in-game map, blurred entry, slight settle (−6 % over 2 frames), then a bell-shaped zoom ×2.1 over 0.55 s (ease-in-out), +5 % more, a −2 % bounce, a +4 %/−2 % "breath", and a zoom-through exit (+9 %/frame) into the cut.
+   - **Ring** (appears 0.67 s in): faint thin white outer circle + small dashed-yellow ellipse with a translucent yellow-green fill that grows over 3 frames; then a thick solid white inner ellipse.
+   - **Pill** (0.77 s in, on the place-name caption): rounded-rect 915×158, radius 15, cream border 4.5 px (#EAD389) + thin navy inner line, flat blue **#0D91DC** fill with a gloss band, white **Outfit 400** text (cap ≈ 52 px), pink map blip at the bottom-right corner. Enters as a ghost at 80 % scale, tilted −3°, pops to 105 % over 4 frames, straightens, settles.
+2. **Spotlight box on a far subject (6.67–7.30 s):** tracks the subject; rounded rect (r 15) with a 2 px white stroke + 1 px dark outline; **inside brightened by +33 (additive)**; four 8–9 px **yellow #F6E22F** L-brackets (arm ≈ 54 px) just outside the corners.
+3. **Prompt badge (9.30–10.53 s):** realistic prompt first ("DIVE (R1)", ghost-in with a 3D tilt) → after 0.17 s swaps to the joke prompt ("COOL DOG (L2)", 862×210) with a yellow/white particle burst; dark teal #2A454D glass fill with a diagonal gloss, cream #EAD389 border, white **Oswald 700** text with a dark outline, a grey ring + white keycap button. Slight 3D drift; fades out over 2 frames before the cut.
+4. **Tracking brackets on a close subject (12.1–13.3 s):** same white rounded rect + yellow corners, no brightening.
+5. **Location title (14.47–15.07 s):** "GRASSRIVERS", lime-green gradient (#BEC34D top → #87AB4E bottom), decorative condensed font (we use **Ranchers**), cap ≈ 85 px, top of frame (y ≈ 128–213), blurred entry with the cut, drifts slowly left.
+6. **Paw trail (18.0–19.4 s):** five yellow paw prints (pad + 3 toes, thin dark outline, soft shadow), one every **6 frames**, zig-zagging upward from the subject.
+7. **Money pop (21.73–23.23 s):** cut frame + 1 get a **mint tint** (contrast ×0.7 + green lift); badge ghosts in (frame 654), pops tilted (−4°) at 90 %, scales to 100 % over 5 frames with mint/white particles; glassy translucent dark fill, mint border #A3CD96 3–4 px, white "+ $1,218" (cap ≈ 75 px), dark circle with a green wallet icon; holds, fades over 3 frames.
+8. **End card (23.27 s → end):** zoom-out/defocus reveal over 8 frames (from a solid blur, sliding up ~200 px, slight overshoot), then a slow +1.3 % push.
+   - Top bar: red YouTube play icon + "YouTube"; search pill (light grey, **gold border**) **typing the handle one character per frame** with a gold blinking cursor.
+   - Channel row: avatar 240 px with a gold ring, channel name ~68 px bold white with a **yellow gradient sweep** and a 4-point twinkle star, "subscribers · videos" line.
+   - Video card 1011×568 (radius 21) showing the long-form thumbnail, **playing** (timestamp ticks, red progress dot), 2-line bold title under it.
+   - Background: the card image blurred to mush; vignette on top; captions continue ("MORE PLACES / ON MY CHANNEL").
+
+### 8.9 Audio
+- VO on frame 0, continuous, compressed hard (LRA 1.9).
+- Bed: low, muffled (little above 2 kHz), ~18 dB under the VO; game audio is not featured.
+- SFX: sparkle shimmer on the logo glint (0.24 s), soft clicks around cuts, a cash shimmer on the money pop, a high "ding"/pop as the end card lands.
