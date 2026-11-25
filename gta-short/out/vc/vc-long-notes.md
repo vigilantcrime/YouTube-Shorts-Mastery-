@@ -66,6 +66,18 @@ Both are also credited on the frame while they show. CC BY-SA asks for the credi
 ## Sound
 Original music (synthesised, A minor, 90 BPM, energy follows the chapters) + ~340 SFX hits cued to the pop-ups (pops, stamp thuds, strikes, count ticks, subscribe click, bumper risers/impacts, whooshes on every camera glide). Music ducks ~7.5 dB under the voice.
 
+## YouTube upload (25 Nov)
+Uploaded to @vigilantcrime through vidIQ (the Windsor `upload_video` action only takes a public URL up to 100 MB, with no thumbnail, so it could not carry the 4K file). Video: https://www.youtube.com/watch?v=t9AC7jQJ5t4 (video id t9AC7jQJ5t4, 5:54). Visibility was not chosen, so it went up private (the draft default) and is **scheduled to go public at 20:30 UTC (8:30 pm UK) on 25 Nov**, after YouTube has had time to finish its 4K processing, so viewers get 4K from the first click. To change it: set it public (or back to private) in YouTube Studio, which also cancels the schedule. The thumbnail was attached through vidIQ; the video is private so the live thumbnail could not be viewed from here, so check it in Studio.
+- Title: GTA 6 Launch Day: Why Britain Called in Sick (56% Spike)
+- Category: News & Politics. Tags: 20 (gta 6, gta vi, grand theft auto 6, gta 6 launch day, gta 6 uk, call in sick gta 6, britain called in sick, brighthr, andy burnham gta 6 and others). Hashtags in the description: #GTA6 #UKNews #GTAVI.
+- Thumbnail: `vc_longform_thumb.jpg`. Description: chapters, what's in the file, sources, photo credits, disclaimers (same text as the description above, with the links).
+- The source links are the ones from the earlier research. They could not be re-opened from this server (the news sites are blocked here), so click through them once before you publish.
+- Not possible through any tool here: posting and **pinning the comment** (the YouTube API has no pin and the connectors have no top-level comment action). Once the video is public, post this from the channel and pin it (three dots next to the comment, then Pin):
+
+> Be honest: did you book the day off weeks ago, wake up suddenly "very unwell", or hold out for the weekend? 👇
+>
+> The numbers here are company data (BrightHR), a pre-launch poll and provisional school figures, not a national census. Sources are in the description. If you think I've read it wrong, say so.
+
 ## Files
 - `vc_longform_full_4k.mp4` — **the 5:52 v2 cut** (3840×2160, HEVC Main10, ~8.4 Mbps, AAC 320k, 369.5 MiB, −14 LUFS).
 - `vc_part1_v2_4k.mp4` — Part 1 on its own (4:15, 4K, 375.5 MiB, v2 effects; its opening still has the dimmer alarm photo, the joined cut has the brighter one).
