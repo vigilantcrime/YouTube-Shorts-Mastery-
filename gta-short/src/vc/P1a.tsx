@@ -5,6 +5,8 @@ import {AlarmScreen, BarPair, Bubble, CalendarCard, Door10, EmptyDesk, EvidenceT
 import {Arrow, Burst, Diary, DashRows, FitNote, LeaveForm, Lens, Paper, Portal, SPill, StruckTitle, SubBtn, TF, Vanish, Rise, Checklist, TodoCard, CallScreen} from './parts2';
 import {Conn} from './kit';
 import {A, P, cue} from './anchors';
+import {Photo} from './parts4';
+import {CR, HAS} from './credits';
 import type {SceneDef} from './world';
 
 export type SD = Omit<SceneDef, 't1'>;
@@ -26,7 +28,8 @@ export const scenesA: SD[] = [
   /* S1 — alarm, the country, the telly, "I'm not going in" */
   {t0: A('the alarm went off'), y: 40, children: <>
     {cue(A('the alarm went off') + 0.15, 'alarm', 2.6)}
-    <Obj t0={P(A('the alarm went off') + 0.1)} x={400} y={540} from="left" rotY={14} z={2}><Phone w={340}><AlarmScreen t0={A('the alarm went off') + 0.15} /></Phone></Obj>
+    {!HAS.alarm && <Obj t0={P(A('the alarm went off') + 0.1)} x={400} y={540} from="left" rotY={14} z={2}><Phone w={340}><AlarmScreen t0={A('the alarm went off') + 0.15} /></Phone></Obj>}
+    {HAS.alarm && <Obj t0={P(A('the alarm went off') + 0.1, 'slam')} x={430} y={540} from="left" rotY={14} z={2}><Photo src="ph/alarm.jpg" w={640} h={620} t0={A('the alarm went off') + 0.1} credit={CR.alarm} dur={6} z0={1.0} z1={1.1} px={0} py={0} label="THURSDAY · 07:00"><div style={{position: 'absolute', left: '15%', top: '44%', width: '71%', height: '33%', background: '#0b0f13', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 0 30px rgba(0,0,0,0.9)'}}><span style={{fontFamily: F.mono, fontWeight: 700, fontSize: 168, letterSpacing: 4, color: '#d9edff', textShadow: '0 0 26px rgba(120,190,255,0.95)'}}>07:00</span></div></Photo></Obj>}
     <Obj t0={P(A('half the country'))} x={1010} y={175} from="down"><Pill text="Half the country" v="red" icon={ic('group', 44)} /></Obj>
     <Obj t0={P(A('half the country') + 0.25)} x={1010} y={560} from="up" rotY={-10} z={2}><UKMap w={600} h={640} t0={A('half the country') + 0.2} center={[-3.2, 54.3]} span={1180} dots={{t0: A('half the country') + 0.4, n: 220, dur: 1.6}} /></Obj>
     <Obj t0={P(A('the telly'))} x={700} y={925} from="up"><Pill text="The telly" v="dark" icon={ic('tv', 44)} /></Obj>
@@ -80,7 +83,7 @@ export const scenesA: SD[] = [
     <Obj t0={P(A('i promise'), 'slam')} x={1560} y={880} from="none"><Stamp t0={A('i promise')} text="To be continued" sub="I PROMISE I'LL COME BACK TO THAT" size={52} color={C.blueL} rot={-5} /></Obj>
   </>},
   /* S6 — picture that Thursday (bumper 01 overlays the middle) */
-  {t0: A('first i need'), y: -40, children: <>
+  {t0: A('first i need'), y: 330, children: <>
     <Obj t0={P(A('picture that') - 0.1, 'slam')} x={960} y={215} from="zoom" z={3}><TF text="Picture that Thursday" size={140} max={1300} /></Obj>
     <Obj t0={P(A('that thursday') + 0.2)} x={470} y={885} from="up"><Pill text="Thursday" v="blue" icon={ic('calendar', 44)} /></Obj>
     <Obj t0={P(A('that thursday') + 0.5)} x={960} y={885} from="up"><Pill text="Morning" v="dark" icon={ic('sun', 44)} /></Obj>
@@ -108,7 +111,7 @@ export const scenesA: SD[] = [
     {cue(A('twenty one percent') - 0.1, 'tick', 1.0)}
     <Obj t0={P(A('another firm'))} x={560} y={225} from="down"><Pill text="Another firm" v="blue" icon={ic('building', 48)} /></Obj>
     <Obj t0={P(A('twenty one percent'), 'slam')} x={560} y={540} from="zoom" z={3}><Count t0={A('twenty one percent') - 0.1} dur={1.0} to={21} fmt={(v) => '+' + Math.round(v) + '%'} size={340} style={{textShadow: '0 10px 0 #0a1a3a, 0 0 90px rgba(47,123,255,0.85)', WebkitTextStroke: '6px #fff', paintOrder: 'stroke fill', color: '#2F7BFF'}} /></Obj>
-    <Obj t0={P(A('leave requests'))} x={1380} y={560} from="right" rotY={-9} z={2}><Card w={720} h={620} label="Leave requests"><BarPair t0={A('leave requests') + 0.2} w={650} h={500} a={{label: 'LAST YEAR', v: 100, sub: 'INDEX'}} b={{label: 'THIS THURSDAY', v: 121, sub: 'INDEX'}} max={140} delta="+21%" /></Card></Obj>
+    <Obj t0={P(A('leave requests'))} x={1380} y={560} from="right" rotY={-9} z={2}><Card w={720} h={620} label="Leave requests"><BarPair t0={A('leave requests') + 0.2} w={650} h={500} a={{label: 'LAST YEAR', v: 100, sub: 'INDEX'}} b={{label: 'THIS THURSDAY', v: 121, sub: 'INDEX'}} max={170} delta="+21%" /></Card></Obj>
     <Obj t0={P(A('on the same thursday'))} x={560} y={800} from="up"><Pill text="Same Thursday, last year" v="dark" icon={ic('calendar', 44)} /></Obj>
   </>},
   /* S10 — not a census (magnifier on the companies' dashboard) */
@@ -164,7 +167,8 @@ export const scenesA: SD[] = [
   /* S15a — the boss, the empty desk */
   {t0: A('and if you were a boss'), y: -30, children: <>
     <Obj t0={P(A('a boss'))} x={540} y={250} from="down"><Pill text="A boss, that morning" v="blue" icon={ic('person', 44)} /></Obj>
-    <Obj t0={P(A('empty desk'))} x={540} y={640} from="left" rotY={8} z={2}><EmptyDesk w={680} /></Obj>
+    {HAS.office ? <Obj t0={P(A('empty desk'))} x={540} y={620} from="left" rotY={8} z={2}><Photo src="ph/office.jpg" w={700} h={520} t0={A('empty desk')} credit={CR.office} dur={5} /></Obj>
+      : <Obj t0={P(A('empty desk'))} x={540} y={640} from="left" rotY={8} z={2}><EmptyDesk w={680} /></Obj>}
     <Obj t0={P(A('empty desk'))} x={1360} y={440} from="right"><Pill text="An empty desk" v="ghost" icon={ic('chair', 44)} /></Obj>
     <Obj t0={P(A("weren't laughing"))} x={1360} y={600} from="right"><Pill text="Not laughing" v="red" icon={ic('warn', 44)} /></Obj>
     <Obj t0={P(A('staring at'))} x={1360} y={760} from="right"><Pill text="Staring at it" v="dark" icon={ic('eye', 44)} /></Obj>
@@ -188,7 +192,7 @@ export const scenesA: SD[] = [
     <Rise t0={A('enjoying your life')} n={8} icon="star" color={C.blueL} x0={900} x1={1700} y0={950} />
   </>},
   /* S17 — what the coverage missed → a country giving itself permission (bumper 02 overlays) */
-  {t0: A("because here's"), y: -30, children: <>
+  {t0: A("because here's"), y: -330, children: <>
     <Obj t0={P(A("because here's") + 0.1, 'slam')} x={960} y={225} from="zoom" z={3}><TF text="What the coverage missed" size={130} max={1500} /></Obj>
     <Obj t0={P(A('coverage missed') + 0.7)} x={520} y={640} from="left" rotY={10} z={2}><Paper w={640} head="Britain pulls a sickie" kicker="COVERAGE" /></Obj>
     <Obj t0={P(A('coverage missed') + 1.1, 'slam')} x={640} y={830} from="none" z={4}><Stamp t0={A('coverage missed') + 1.1} text="Missed the point" size={54} color={C.red} rot={-7} /></Obj>

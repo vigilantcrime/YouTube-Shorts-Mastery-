@@ -4,6 +4,8 @@ import {Big, C, Card, Count, F, Hi, Icon, Obj, Pill, Shock, Small, Stamp, commas
 import {Door10, LineSpike, PeopleGrid, Quote, UKMap, Bubble} from './parts';
 import {SchoolHouse, Arrow, AgeBadge, Battery, Burst, Bust, DayTiles, Diary, Dissolve, Donut, Download, Gauge, Late, Moon, OfficeBlock, Portal, Race, Rise, SPill, StruckTitle, TF, Thought, Voucher, Checklist} from './parts2';
 import {A, P, cue} from './anchors';
+import {Photo} from './parts4';
+import {CR, HAS} from './credits';
 import type {SD} from './P1a';
 
 const ic = (n: string, size = 46) => <Icon n={n} size={size} />;
@@ -26,9 +28,10 @@ export const scenesB: SD[] = [
   /* S19 — new telly, custom controller, the full bunker → asleep before midnight, alarm, lock away */
   {t0: A('new telly'), y: -40, children: <>
     <Obj t0={P(A('new telly'))} x={520} y={560} from="left" rotY={10} z={2}><Checklist w={700} title="The setup" items={[{t: A('new telly') + 0.1, label: 'New telly', icon: 'tv'}, {t: A('custom controller'), label: 'Custom controller', icon: 'pad'}, {t: A('the full bunker'), label: 'The full bunker', icon: 'house'}]} /></Obj>
-    <Obj t0={P(A("then he couldn't"))} x={1360} y={360} from="right"><Pill text="Asleep before midnight" v="dark" icon={ic('moon')} /></Obj>
-    <Obj t0={P(A('set his alarm'))} x={1360} y={520} from="right"><Pill text="Alarm set for seven" v="red" icon={ic('bell')} /></Obj>
-    <Obj t0={P(A('lock himself'))} x={1360} y={680} from="right"><Pill text="Locked himself away" v="blue" icon={ic('lock')} /></Obj>
+    <Obj t0={P(A('new telly') + 0.3)} x={1360} y={400} from="right" rotY={-9} z={2}><Photo src="ph/ps5.jpg" w={640} h={410} t0={A('new telly') + 0.3} credit={CR.ps5} dur={7} z0={1.3} z1={1.5} fx={0.7} fy={0.6} px={0} py={0} pos="50% 92%" /></Obj>
+    <Obj t0={P(A("then he couldn't"))} x={1360} y={690} from="right"><Pill text="Asleep before midnight" v="dark" icon={ic('moon')} /></Obj>
+    <Obj t0={P(A('set his alarm'))} x={1360} y={790} from="right"><Pill text="Alarm set for seven" v="red" icon={ic('bell')} /></Obj>
+    <Obj t0={P(A('lock himself'))} x={1360} y={890} from="right"><Pill text="Locked himself away" v="blue" icon={ic('lock')} /></Obj>
   </>},
   /* S21 — not laziness, devotion */
   {t0: A("that's not laziness"), y: 40, children: <>
@@ -58,8 +61,9 @@ export const scenesB: SD[] = [
   /* S24 — not for the hills, for Vice City */
   {t0: A('i love that'), y: 50, children: <>
     <Obj t0={P(A('a week in'))} x={960} y={215} from="down"><Pill text="A week in Wales" v="blue" icon={ic('calendar')} /></Obj>
-    <Obj t0={P(A('not for the hills'))} x={520} y={500} from="up" z={2}><Icon n="mountain" size={300} sw={5} color={C.blueL} /></Obj>
-    <Obj t0={P(A('the hills'))} x={520} y={760} from="up"><SPill t0={P(A('the hills') + 0.35, 'strike')} text="The hills" v="dark" icon={ic('mountain')} /></Obj>
+    {HAS.snowdonia ? <Obj t0={P(A('not for the hills') - 0.3)} x={520} y={520} from="up" rotY={10} z={2}><Photo src="ph/snowdonia.jpg" w={640} h={470} t0={A('not for the hills') - 0.3} credit={CR.snowdonia} dur={6} /></Obj>
+      : <Obj t0={P(A('not for the hills'))} x={520} y={500} from="up" z={2}><Icon n="mountain" size={300} sw={5} color={C.blueL} /></Obj>}
+    <Obj t0={P(A('the hills'))} x={520} y={HAS.snowdonia ? 830 : 760} from="up"><SPill t0={P(A('the hills') + 0.35, 'strike')} text="The hills" v="dark" icon={ic('mountain')} /></Obj>
     <Obj t0={P(A('for vice city'))} x={1360} y={340} from="down"><Icon n="sun" size={150} sw={5} color={C.redL} style={{filter: 'drop-shadow(0 0 40px rgba(255,46,74,0.9))'}} /></Obj>
     <Obj t0={P(A('vice city'), 'slam')} x={1360} y={560} from="zoom" z={3}><TF text="Vice City" size={250} max={820} hot /></Obj>
     <Obj t0={P(A('vice city') + 0.4)} x={1360} y={780} from="up"><Pill text="For Vice City" v="red" icon={ic('pad')} /></Obj>
@@ -103,7 +107,7 @@ export const scenesB: SD[] = [
     <Rise t0={A('to be happy')} n={9} icon="heart" />
   </>},
   /* S30 — no kit? good luck; John Lewis +62% (bumper 03 overlays) */
-  {t0: A("and if you didn't"), y: 40, children: <>
+  {t0: A("and if you didn't"), y: 330, children: <>
     {cue(A('sixty two percent') - 0.1, 'tick', 1.1)}
     <Obj t0={P(A('have the kit'), 'slam')} x={960} y={225} from="zoom" z={3}><TF text="No kit? Good luck." size={150} max={1300} /></Obj>
     <Obj t0={P(A('in the weeks before'))} x={540} y={895} from="up"><Pill text="In the weeks before launch" v="dark" icon={ic('clock')} /></Obj>
@@ -128,6 +132,7 @@ export const scenesB: SD[] = [
   {t0: A('they broke the internet'), y: -30, children: <>
     <Obj t0={P(A('broke the internet'), 'slam')} x={960} y={250} from="zoom" z={3}><TF text="Broke the internet" size={190} max={1500} hot /></Obj>
     <Obj t0={P(A('broke the internet') + 0.05)} x={960} y={660} from="up" z={2}><Gauge t0={A('broke the internet') + 0.05} w={720} /></Obj>
+    {HAS.router && <Obj t0={P(A('broke the internet') + 0.2)} x={330} y={640} from="left" rotY={12} z={2}><Photo src="ph/router.jpg" w={500} h={380} t0={A('broke the internet') + 0.2} credit={CR.router} dur={4} /></Obj>}
     <Obj t0={P(A('broke the internet') + 0.8, 'slam')} x={1500} y={850} from="none"><Stamp t0={A('broke the internet') + 0.8} text="Off the chart" size={56} color={C.red} rot={-5} /></Obj>
   </>},
   /* S33b — Virgin Media O2 and BT/EE broadband records */
@@ -164,7 +169,9 @@ export const scenesB: SD[] = [
   </>},
   /* S36b — a download the size of a small moon; a nation in the dark */
   {t0: A('just to download'), y: 40, children: <>
-    <Obj t0={P(A('just to download'))} x={1270} y={470} from="zoom" z={2}><Moon size={520} /></Obj>
+    {HAS.moon ? <Obj t0={P(A('just to download'))} t1={HAS.uknight ? A('a nation sitting') - 0.1 : undefined} x={1270} y={470} from="zoom" z={2}><Photo src="ph/moon.jpg" round w={540} h={540} t0={A('just to download')} dur={4} z0={1.0} z1={1.18} px={0} py={0} /></Obj>
+      : <Obj t0={P(A('just to download'))} x={1270} y={470} from="zoom" z={2}><Moon size={520} /></Obj>}
+    {HAS.uknight && <Obj t0={P(A('a nation sitting'), 'slam')} x={1270} y={470} from="zoom" z={2}><Photo src="ph/uknight.jpg" w={600} h={600} t0={A('a nation sitting')} credit={CR.uknight} label="BRITAIN AT NIGHT" dur={3} z0={1.0} z1={1.15} /></Obj>}
     <Obj t0={P(A('size of a small'))} x={560} y={310} from="left"><Pill text="The size of a small moon" v="blue" icon={ic('moon')} /></Obj>
     <Obj t0={P(A('a nation sitting'))} x={560} y={560} from="left"><Pill text="A nation, in the dark" v="dark" icon={ic('group')} /></Obj>
     <Obj t0={P(A('progress bar') - 0.3)} x={960} y={880} from="up" z={3}><Download t0={A('just to download') + 0.4} t1={A('finish')} w={1300} /></Obj>
@@ -180,7 +187,7 @@ export const scenesB: SD[] = [
     <Obj t0={P(A('seven am alarm'))} x={1440} y={710} from="right"><SPill t0={P(A('seven am alarm') + 0.5, 'strike')} text="The 7am alarm" v="dark" icon={ic('bell')} /></Obj>
   </>},
   /* S38 — the real story (bumper 04) */
-  {t0: A('if you ask me'), y: 40, children: <>
+  {t0: A('if you ask me'), y: -330, children: <>
     <Obj t0={P(A('real story'), 'slam')} x={960} y={225} from="zoom" z={3}><TF text="The real story" size={170} max={1400} hot /></Obj>
     <Obj t0={P(A('not that people'))} x={560} y={850} from="left"><SPill t0={P(A('not that people') + 0.7, 'strike')} text="People skipped work" v="dark" icon={ic('case')} /></Obj>
     <Obj t0={P(A('at the same time'))} x={1330} y={380} from="down"><Pill text="At the same time" v="red" icon={ic('clock')} /></Obj>
@@ -190,10 +197,12 @@ export const scenesB: SD[] = [
   /* S39 — the Prime Minister; Downing Street; a British success story made in Edinburgh */
   {t0: A('which brings me'), y: -30, children: <>
     <Obj t0={P(A('the prime minister'))} x={560} y={225} from="down"><Pill text="The Prime Minister" v="blue" size={42} icon={ic('shield', 58)} /></Obj>
-    <Obj t0={P(A('downing street'))} x={380} y={600} from="left" rotY={14} z={2}><Door10 w={330} /></Obj>
+    {HAS.door ? <Obj t0={P(A('downing street'))} x={380} y={590} from="left" rotY={14} z={2}><Photo src="ph/door.jpg" w={340} h={500} t0={A('downing street')} credit={CR.door} dur={6} label="NO. 10" /></Obj>
+      : <Obj t0={P(A('downing street'))} x={380} y={600} from="left" rotY={14} z={2}><Door10 w={330} /></Obj>}
     <Obj t0={P(A('downing street') + 0.3)} x={380} y={925} from="up"><Pill text="Downing Street" v="dark" size={30} icon={ic('house', 40)} /></Obj>
     <Obj t0={P(A('a british success'))} x={1260} y={420} from="right" rotY={-8} z={2}><Quote w={900} who="Downing Street" v="blue">A British <Hi t0={A('success story')}>success story,</Hi> made in Edinburgh.</Quote></Obj>
-    <Obj t0={P(A('made in edinburgh'))} x={1260} y={790} from="up" rotY={-6} z={2}><UKMap w={620} h={330} t0={A('made in edinburgh')} center={'Edinburgh'} span={430} pins={[{at: 'Edinburgh', label: 'EDINBURGH', t: A('made in edinburgh') + 0.5, side: 'r'}]} /></Obj>
+    {HAS.edinburgh ? <Obj t0={P(A('made in edinburgh'))} x={1260} y={790} from="up" rotY={-6} z={2}><Photo src="ph/edinburgh.jpg" w={640} h={330} t0={A('made in edinburgh')} credit={CR.edinburgh} label="EDINBURGH" dur={4} /></Obj>
+      : <Obj t0={P(A('made in edinburgh'))} x={1260} y={790} from="up" rotY={-6} z={2}><UKMap w={620} h={330} t0={A('made in edinburgh')} center={'Edinburgh'} span={430} pins={[{at: 'Edinburgh', label: 'EDINBURGH', t: A('made in edinburgh') + 0.5, side: 'r'}]} /></Obj>}
     <Obj t0={P(A('fair enough'))} x={740} y={700} from="up"><Pill text="Fair enough" v="blue" icon={ic('tick')} /></Obj>
   </>},
   /* S41a — would Andy Burnham be exploring Vice City? */

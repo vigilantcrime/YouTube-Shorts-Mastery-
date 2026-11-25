@@ -47,6 +47,7 @@ export const fit = (text: string, font: string, base: number, maxW: number, ls =
 /* ---------- contexts ---------- */
 export const CamCtx = React.createContext({x: 960, y: 540, z: 1});
 export const SceneCtx = React.createContext({t0: 0, t1: 1, cx: 960, cy: 540});
+export const ObjT0 = React.createContext<number | null>(null);
 
 /* ---------- police-light stage (parallax by camera) ---------- */
 const skylinePath = (() => {
@@ -104,7 +105,7 @@ export const Obj: React.FC<{t0: number; t1?: number; x: number; y: number; from?
   const fl = float ? Math.sin(t * 1.25 + x * 0.013) * float : 0; const sway = Math.sin(t * 0.7 + y * 0.01) * 1.4;
   const px = -(cam.x - sc.cx) * depth * 0.22, py = -(cam.y - sc.cy) * depth * 0.22;
   return <div style={{position: 'absolute', left: x, top: y, zIndex: Math.round(z * 10), opacity: op, filter: blur > 0.3 ? `blur(${blur}px)` : undefined, transformOrigin: '50% 50%', width: 'max-content',
-    transform: `translate(-50%, -50%) translate(${px + tx}px, ${py + ty + fl}px) perspective(1700px) rotateX(${rotX + rx}deg) rotateY(${rotY + sway * (rotY ? 1 : 0)}deg) rotate(${rot}deg) scale(${s * scale})`, ...style}}>{children}</div>;
+    transform: `translate(-50%, -50%) translate(${px + tx}px, ${py + ty + fl}px) perspective(1700px) rotateX(${rotX + rx}deg) rotateY(${rotY + sway * (rotY ? 1 : 0)}deg) rotate(${rot}deg) scale(${s * scale})`, ...style}}><ObjT0.Provider value={t0}>{children}</ObjT0.Provider></div>;
 };
 
 /* ---------- Card / Pill / Title / Big / Stamp / Hi ---------- */
@@ -130,11 +131,15 @@ export const Pill: React.FC<{text: string; icon?: React.ReactNode; v?: PV; size?
     {strike !== undefined && <div style={{position: 'absolute', left: size * 0.5, top: '50%', height: 5, width: `${strike * 100 - 6}%`, background: C.red, borderRadius: 3, boxShadow: `0 0 12px ${C.red}`, transform: 'rotate(-2deg)'}} />}
   </div>;
 };
-export const Title: React.FC<{children: React.ReactNode; size?: number; hot?: boolean; style?: React.CSSProperties}> = ({children, size = 150, hot, style}) =>
-  <div style={{fontFamily: F.display, fontSize: size, lineHeight: 1.04, textTransform: 'uppercase', textAlign: 'center', whiteSpace: 'nowrap', letterSpacing: size * 0.012, color: 'transparent',
-    background: hot ? 'linear-gradient(180deg, #FF8A99 0%, #FF2E4A 60%, #D01232 100%)' : 'linear-gradient(180deg, #FFFFFF 18%, #BFDDFF 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text',
+export const Title: React.FC<{children: React.ReactNode; size?: number; hot?: boolean; style?: React.CSSProperties}> = ({children, size = 150, hot, style}) => {
+  const t = useT(); const o0 = React.useContext(ObjT0); const p = o0 === null ? 1 : ramp(t, o0 + 0.22, o0 + 0.95, 0, 1, eio);
+  const base = hot ? 'linear-gradient(180deg, #FF8A99 0%, #FF2E4A 60%, #D01232 100%)' : 'linear-gradient(180deg, #FFFFFF 18%, #BFDDFF 100%)';
+  const sheen = p > 0.001 && p < 0.999 ? `linear-gradient(105deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.98) 50%, rgba(255,255,255,0) 60%) ${160 - 230 * p}% 0 / 280% 100% no-repeat, ` : '';
+  return <div style={{fontFamily: F.display, fontSize: size, lineHeight: 1.04, textTransform: 'uppercase', textAlign: 'center', whiteSpace: 'nowrap', letterSpacing: size * 0.012, color: 'transparent',
+    background: sheen + base, WebkitBackgroundClip: 'text', backgroundClip: 'text',
     WebkitTextStroke: hot ? `${Math.max(3, size * 0.026)}px #fff` : '0px', paintOrder: 'stroke fill',
     filter: hot ? `drop-shadow(0 ${size * 0.04}px 0 #5a0a1c) drop-shadow(0 0 ${size * 0.2}px rgba(255,46,74,0.6))` : `drop-shadow(0 ${size * 0.04}px 0 #0a1a3a) drop-shadow(0 0 ${size * 0.2}px rgba(47,123,255,0.6))`, ...style}}>{children}</div>;
+};
 export const Big: React.FC<{children: React.ReactNode; size?: number; color?: string; style?: React.CSSProperties}> = ({children, size = 64, color = C.white, style}) =>
   <div style={{fontFamily: F.uiB, fontSize: size, lineHeight: 1.12, color, ...style}}>{children}</div>;
 export const Small: React.FC<{children: React.ReactNode; size?: number; color?: string; mono?: boolean; style?: React.CSSProperties}> = ({children, size = 26, color = C.mute, mono, style}) =>
@@ -142,13 +147,21 @@ export const Small: React.FC<{children: React.ReactNode; size?: number; color?: 
 export const Src: React.FC<{text: string; style?: React.CSSProperties}> = ({text, style}) =>
   <div style={{display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: F.mono, fontSize: 21, letterSpacing: 2, color: C.blueL, textTransform: 'uppercase', ...style}}>
     <span style={{width: 8, height: 8, background: C.blueL, transform: 'rotate(45deg)'}} />{text}</div>;
+export const Sparks: React.FC<{k: number; n?: number; r?: number; col?: string; size?: number}> = ({k, n = 18, r = 230, col = '#fff', size = 9}) => {
+  if (k < 0 || k > 0.9) return null;
+  return <>{Array.from({length: n}, (_, i) => { const a = rnd(i, 61) * 6.283, sp = 0.45 + rnd(i, 62) * 0.75, d = r * sp * (1 - Math.pow(1 - Math.min(1, k / 0.9), 2.2)); const g = 120 * k * k; const sz = size * (0.5 + rnd(i, 63));
+    return <div key={i} style={{position: 'absolute', left: '50%', top: '50%', width: sz, height: sz, marginLeft: -sz / 2, marginTop: -sz / 2, borderRadius: sz, background: i % 3 ? col : '#ffd36a', opacity: 1 - k / 0.9, transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d + g}px)`, boxShadow: `0 0 ${sz * 2}px ${col}`}} />; })}</>;
+};
 export const Stamp: React.FC<{t0: number; text: string; color?: string; size?: number; rot?: number; sub?: string; style?: React.CSSProperties}> = ({t0, text, color = C.red, size = 84, rot = -6, sub, style}) => {
   const t = useT(); const k = t - t0; if (k < 0) return null;
   const s = k < 0.14 ? 2.3 - 1.3 * (k / 0.14) : 1; const sh = k < 0.4 ? Math.sin(k * 90) * 6 * (1 - k / 0.4) : 0; const op = ramp(t, t0, t0 + 0.06);
-  return <div style={{display: 'inline-block', opacity: op, transform: `rotate(${rot}deg) translate(${sh}px, ${-sh * 0.4}px) scale(${s})`, padding: `${size * 0.1}px ${size * 0.3}px`, border: `${Math.max(5, size * 0.075)}px solid ${color}`, borderRadius: size * 0.14, color, textAlign: 'center',
-    boxShadow: `0 0 0 3px rgba(0,0,0,0.25), inset 0 0 0 3px ${color}55, 0 0 30px ${color}66`, background: 'rgba(5,11,26,0.35)', ...style}}>
-    <div style={{fontFamily: F.hero, fontSize: size, letterSpacing: size * 0.06, lineHeight: 1, textTransform: 'uppercase'}}>{text}</div>
-    {sub && <div style={{fontFamily: F.mono, fontSize: size * 0.26, letterSpacing: size * 0.04, marginTop: size * 0.08, opacity: 0.85}}>{sub}</div>}
+  return <div style={{position: 'relative', display: 'inline-block'}}>
+    <div style={{display: 'inline-block', opacity: op, transform: `rotate(${rot}deg) translate(${sh}px, ${-sh * 0.4}px) scale(${s})`, padding: `${size * 0.1}px ${size * 0.3}px`, border: `${Math.max(5, size * 0.075)}px solid ${color}`, borderRadius: size * 0.14, color, textAlign: 'center', whiteSpace: 'nowrap',
+      boxShadow: `0 0 0 3px rgba(0,0,0,0.25), inset 0 0 0 3px ${color}55, 0 0 30px ${color}66`, background: 'rgba(5,11,26,0.35)', ...style}}>
+      <div style={{fontFamily: F.hero, fontSize: size, letterSpacing: size * 0.06, lineHeight: 1, textTransform: 'uppercase'}}>{text}</div>
+      {sub && <div style={{fontFamily: F.mono, fontSize: size * 0.26, letterSpacing: size * 0.04, marginTop: size * 0.08, opacity: 0.85}}>{sub}</div>}
+    </div>
+    <Sparks k={k - 0.1} r={size * 2.4} col={color === C.red ? '#ff6a7e' : '#8FC1FF'} />
   </div>;
 };
 export const Hi: React.FC<{t0: number; dur?: number; children: React.ReactNode; color?: string}> = ({t0, dur = 0.45, children, color = 'rgba(255,46,74,0.88)'}) => {

@@ -5,6 +5,8 @@ import {BarPair, LineSpike, PeopleGrid, Quote, UKMap} from './parts';
 import {Arrow, Battery, Burst, Rise, SPill, SchoolHouse, StruckTitle, TF} from './parts2';
 import {Breath, CommentBox, EmptySeats, Pulse, RiseCard, SchoolGrid, Ticket, WeekCard} from './parts3';
 import {A2 as A, P, D2, cue} from './anchors';
+import {Photo} from './parts4';
+import {CR, HAS} from './credits';
 import type {SD} from './P1a';
 
 const ic = (n: string, size = 46) => <Icon n={n} size={size} />;
@@ -12,9 +14,10 @@ const hot = {textShadow: '0 10px 0 #5a0a1c, 0 0 90px rgba(255,46,74,0.7)', Webki
 
 export const scenes2: SD[] = [
   /* P0 — not a panic about kids (bumper 05 overlays) */
-  {t0: A("i'm not turning"), y: -30, children: <>
+  {t0: A("i'm not turning"), y: 330, children: <>
     <Obj t0={P(A('a panic'), 'slam')} x={960} y={225} from="zoom" z={3}><StruckTitle t0={A('about kids') + 0.3} text="A panic about kids" size={140} max={1400} /></Obj>
-    <Obj t0={P(A('about kids') + 0.5, 'slam')} x={960} y={575} from="zoom" z={2}><SchoolHouse w={440} /></Obj>
+    {HAS.school ? <Obj t0={P(A('about kids') + 0.5, 'slam')} x={960} y={575} from="zoom" rotY={-6} z={2}><Photo src="ph/school.jpg" w={860} h={520} t0={A('about kids') + 0.5} credit={CR.school} dur={4} label="SCHOOL · ILLUSTRATIVE" /></Obj>
+      : <Obj t0={P(A('about kids') + 0.5, 'slam')} x={960} y={575} from="zoom" z={2}><SchoolHouse w={440} /></Obj>}
     <Obj t0={P(A('straight with you'))} x={960} y={885} from="up"><Pill text="Straight with you" v="blue" size={40} icon={ic('eye', 56)} /></Obj>
   </>},
   /* P1 — more than 1,400 English secondary schools */
@@ -79,7 +82,7 @@ export const scenes2: SD[] = [
     <Obj t0={P(A('about us') + 0.3)} x={960} y={820} from="up"><Pill text="Actually" v="ghost" icon={ic('search')} /></Obj>
   </>},
   /* P9 — my read (bumper 06 overlays), opinion */
-  {t0: A('going to give'), y: 30, children: <>
+  {t0: A('going to give'), y: -330, children: <>
     <Obj t0={P(A('going to give') + 0.15, 'slam')} x={960} y={225} from="zoom" z={3}><TF text="My read" size={170} max={900} /></Obj>
     <Obj t0={P(A('my opinion'), 'slam')} x={960} y={860} from="none"><Stamp t0={A('my opinion')} text="Opinion" sub="MINE — NOT A FACT" size={84} color={C.blueL} rot={-4} /></Obj>
   </>},
@@ -115,7 +118,7 @@ export const scenes2: SD[] = [
   /* P13 — and then a game comes along */
   {t0: A('a game comes along'), y: -30, children: <>
     <Obj t0={P(A('a game comes along') + 0.2, 'slam')} x={960} y={225} from="zoom" z={3}><TF text="A game comes along" size={140} max={1400} hot /></Obj>
-    <Obj t0={P(A('a game comes along') + 0.5, 'slam')} x={520} y={620} from="zoom" rot={-6} z={2}><Icon n="pad" size={400} sw={4.5} style={{filter: 'drop-shadow(0 0 44px rgba(47,123,255,0.95))'}} /></Obj>
+    <Obj t0={P(A('a game comes along') + 0.5, 'slam')} x={520} y={620} from="zoom" rotY={9} z={2}><Photo src="ph/ps5.jpg" w={470} h={600} t0={A('a game comes along') + 0.5} credit={CR.ps5} dur={5} z0={1.0} z1={1.12} /></Obj>
     <Obj t0={P(A('half the country'))} x={1380} y={470} from="right"><Pill text="Half the country" v="red" icon={ic('group')} /></Obj>
     <Obj t0={P(A('since they were'))} x={1380} y={620} from="right"><Pill text="Since they were teens" v="dark" icon={ic('bag')} /></Obj>
     <Rise t0={A('since they were')} n={8} icon="star" color={C.blueL} x0={900} x1={1700} y0={950} />
@@ -147,7 +150,8 @@ export const scenes2: SD[] = [
     <Obj t0={P(A('or is that'))} x={960} y={380} from="pop" z={3}><Pill text="Or" v="ghost" size={34} /></Obj>
     <Obj t0={P(A('a nation catching'), 'slam')} x={1440} y={380} from="zoom" z={3}><TF text="Catching its breath?" size={100} max={720} /></Obj>
     <Obj t0={P(A('a nation catching'))} x={1440} y={520} from="up"><Pill text="A nation" v="blue" icon={ic('group')} /></Obj>
-    <Obj t0={P(A('its breath') - 0.5)} x={960} y={790} from="zoom" z={2}><Breath size={300} /></Obj>
+    {HAS.mist && <Obj t0={P(A('its breath') - 1.4)} x={960} y={790} from="up" z={1}><Photo src="ph/mist.jpg" w={940} h={330} t0={A('its breath') - 1.4} credit={CR.mist} dur={5} label="A NATION, CATCHING ITS BREATH" /></Obj>}
+    <Obj t0={P(A('its breath') - 0.5)} x={960} y={790} from="zoom" z={3}><Breath size={280} /></Obj>
   </>},
   /* P18 — you don't have to like it… but you can't look at a 56% (ends mid-word in the VO) */
   {t0: A("you don't have to"), y: 40, children: <>
