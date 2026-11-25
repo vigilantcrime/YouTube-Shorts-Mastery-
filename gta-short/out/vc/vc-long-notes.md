@@ -52,6 +52,16 @@ Needs your call (not found / contradicted — the audio says them, the graphics 
 6. **The teaser is never paid off.** Part 1 promises "a Travelodge, a Fire Stick and a man who walked out of court" and says "I'll come back to that" — nothing in Part 1 or Part 2 does. It matches the reported Rockstar-hack case; if you add that section, mind UK contempt-of-court rules (active proceedings).
 7. **Part 2's audio is cut mid-word** ("…you can't look at a 56% j—"). The video lands on +56% and fades to black; send the rest of that line and I'll extend the ending.
 
+
+## v2 upgrade (what changed after v1)
+- Impact engine: camera shake + zoom punch on every slam/bumper/counter landing, roll during glides, kick-synced "breathing" (the world pulses on the music's kick), foreground bokeh/dust for depth, light sheen sweeping through every hot title, spark bursts on every stamp, a flash on every chapter hit, crane moves into each File chapter, riser + half-second dropout into the title slam at 0:02.
+- Real photography in floating glass screens, graded blue/red, credited on the frame and below: alarm clock (Tbatb, CC BY-SA 4.0 — the displayed time is edited to 07:00), PS5 + DualSense (Osh33m, CC BY-SA 4.0), plus any of the Commons/NASA shots that downloaded in time (see the credits list at the end). All credited photos are real, not AI. **No AI footage anywhere:** Higgsfield unlimited showed as unavailable on Seedance 2.5, so nothing was generated and no credits were spent.
+- Add the credits to the description (below).
+
+## Photo credits (paste into the description)
+- Alarm clock: "A digital alarm clock in Glasgow" — Tbatb, CC BY-SA 4.0, via Wikimedia Commons (edited: time display changed).
+- PlayStation 5 and DualSense — Osh33m, CC BY-SA 4.0, via Wikimedia Commons (cropped/graded).
+
 ## Sound
 Original music (synthesised, A minor, 90 BPM, energy follows the chapters) + ~340 SFX hits cued to the pop-ups (pops, stamp thuds, strikes, count ticks, subscribe click, bumper risers/impacts, whooshes on every camera glide). Music ducks ~7.5 dB under the voice.
 
