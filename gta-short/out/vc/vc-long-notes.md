@@ -1,6 +1,6 @@
 # Vigilant Crime long-form — "Britain called in sick" (Part 1 + Part 2)
 
-Style: PatientGTA continuous motion-graphics world, rebuilt for a UK crime channel (police-blue / siren-red on navy, case-file accents), no GTA colours, no Rockstar art. 16:9, authored at 1920×1080 and rendered at **3840×2160**, 30 fps, HEVC, BT.709, audio AAC 320k at **−14 LUFS / −1.5 dBTP**.
+Style: PatientGTA continuous motion-graphics world, rebuilt for a UK crime channel (police-blue / siren-red on navy, case-file accents), no GTA colours, no Rockstar art. 16:9, authored at 1920×1080 and rendered at **3840×2160**, 30 fps, HEVC Main10, BT.709, audio AAC 320k at **−14 LUFS** (true peak −1.4 dBFS). Final cut: `vc_longform_full_4k.mp4`, 5:52, 369.5 MiB.
 
 ## Title (vidIQ long-form CTR score)
 1. **GTA 6 Launch Day: Why Britain Called in Sick (56% Spike)** — 95  ← use this
@@ -55,17 +55,21 @@ Needs your call (not found / contradicted — the audio says them, the graphics 
 
 ## v2 upgrade (what changed after v1)
 - Impact engine: camera shake + zoom punch on every slam/bumper/counter landing, roll during glides, kick-synced "breathing" (the world pulses on the music's kick), foreground bokeh/dust for depth, light sheen sweeping through every hot title, spark bursts on every stamp, a flash on every chapter hit, crane moves into each File chapter, riser + half-second dropout into the title slam at 0:02.
-- Real photography in floating glass screens, graded blue/red, credited on the frame and below: alarm clock (Tbatb, CC BY-SA 4.0 — the displayed time is edited to 07:00), PS5 + DualSense (Osh33m, CC BY-SA 4.0), plus any of the Commons/NASA shots that downloaded in time (see the credits list at the end). All credited photos are real, not AI. **No AI footage anywhere:** Higgsfield unlimited showed as unavailable on Seedance 2.5, so nothing was generated and no credits were spent.
+- Real photography in floating glass screens, graded blue/red, credited on the frame and below: alarm clock (Tbatb, CC BY-SA 4.0 — the displayed time is edited to 07:00), PS5 + DualSense (Osh33m, CC BY-SA 4.0), and nothing else: Wikimedia throttled this server's IP (HTTP 429) for the whole session, so the other planned photos (office, school, houses, the Downing Street door, Edinburgh, Snowdonia, UK at night, moon, router, mist) fell back to the vector graphics. Both photos are real, not AI. **No AI footage anywhere:** Higgsfield unlimited showed as unavailable on Seedance 2.5, so nothing was generated and no credits were spent.
 - Add the credits to the description (below).
 
 ## Photo credits (paste into the description)
 - Alarm clock: "A digital alarm clock in Glasgow" — Tbatb, CC BY-SA 4.0, via Wikimedia Commons (edited: time display changed).
 - PlayStation 5 and DualSense — Osh33m, CC BY-SA 4.0, via Wikimedia Commons (cropped/graded).
+Both are also credited on the frame while they show. CC BY-SA asks for the credit above plus the license name; if you would rather not carry any share-alike question, the two photo scenes can be swapped back to the vector graphics (a one-line change in `src/vc/credits.ts`, `HAS`).
 
 ## Sound
 Original music (synthesised, A minor, 90 BPM, energy follows the chapters) + ~340 SFX hits cued to the pop-ups (pops, stamp thuds, strikes, count ticks, subscribe click, bumper risers/impacts, whooshes on every camera glide). Music ducks ~7.5 dB under the voice.
 
 ## Files
+- `vc_longform_full_4k.mp4` — **the 5:52 v2 cut** (3840×2160, HEVC Main10, ~8.4 Mbps, AAC 320k, 369.5 MiB, −14 LUFS).
+- `vc_part1_v2_4k.mp4` — Part 1 on its own (4:15, 4K, 375.5 MiB, v2 effects; its opening still has the dimmer alarm photo, the joined cut has the brighter one).
+- The 4K masters were rendered at CRF 12 (about 510 MB for the 5:52), which is too large to send through chat, so the delivery file is a single-pass 10-bit re-encode (`tools/vc/final_encode.sh`). Measured against the masters: SSIM(Y) 0.997–0.999, PSNR(Y) 49–56 dB on twelve sampled seconds, full decode with no errors (`tools/vc/qa_final.py`). If you want the extra headroom for YouTube's own re-encode, the masters can be rebuilt with `tools/vc/render_v2.sh`.
 - `vc_longform_full.srt` / `.vtt` — captions for the 5:52 cut; `vc_longform_p1.srt` for Part 1 alone.
 - `vc_longform_thumb.jpg` — thumbnail.
 - Source: `gta-short/src/vc/*` (composition `VcPart1`, `VcFull`, `VcThumb`).

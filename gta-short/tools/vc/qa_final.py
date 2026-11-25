@@ -20,8 +20,8 @@ def run(cmd):
 for t in POINTS:
     k = int(t // SEGLEN)
     off = t - k * SEGLEN
-    flt = ("[0:v]scale=3840:2160:flags=bicubic,format=yuv420p10le,split[a1][a2];"
-           "[1:v]format=yuv420p10le,split[b1][b2];[a1][b1]ssim[o1];[a2][b2]psnr[o2];[o1]nullsink;[o2]nullsink")
+    flt = ("[0:v]format=yuv420p10le[a];[1:v]format=yuv420p10le,split[b1][b2];"
+           "[a][b1]ssim[s];[s][b2]psnr")
     out = run(["ffmpeg", "-hide_banner", "-nostats", "-ss", f"{t:.3f}", "-t", "1", "-i", FINAL,
                "-ss", f"{off:.3f}", "-t", "1", "-i", SEGS[k], "-filter_complex", flt, "-f", "null", "-"])
     s = re.search(r"SSIM Y:([0-9.]+).*All:([0-9.]+)", out)
