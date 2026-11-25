@@ -261,3 +261,76 @@ All gameplay from the 6-star Drive clip (1080p60, Lanczos 3414×1920 upscale, 9:
 | 33–34 | 45.66 | YOUR ONLY WAY OUT IS DYING | at the sedan (167.3) → death blast (171.7) | punch |
 | 35 | 47.80 | (WASTED) BE HONEST, HOW LONG DID YOU LAST | the real WASTED screen, fitted | timer pop 0:00→1:55 |
 | End | 50.82 | DROP YOUR TIME IN THE COMMENTS | YouTube comments sheet, pinned @LeonidaShifts | typed "I lasted", gold cursor |
+
+## Vigilant Crime long-form — "Britain called in sick" (PatientGTA-style continuous motion graphics, 16:9, rendered 3840×2160; no footage, no photos)
+Every scene sits in ONE continuous world; the camera glides between them (bezier ease + 10% zoom dip + directional blur). Each scene has its own layout and illustration; no illustration repeats except deliberate callbacks in the Part 2 montage. Pop-ups land on the spoken noun (word-anchored).
+| # | Time | Pop-ups / illustration | Camera |
+|---|------|------------------------|--------|
+| 0 | 0:00.00 | Calendar page with 19 circled, hot title, struck 'A few people' / 'A cheeky Friday', crowd grid lights up | glide → (level), zoom 1 |
+| 1 | 0:06.04 | Shaking alarm phone, UK map filling with dots, 'Half the country', 'The telly', "I'm not going in" bubble | glide → (drift ↓), zoom 1 |
+| 2 | 0:11.90 | 'Grand Theft Auto VI' hot title, 'Unlocked at midnight' + shockwave, 00:00 launch clock, lock / key | glide → (drift ↑), zoom 1 |
+| 3 | 0:14.86 | Giant 13 YEARS count + THE WAIT bar, two DELAYED stamps, schoolkid → mortgage holder arrow | glide → (drift ↓), zoom 1 |
+| 4 | 0:22.35 | 'Something very British', struck Riot / Camp outside the shops, row of people fading to ghosts | glide → (drift ↑), zoom 1 |
+| 5 | 0:28.11 | 'Stay with me', Subscribe button + cursor click → SUBSCRIBED, 'The sick days' bar, 'Only the opening' | glide → (drift ↓), zoom 0.98 |
+| 6 | 0:30.93 | Case-file teaser: Travelodge / Fire Stick / court evidence tags on red strings, TO BE CONTINUED stamp | glide → (drift ↑), zoom 1 |
+| 7 | 0:39.26 | 'Picture that Thursday' + chequer bumper FILE 01 THE NUMBERS | glide → (drift ↑), zoom 1 |
+| 8 | 0:41.51 | Bright HR: 1,000,000+ workers and 70,000 firms exhibit cards | glide → (drift ↓), zoom 1 |
+| 9 | 0:47.72 | Sickness-absence bar pair + giant +56% with shockwave on the repeat | glide → (drift ↑), zoom 1 |
+| 10 | 0:53.69 | Giant blue +21% + leave-requests bar pair | glide → (drift ↓), zoom 1 |
+| 11 | 0:59.49 | NOT A CENSUS stamp + magnifier gliding over the companies' dashboard | glide → (drift ↑), zoom 1.02 |
+| 12 | 1:04.42 | 'A nation waiting / for a Thursday' two-line title, 13 years / One day pills | glide → (drift ↓), zoom 1 |
+| 13 | 1:08.84 | Pre-launch poll card counting to 2.8 MILLION, 'Day one' stamp | glide → (drift ↑), zoom 1 |
+| 14 | 1:14.94 | 5×4 people grid with one lit + giant '1 in 20' | glide → (drift ↓), zoom 1 |
+| 15 | 1:18.79 | Annual-leave form with APPROVED tick, 'The honest approach' | glide → (drift ↑), zoom 1 |
+| 16 | 1:23.00 | Fit note typing 'Severe case of launch day', Suddenly / Tragically / Very unwell, ALLEGEDLY stamp | glide → (drift ↓), zoom 1 |
+| 17 | 1:25.77 | Line-art empty desk, 'A boss, that morning', 'Not laughing' | glide → (drift ↑), zoom 1 |
+| 18 | 1:30.48 | Rota grid with empty slots, missed-calls phone, to-do list that never ticks | glide → (drift ↓), zoom 1 |
+| 19 | 1:34.61 | Giant controller, struck 'Skiving', 'Enjoying your life', rising stars | glide → (drift ↑), zoom 1 |
+| 20 | 1:40.18 | 'What the coverage missed', newspaper mock + MISSED THE POINT, struck duvet pill, PERMISSION; bumper FILE 02 THE PEOPLE | glide → (level), zoom 1 |
+| 21 | 1:46.57 | Sam: St Albans map pins, four day tiles, £1,500 count | glide → (drift ↓), zoom 1 |
+| 22 | 1:53.24 | Checklist (telly / controller / bunker), asleep before midnight, alarm for seven, lock himself away | glide → (drift ↑), zoom 1 |
+| 23 | 2:00.84 | Struck LAZINESS vs hot DEVOTION + heart | glide → (drift ↓), zoom 1 |
+| 24 | 2:03.07 | Kieran: Manchester → Wales route on the map, Told the BBC, Off grid stamp, For a week | glide → (drift ↑), zoom 1 |
+| 25 | 2:10.62 | Partner: 'Incredibly understanding' bubble, thought cloud 'Why is our romantic getaway… a PlayStation?' | glide → (level), zoom 1 |
+| 26 | 2:18.01 | Mountain + struck 'The hills' vs hot VICE CITY and sun | glide → (drift ↓), zoom 1 |
+| 27 | 2:21.86 | 'All in' + lit crowd, house + sun 'holiday at home' | glide → (drift ↑), zoom 1 |
+| 28 | 2:26.40 | Calendar tick + £90 gift-voucher ticket | glide → (drift ↓), zoom 1 |
+| 29 | 2:29.80 | Getaway basket with Lego / Colouring books / Pyjamas pills | glide → (drift ↑), zoom 1 |
+| 30 | 2:34.85 | Person dissolving with a scan line + struck 'National crisis' | glide → (drift ↓), zoom 1 |
+| 31 | 2:38.08 | 'People trying / in their own slightly chaotic way / to be happy' + rising hearts | glide → (drift ↑), zoom 1 |
+| 32 | 2:41.82 | 'No kit? Good luck.' + John Lewis +62% card; bumper FILE 03 THE BUILD-UP | glide → (drift ↓), zoom 1 |
+| 33 | 2:50.92 | Bar race John Lewis +62% vs Currys +149%, MORE THAN DOUBLED stamp | glide → (drift ↑), zoom 1 |
+| 34 | 2:55.21 | Struck 'Just buying a game' → BUILDING A NIGHT + moon | glide → (drift ↓), zoom 1 |
+| 35 | 2:59.50 | 'Broke the internet' + traffic gauge pegging the needle | glide → (drift ↑), zoom 1 |
+| 36 | 3:01.08 | Traffic spike line chart, Virgin Media O2 (10 NOV) and BT & EE cards, RECORD / PEAK EVER stamps | glide → (drift ↓), zoom 1 |
+| 37 | 3:09.64 | Quote card with highlighter + 5-hour ring timer | glide → (drift ↑), zoom 1 |
+| 38 | 3:18.29 | Draining battery + NEGOTIABLE stamp | glide → (drift ↓), zoom 1 |
+| 39 | 3:24.21 | Struck 'Queue outside Game', empty-queue 0 card, disc with a cross | glide → (drift ↑), zoom 1 |
+| 40 | 3:28.01 | Cratered moon + 212 GB download bar to 100% | glide → (drift ↓), zoom 1 |
+| 41 | 3:33.91 | Glowing portal 'Somewhere else', Warmer / Louder, struck group chat / bills / 7am alarm | glide → (drift ↑), zoom 1 |
+| 42 | 3:42.41 | 'The real story', lit crowd, WORTH IT stamp, struck 'People skipped work'; bumper FILE 04 THE VERDICT | glide → (drift ↓), zoom 1 |
+| 43 | 3:49.93 | No. 10 door, 'A British success story' quote with highlighter, Edinburgh pin, 'Fair enough' | glide → (drift ↑), zoom 1 |
+| 44 | 3:57.58 | Burnham bust card, 'Exploring Vice City?' | glide → (drift ↓), zoom 1 |
+| 45 | 4:01.26 | Diary filling row by row, 'very full', NOT PLAYING stamp | glide → (drift ↑), zoom 1 |
+| 46 | 4:05.82 | UK map flooding red + office block going dark | glide → (drift ↓), zoom 1 |
+| 47 | 4:10.47 | Line-art school with flag, THE SCHOOLS, age-rating 18 badge slam | glide → (drift ↑), zoom 1 |
+| 48 | 4:14.89 | Struck 'A panic about kids', school building, 'Straight with you'; bumper FILE 05 THE SCHOOLS | glide → (level), zoom 1 |
+| 49 | 4:19.12 | 1,400+ schools count + England map dots | glide → (drift ↓), zoom 1 |
+| 50 | 4:23.79 | +35,000 count + classroom seats going empty, 'Older boys, mostly' | glide → (drift ↑), zoom 1 |
+| 51 | 4:30.31 | PRIZE DRAW raffle ticket, 'Tried to bribe them in', voucher draws | glide → (drift ↓), zoom 1 |
+| 52 | 4:33.40 | Quote 'The enemy.' + Birmingham map pin | glide → (drift ↑), zoom 1 |
+| 53 | 4:36.84 | Bigger set of schools grid, HANG ON stamp, winter bugs, snow in the north, DON'T OVEREGG IT | glide → (drift ↓), zoom 1 |
+| 54 | 4:45.50 | Struck 'Collapse' + tension line chart | glide → (drift ↑), zoom 1 |
+| 55 | 4:50.40 | Three tug cards: bosses / teachers / a country with other plans | glide → (drift ↓), zoom 1 |
+| 56 | 4:58.36 | 'What does that say about us?' | glide → (drift ↑), zoom 1 |
+| 57 | 5:01.15 | 'My read' + OPINION stamp; bumper FILE 06 MY READ | glide → (drift ↓), zoom 1 |
+| 58 | 5:04.09 | Comment box typing "Tell me I'm wrong." | glide → (drift ↑), zoom 1 |
+| 59 | 5:06.00 | 'Britain is tired' + draining battery | glide → (drift ↓), zoom 1 |
+| 60 | 5:07.79 | Hourglass / cost of living / burnout pills + promised vs actual week planner | glide → (drift ↑), zoom 1 |
+| 61 | 5:16.08 | Rising-price cards (energy / rent / shop), The fun → Has to wait | glide → (drift ↓), zoom 1 |
+| 62 | 5:24.31 | 'A game comes along' + controller, Half the country, Since they were teens | glide → (drift ↑), zoom 1 |
+| 63 | 5:29.04 | 'Feel alive' + ECG pulse going from flat to alive | glide → (drift ↓), zoom 1 |
+| 64 | 5:32.68 | Struck 'Next month' / 'When things calm down' + THURSDAY | glide → (drift ↑), zoom 1 |
+| 65 | 5:36.79 | Callback montage: £1,500 / calendar tick / sick day / Wales route | glide → (drift ↓), zoom 1 |
+| 66 | 5:43.16 | 'Irresponsible?' or 'Catching its breath?' + breathing rings | glide → (drift ↑), zoom 1 |
+| 67 | 5:47.28 | Struck 'Like the game' / 'Like the sickie' + giant +56%, fade to black | glide → (drift ↓), zoom 1 |

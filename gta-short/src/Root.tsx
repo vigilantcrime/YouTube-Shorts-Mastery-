@@ -27,6 +27,11 @@ import {LeonidaEp1, EP1_FRAMES} from './ls/Ep1';
 import {LsThumb} from './ls/LsThumb';
 import {NpcShort, NS_FRAMES} from './ls/NpcShort';
 import {SixStar, SIX_FRAMES} from './ls/SixStar';
+import {Bench as VcBench} from './vc/Bench';
+import {VcGallery} from './vc/Gallery';
+import {VcPart1, P1_VO, P1_TAIL} from './vc/Part1';
+import {VcFull, FULL_DUR} from './vc/Full';
+import {VcThumb} from './vc/Thumb';
 import {AgentReel, AB_FRAMES} from './AgentReel';
 
 export const FPS = 30;
@@ -34,6 +39,11 @@ export const Root = () => (
   <>
     <Composition id="AgentReel" component={AgentReel} durationInFrames={AB_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="NpcShort" component={NpcShort} durationInFrames={NS_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="VcGallery" component={VcGallery} durationInFrames={360} fps={30} width={1920} height={1080} />
+    <Composition id="VcBench" component={VcBench} durationInFrames={300} fps={30} width={1920} height={1080} />
+    <Composition id="VcThumb" component={VcThumb} durationInFrames={1} fps={30} width={1280} height={720} />
+    <Composition id="VcFull" component={VcFull} durationInFrames={Math.ceil(FULL_DUR * 30)} fps={30} width={1920} height={1080} />
+    <Composition id="VcPart1" component={VcPart1} durationInFrames={Math.ceil((P1_VO + P1_TAIL) * 30)} fps={30} width={1920} height={1080} />
     <Composition id="SixStar" component={SixStar} durationInFrames={SIX_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="LsThumb" component={LsThumb} durationInFrames={1} fps={30} width={1280} height={720} />
     <Composition id="LeonidaEp1" component={LeonidaEp1} durationInFrames={EP1_FRAMES} fps={30} width={1920} height={1080} />

@@ -1,2 +1,6 @@
 node_modules/
 out/
+
+# VC long-form working media (large)
+public/vc2/*.wav
+public/vc2/*.mp3
