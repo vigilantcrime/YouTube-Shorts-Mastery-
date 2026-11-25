@@ -14,7 +14,7 @@ export const scenes2: SD[] = [
   /* P0 — not a panic about kids (bumper 05 overlays) */
   {t0: A("i'm not turning"), y: -30, children: <>
     <Obj t0={P(A('a panic'), 'slam')} x={960} y={225} from="zoom" z={3}><StruckTitle t0={A('about kids') + 0.3} text="A panic about kids" size={140} max={1400} /></Obj>
-    <Obj t0={P(A('about kids') + 1.3, 'slam')} x={960} y={575} from="zoom" z={2}><SchoolHouse w={440} /></Obj>
+    <Obj t0={P(A('about kids') + 0.5, 'slam')} x={960} y={575} from="zoom" z={2}><SchoolHouse w={440} /></Obj>
     <Obj t0={P(A('straight with you'))} x={960} y={885} from="up"><Pill text="Straight with you" v="blue" size={40} icon={ic('eye', 56)} /></Obj>
   </>},
   /* P1 — more than 1,400 English secondary schools */

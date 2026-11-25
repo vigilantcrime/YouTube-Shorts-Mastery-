@@ -49,7 +49,7 @@ export const HUD: React.FC<{chapters: Chapter[]; end: number; caseId: string}> =
       <span style={{color: C.red}}>FILE {cur.n}</span><span style={{opacity: 0.5}}>·</span><span>{cur.name}</span></div>}
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 7, background: 'rgba(255,255,255,0.10)'}}>
       <div style={{width: `${p * 100}%`, height: '100%', background: 'linear-gradient(90deg, #2F7BFF, #8FC1FF 55%, #FF2E4A)', boxShadow: '0 0 14px rgba(47,123,255,0.8)'}} />
-      {chapters.map((c, i) => <div key={i} style={{position: 'absolute', left: `${(c.t / end) * 100}%`, top: -4, width: 3, height: 15, background: '#fff', opacity: 0.7}} />)}
+      {chapters.filter((c) => c.t <= Math.max(t, 254.9)).map((c, i) => <div key={i} style={{position: 'absolute', left: `${(c.t / end) * 100}%`, top: -4, width: 3, height: 15, background: '#fff', opacity: 0.7}} />)}
     </div>
   </>;
 };
