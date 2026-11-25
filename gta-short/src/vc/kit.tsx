@@ -134,9 +134,12 @@ export const Pill: React.FC<{text: string; icon?: React.ReactNode; v?: PV; size?
 export const Title: React.FC<{children: React.ReactNode; size?: number; hot?: boolean; style?: React.CSSProperties}> = ({children, size = 150, hot, style}) => {
   const t = useT(); const o0 = React.useContext(ObjT0); const p = o0 === null ? 1 : ramp(t, o0 + 0.22, o0 + 0.95, 0, 1, eio);
   const base = hot ? 'linear-gradient(180deg, #FF8A99 0%, #FF2E4A 60%, #D01232 100%)' : 'linear-gradient(180deg, #FFFFFF 18%, #BFDDFF 100%)';
-  const sheen = p > 0.001 && p < 0.999 ? `linear-gradient(105deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.98) 50%, rgba(255,255,255,0) 60%) ${160 - 230 * p}% 0 / 280% 100% no-repeat, ` : '';
+  const on = p > 0.001 && p < 0.999;
+  /* longhands only: a changing `background` shorthand would reset background-clip between frames (React updates the DOM in place) */
   return <div style={{fontFamily: F.display, fontSize: size, lineHeight: 1.04, textTransform: 'uppercase', textAlign: 'center', whiteSpace: 'nowrap', letterSpacing: size * 0.012, color: 'transparent',
-    background: sheen + base, WebkitBackgroundClip: 'text', backgroundClip: 'text',
+    backgroundImage: on ? `linear-gradient(105deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.98) 50%, rgba(255,255,255,0) 60%), ${base}` : `${base}, ${base}`,
+    backgroundSize: on ? '280% 100%, 100% 100%' : '100% 100%, 100% 100%', backgroundPosition: on ? `${160 - 230 * p}% 0, 0 0` : '0 0, 0 0', backgroundRepeat: 'no-repeat, no-repeat',
+    WebkitBackgroundClip: 'text', backgroundClip: 'text',
     WebkitTextStroke: hot ? `${Math.max(3, size * 0.026)}px #fff` : '0px', paintOrder: 'stroke fill',
     filter: hot ? `drop-shadow(0 ${size * 0.04}px 0 #5a0a1c) drop-shadow(0 0 ${size * 0.2}px rgba(255,46,74,0.6))` : `drop-shadow(0 ${size * 0.04}px 0 #0a1a3a) drop-shadow(0 0 ${size * 0.2}px rgba(47,123,255,0.6))`, ...style}}>{children}</div>;
 };
