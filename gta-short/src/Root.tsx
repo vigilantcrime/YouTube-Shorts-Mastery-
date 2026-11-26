@@ -41,7 +41,7 @@ export const Root = () => (
     <Composition id="NpcShort" component={NpcShort} durationInFrames={NS_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="VcGallery" component={VcGallery} durationInFrames={360} fps={30} width={1920} height={1080} />
     <Composition id="VcBench" component={VcBench} durationInFrames={300} fps={30} width={1920} height={1080} />
-    <Composition id="VcThumb" component={VcThumb} durationInFrames={1} fps={30} width={1280} height={720} />
+    <Composition id="VcThumb" component={VcThumb} durationInFrames={1} fps={30} width={1280} height={720} defaultProps={{v: 'A' as const}} />
     <Composition id="VcFull" component={VcFull} durationInFrames={Math.ceil(FULL_DUR * 30)} fps={30} width={1920} height={1080} />
     <Composition id="VcPart1" component={VcPart1} durationInFrames={Math.ceil((P1_VO + P1_TAIL) * 30)} fps={30} width={1920} height={1080} />
     <Composition id="SixStar" component={SixStar} durationInFrames={SIX_FRAMES} fps={30} width={1080} height={1920} />
