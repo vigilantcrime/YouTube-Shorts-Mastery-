@@ -117,7 +117,7 @@ This is Vigilant Crime. Subscribe for the next file.
 
 ---
 
-# Part 2 (makes the full video about 11 minutes)
+# Part 2 (full video about 9 minutes: 1,285 words of voiceover)
 
 ## Change to the end of Part 1
 
