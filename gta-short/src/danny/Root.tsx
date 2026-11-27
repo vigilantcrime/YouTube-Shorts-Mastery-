@@ -4,11 +4,16 @@ import {ShotClip} from './ShotClip';
 import {HandTest} from './HandTest';
 import {ShotPhone} from './ShotPhone';
 import {ShotFinger} from './ShotFinger';
+import {Sprites, SPRITE_N} from './Sprites';
+import {ExAll, exTotal, Scene} from './ex/Ex';
 export const DannyRoot: React.FC = () => (
   <>
     <Composition id="DClipG" component={ShotClip} defaultProps={{v: 'G' as const}} durationInFrames={149} fps={25} width={1920} height={1080} />
     <Composition id="DClipH" component={ShotClip} defaultProps={{v: 'H' as const}} durationInFrames={177} fps={25} width={1920} height={1080} />
     <Composition id="DHandTest" component={HandTest} defaultProps={{k: 0}} durationInFrames={1} fps={25} width={1920} height={1080} />
+    <Composition id="DExAll" component={ExAll} defaultProps={{scenes: [] as Scene[]}} fps={25} width={1920} height={1080} durationInFrames={1}
+      calculateMetadata={({props}) => ({durationInFrames: Math.max(1, exTotal((props as {scenes: Scene[]}).scenes))})} />
+    <Composition id="DSprites" component={Sprites} durationInFrames={SPRITE_N} fps={25} width={512} height={512} />
     <Composition id="DFinger" component={ShotFinger} durationInFrames={69} fps={25} width={1920} height={1080} />
     <Composition id="DP0" component={ShotPhone} defaultProps={{v: 'P0' as const}} durationInFrames={182} fps={25} width={1920} height={1080} />
     <Composition id="DP1" component={ShotPhone} defaultProps={{v: 'P1' as const}} durationInFrames={138} fps={25} width={1920} height={1080} />

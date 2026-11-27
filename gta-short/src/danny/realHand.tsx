@@ -115,9 +115,10 @@ export const RealHand: React.FC<{side?: 'left' | 'right'; skin: string; curl: Cu
     armEl = (
       <group>
         <Rod a={w.clone().add(e.clone().sub(w).normalize().multiplyScalar(-0.012)).toArray() as V3} b={cuff.toArray() as V3} r0={0.026 * scale} r1={0.028 * scale} color={skin} rough={0.52} caps={false} />
+        {arm.sleeve === 'none' ? <Rod a={cuff.toArray() as V3} b={w.clone().add(e.clone().sub(w).normalize().multiplyScalar(0.12)).toArray() as V3} r0={0.028 * scale} r1={0.03 * scale} color={skin} rough={0.52} caps={false} /> : <>
         <Rod a={cuff.toArray() as V3} b={arm.elbow} r0={r} r1={r * 1.12} color={arm.sleeve} rough={0.65} caps={false} />
-        <mesh position={arm.elbow}><sphereGeometry args={[r * 1.12, 32, 24]} /><meshStandardMaterial color={arm.sleeve} roughness={0.65} /></mesh>
-        {arm.shoulder && <Rod a={arm.elbow} b={arm.shoulder} r0={r * 1.12} r1={r * 1.2} color={arm.sleeve} rough={0.65} />}
+        <mesh position={arm.elbow}><sphereGeometry args={[r * 1.12, 32, 24]} /><meshStandardMaterial color={arm.sleeve} roughness={0.65} /></mesh></>}
+        {arm.shoulder && arm.sleeve !== 'none' && <Rod a={arm.elbow} b={arm.shoulder} r0={r * 1.12} r1={r * 1.2} color={arm.sleeve} rough={0.65} />}
       </group>
     );
   }

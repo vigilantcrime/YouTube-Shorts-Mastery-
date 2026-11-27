@@ -29,6 +29,7 @@ export const useFonts = () => {
       new FontFace('PlexMono', `url(${staticFile('fonts/IBMPlexMono-Medium.ttf')})`, {weight: '500'}),
       new FontFace('PlexMonoBold', `url(${staticFile('fonts/IBMPlexMono-Bold.ttf')})`, {weight: '700'}),
       new FontFace('InterUI', `url(${staticFile('fonts/inter400.woff2')})`),
+      new FontFace('SerifQ', `url(${staticFile('fonts/LiberationSerif-Bold.ttf')})`, {weight: '700'}),
       new FontFace('InterMed', `url(${staticFile('fonts/inter500.woff2')})`),
       new FontFace('InterBold', `url(${staticFile('fonts/Inter-Bold.otf')})`),
     ];
