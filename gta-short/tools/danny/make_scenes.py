@@ -127,7 +127,7 @@ H = {
  72: dict(layout='object', icon='cctv'),
  73: dict(layout='stat', icon='car', stat={'value': 400, 'prefix': '£', 'label': 'THE RESPRAY · OUT OF HIS OWN POCKET'}),
  74: dict(layout='cast', cast=C('danny'), moods=C('blank')),
- 75: dict(layout='cast', cast=C('leah', 'danny'), bubbles=[('danny', "HE DIDN'T WANT TO BE THE BLOKE MOANING ABOUT HIS NICE NEW CAR")], moods=C('worried', 'neutral')),
+ 75: dict(layout='cast', cast=C('leah', 'danny'), bubbles=[('danny', "DIDN'T WANT TO BE THE BLOKE MOANING ABOUT HIS NICE NEW CAR")], moods=C('worried', 'neutral')),
  76: dict(layout='quote', who='leah', quote="SO YOU'D RATHER SOMEONE JUST GETS AWAY WITH IT"),
  77: dict(layout='cast', cast=C('danny'), moods=C('blank')),
  78: dict(layout='cast', cast=C('jordan'), tags=C('JORDAN, 17 · LEFT SCHOOL WITH NOTHING'), chapter={'num': 'CHAPTER 06', 'title': 'THE LAD ON THE WALL', 'to': 70}),

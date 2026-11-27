@@ -43,9 +43,11 @@ const Kinetic: React.FC<{phrases: Phrase[]; y?: number; size?: number; right?: n
   return (
     <AbsoluteFill>
       {phrases.map((p, i) => {
-        const vis = f >= p.t0 - 3 && f < p.t1 + 2;
-        if (!vis) return null;
-        const out = interpolate(f, [p.t1 - 3, p.t1 + 2], [1, 0], cl);
+        // one caption line at a time: a line hands over to the next one as it appears (no overlap)
+        const last = i + 1 >= phrases.length;
+        const end = last ? p.t1 + 2 : phrases[i + 1].t0 - 3;
+        if (f < p.t0 - 3 || f >= end) return null;
+        const out = last ? interpolate(f, [p.t1 - 3, p.t1 + 2], [1, 0], cl) : 1;
         return (
           <div key={i} style={{position: 'absolute', left: 160, right, top: y, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline',
             columnGap: size * 0.24, rowGap: 4, opacity: out}}>
@@ -225,7 +227,7 @@ const SceneView: React.FC<{sc: Scene}> = ({sc}) => {
       return <div style={{position: 'absolute', left: x - 110, top: y - 110}}><Icon name={sc.icon} size={220} draw={draw} t={scr} /></div>;
     }
     if (n === 1) return <div style={{position: 'absolute', left: 1130, top: avY - 210, transform: `rotate(${Math.sin(f / 20) * 3}deg)`}}><Icon name={sc.icon} size={400} draw={draw} t={scr} /></div>;
-    if (n >= 2) return <div style={{position: 'absolute', left: 960 - 100, top: avY - 290}}><Icon name={sc.icon} size={200} draw={draw} t={scr} /></div>;
+    if (n >= 2) return <div style={{position: 'absolute', left: 960 - 100, top: avY - 127}}><Icon name={sc.icon} size={200} draw={draw} t={scr} /></div>;
     return <div style={{position: 'absolute', left: 960 - 230, top: 140, transform: `rotate(${Math.sin(f / 20) * 3}deg)`}}><Icon name={sc.icon} size={460} draw={draw} t={scr} /></div>;
   };
   const bubbles = () => (sc.bubbles ?? []).map((b, i) => {

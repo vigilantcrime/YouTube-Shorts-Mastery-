@@ -2,8 +2,11 @@
 kept fixes must match their clips; writes a contact sheet of all windows (mid frame) from the delivered file."""
 import sys, json, subprocess, numpy as np
 from PIL import Image, ImageDraw, ImageFont
-SB, OUT = sys.argv[1], sys.argv[2]; SRC = SB + '/danny_in/danny.mp4'; TR = SB + '/ex/track.mp4'
-sc = sorted(json.load(open(SB + '/ex/scenes.json'))['scenes'], key=lambda s: s['start'])
+SB, OUT = sys.argv[1], sys.argv[2]; SRC = SB + '/danny_in/danny.mp4'; EX = SB + '/ex/exall.mp4'
+sc = json.load(open(SB + '/ex/scenes.json'))['scenes']
+_o = 0
+for _s in sc: _s['off'] = _o; _o += _s['dur']
+sc = sorted(sc, key=lambda s: s['start'])
 def fr(path, n):
     p = subprocess.run(['ffmpeg', '-v', 'error', '-ss', f'{n/25:.4f}', '-i', path, '-frames:v', '1', '-vf', 'scale=480:270', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], capture_output=True)
     return np.frombuffer(p.stdout, np.uint8).reshape(270, 480, 3).astype(float)
@@ -16,7 +19,7 @@ def expect_src(n):
 tiles = []; font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 18)
 for s in sc:
     a, b = s['start'], s['start'] + s['dur'] - 1
-    ins = [psnr(fr(OUT, n), fr(TR, n)) for n in (a, (a + b) // 2, b)]
+    ins = [psnr(fr(OUT, n), fr(EX, n - a + s['off'])) for n in (a, (a + b) // 2, b)]
     outs = []
     for n in (a - 1, b + 1):
         if 0 <= n < 21935 and expect_src(n) and not any(t['start'] <= n < t['start'] + t['dur'] for t in sc): outs.append(psnr(fr(OUT, n), fr(SRC, n)))
