@@ -7,15 +7,17 @@ en = '+'.join(f"between(n,{s['start']},{s['start'] + s['dur'] - 1})" for s in sc
 fixes = [(f'{W}/F1_1443.mp4', 1443, 1480), (f'{W}/F2_2329.mp4', 2329, 2384), (f'{W}/I_4851.mp4', 4851, 4851), (f'{W}/J_8019.mp4', 8019, 8122), (f'{W}/K_8241.mp4', 8241, 8320)]
 order = json.load(open(SB + '/ex/scenes.json'))['scenes']   # render order (DExAll concatenates in this order)
 off = 0; terms = []
-for s_ in order:
-    terms.append(f"{s_['start'] - off}*between(N,{off},{off + s_['dur'] - 1})"); off += s_['dur']
+for i_, s_ in enumerate(order):
+    # the last window stays open so the padded tail frames keep counting forward in time
+    cond = f"gte(N,{off})" if i_ == len(order) - 1 else f"between(N,{off},{off + s_['dur'] - 1})"
+    terms.append(f"{s_['start'] - off}*{cond}"); off += s_['dur']
 SHIFT = '+'.join(terms)
 ins = f"-i {SB}/danny_in/danny.mp4 -i {SB}/ex/exall.mp4 " + ' '.join(f'-i {c}' for c, _, _ in fixes)
 fc = [f"[{i + 2}:v]setpts=PTS-STARTPTS+{a}/25/TB[f{i}]" for i, (c, a, b) in enumerate(fixes)]
 prev = '0:v'
 for i, (c, a, b) in enumerate(fixes):
     fc.append(f"[{prev}][f{i}]overlay=enable='between(n,{a},{b})':eof_action=pass[g{i}]"); prev = f'g{i}'
-fc.append(f"[1:v]setpts='(N+{SHIFT})/(25*TB)',fps=25:start_time=0,trim=end_frame=21935[ex]")
+fc.append(f"[1:v]tpad=stop_mode=clone:stop=50,setpts='(N+{SHIFT})/(25*TB)',fps=25:start_time=0,trim=end_frame=21935[ex]")
 fc.append(f"[{prev}][ex]overlay=enable='{en}':eof_action=pass,format=yuv420p[v]")
 FC = ';'.join(fc)
 sh = f'''#!/bin/bash
